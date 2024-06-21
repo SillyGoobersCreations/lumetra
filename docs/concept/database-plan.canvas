@@ -1,0 +1,40 @@
+{
+	"nodes":[
+		{"id":"1afb7ec4b4f63941","x":-230,"y":-576,"width":1010,"height":637,"type":"group","label":"Public Directory"},
+		{"id":"a0bdcb87377bc649","x":-1180,"y":-1000,"width":400,"height":1020,"type":"group","label":"Rooms"},
+		{"id":"f915d968b0524345","x":-680,"y":-1000,"width":380,"height":812,"type":"group","label":"Event"},
+		{"id":"8f08b89b6a1b8093","x":260,"y":120,"width":540,"height":221,"type":"group","label":"Chat"},
+		{"id":"70074dd32eb92b82","type":"text","text":"### Event\n* (uuid) id\n* (string) name\n* (string) logo_url\n* (string?) description\n* (string) location\n* (DateTime) start_date\n* (DateTime) end_date\n* (string) color_primary\n* (string) color_secondary\n* (bool) confirmation_required\n* (bool) confirmation_personalized\n* (int?) room_slot_max_claims\n* (float?) room_slot_min_time\n* (float?) room_slot_max_time\n* (bool) room_slot_team_confirms\n* (int?) max_attendees","x":-660,"y":-736,"width":340,"height":528},
+		{"id":"23aa0812f4dc2b86","type":"text","text":"### (Attendance)ContactInfo\n* (uuid) id\n* (Attendance) attendance_id\n* (enum) type (Web, Twitter, Facebook, LinkedIn, Discord, Mastodon, GitHub, YouTube, Reddit)\n* (string) value\n* (enum) visibility (Hidden, Public, ConnectionsOnly)","x":300,"y":-556,"width":460,"height":320},
+		{"id":"a187a056044f3957","type":"text","text":"### (Attendance)Connection\n* (uuid) id\n* (Attendance) inviter_attendance_id\n* (Attendance) invitee_attendance_id\n* (enum) state (Pending, Confirmed, Declined)","x":300,"y":-179,"width":420,"height":220},
+		{"id":"93723d7054e56f18","type":"text","text":"### (User)ChatMessage\n* (uuid) id\n* (Attendance) inviter_attendance_id\n* (string) text","x":300,"y":140,"width":460,"height":160},
+		{"id":"e19e6798249901d1","type":"text","text":"### (User)Attendance\n* (uuid) id\n* (Event) event_uuid\n* (User) user_uuid\n* (bool) confirmed\n* (uuid) confirmation_key\n* (string) description\n* (string) job_company\n* (string) job_function\n* (enum) role (Attendee,Organizer,Admin)","x":-210,"y":-357,"width":320,"height":398},
+		{"id":"c92457ff63afb15a","type":"text","text":"### (Event)Notes\n* (uuid) id\n* (Event) event_id\n* (string) text","x":-660,"y":-980,"width":340,"height":160},
+		{"id":"042b674b7fad7cf8","type":"text","text":"### (Event)Room\n* (uuid) id\n* (Event) event_uuid\n* (string) room\n* (string?) location\n* (string?) notes\n* (bool) available","x":-1140,"y":-980,"width":320,"height":255},
+		{"id":"214e88c718bb6ecf","type":"text","text":"### User\n* (uuid) id\n* (string) email\n* (string) password\n* (string?) avatar_url\n* (string) first_name\n* (string) last_name\n* (bool) can_create_events\n* (enum) role (User,Organizer,Admin)","x":-640,"y":0,"width":340,"height":346},
+		{"id":"5b54d85aa7b67c64","type":"text","text":"### (Event)RoomSlotClaim\n* (uuid) id\n* (RoomSlot) slot_uuid\n* (Attendance) attendee_inviter_uuid\n* (Attendance) attendee_invitee_uuid\n* (enum) state (Pending, AttendeeConfirmed, Confirmed)\n* (float) time_length","x":-1160,"y":-302,"width":360,"height":288},
+		{"id":"b2813a514cd4580b","type":"text","text":"### (Event)RoomSlot\n* (uuid) id\n* (Room) room_uuid\n* (DateTime) start_date\n* (DateTime) end_date\n* (string?) notes\n* (float?) time_between_slots\n* (enum) state (Open,Reserved,Claimed,Unavailable)","x":-1140,"y":-691,"width":320,"height":334}
+	],
+	"edges":[
+		{"id":"9307c7aa50b22ccf","fromNode":"042b674b7fad7cf8","fromSide":"bottom","toNode":"b2813a514cd4580b","toSide":"top"},
+		{"id":"fdf1a7c0ed6c8869","fromNode":"b2813a514cd4580b","fromSide":"top","toNode":"042b674b7fad7cf8","toSide":"bottom"},
+		{"id":"e176d7a3dc9c6452","fromNode":"b2813a514cd4580b","fromSide":"bottom","toNode":"5b54d85aa7b67c64","toSide":"top"},
+		{"id":"0b29d5bafa712114","fromNode":"5b54d85aa7b67c64","fromSide":"top","toNode":"b2813a514cd4580b","toSide":"bottom"},
+		{"id":"7b09714088791461","fromNode":"042b674b7fad7cf8","fromSide":"right","toNode":"70074dd32eb92b82","toSide":"left"},
+		{"id":"9afab1dd39a50e7b","fromNode":"70074dd32eb92b82","fromSide":"left","toNode":"042b674b7fad7cf8","toSide":"right"},
+		{"id":"fc884f5a319a4ec4","fromNode":"e19e6798249901d1","fromSide":"right","toNode":"23aa0812f4dc2b86","toSide":"left"},
+		{"id":"5318b5d99df0511b","fromNode":"23aa0812f4dc2b86","fromSide":"left","toNode":"e19e6798249901d1","toSide":"right"},
+		{"id":"dccd58f4c7645d49","fromNode":"e19e6798249901d1","fromSide":"right","toNode":"a187a056044f3957","toSide":"left"},
+		{"id":"ab09e06f9098b20d","fromNode":"a187a056044f3957","fromSide":"left","toNode":"e19e6798249901d1","toSide":"right"},
+		{"id":"908aafe489f1993e","fromNode":"93723d7054e56f18","fromSide":"left","toNode":"e19e6798249901d1","toSide":"right"},
+		{"id":"5096a52586d46136","fromNode":"e19e6798249901d1","fromSide":"right","toNode":"93723d7054e56f18","toSide":"left"},
+		{"id":"8984e9b0181af75e","fromNode":"5b54d85aa7b67c64","fromSide":"right","toNode":"e19e6798249901d1","toSide":"left"},
+		{"id":"045e63afb4861aae","fromNode":"5b54d85aa7b67c64","fromSide":"right","toNode":"e19e6798249901d1","toSide":"left"},
+		{"id":"4f71ab10cd702a91","fromNode":"70074dd32eb92b82","fromSide":"right","toNode":"e19e6798249901d1","toSide":"top"},
+		{"id":"3150897eb74aba68","fromNode":"70074dd32eb92b82","fromSide":"right","toNode":"e19e6798249901d1","toSide":"top"},
+		{"id":"ff48182bca0db2b4","fromNode":"c92457ff63afb15a","fromSide":"bottom","toNode":"70074dd32eb92b82","toSide":"top"},
+		{"id":"c13433270b1e6de6","fromNode":"70074dd32eb92b82","fromSide":"top","toNode":"c92457ff63afb15a","toSide":"bottom"},
+		{"id":"ca516c07cbf0247f","fromNode":"214e88c718bb6ecf","fromSide":"top","toNode":"e19e6798249901d1","toSide":"left"},
+		{"id":"9edc3887fd655ca6","fromNode":"e19e6798249901d1","fromSide":"left","toNode":"214e88c718bb6ecf","toSide":"top"}
+	]
+}
