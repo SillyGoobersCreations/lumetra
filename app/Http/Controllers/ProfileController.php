@@ -2,62 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\RedirectResponse;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): Response
-    {
-        return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => session('status'),
-        ]);
+    public function showOverview(string $eventId): Response {
+        // TODO: Show a short preview of public attendee profiles and a search
     }
 
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit');
+    public function showDetail(string $eventId, string $userId): Response {
+        // TODO: Show the attendee profile of $userId for $eventId
     }
 
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
+    public function doConnect(string $eventId, string $userId): RedirectResponse {
+        // TODO: If ConnectRequest exists: Remove ConnectRequest and connect authenticated user with $userId
+        // TODO: If no ConnectRequest exists: Create a Connect Request to $userId from the authenticated user and redirect to attendee detail page
+    }
 
-        $user = $request->user();
+    public function doDisconnect(string $eventId, string $userId): RedirectResponse {
+        // TODO: If ConnectRequest exists: Remove ConnectRequest
+        // TODO: Always: Disconnect authenticated user from $userId and redirect to attendee detail page
+    }
 
-        Auth::logout();
+    public function showSettings(string $eventId): Response {
+        // TODO: Show attendee profile settings and general user settings
+    }
 
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+    public function doSaveSettings(string $eventId): RedirectResponse {
+        // TODO: Save attendee profile settings and general user settings
     }
 }
