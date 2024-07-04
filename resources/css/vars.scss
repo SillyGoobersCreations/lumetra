@@ -5,4 +5,33 @@
     font-family: var(--fontFamily);
     font-size: var(--fontSize);
     line-height: 1rem;
+
+    /* COLORS */
+    --color-primary-50: 240, 246, 254;
+    --color-primary-100: 221, 235, 252;
+    --color-primary-200: 194, 220, 251;
+    --color-primary-300: 152, 199, 248;
+    --color-primary-400: 103, 169, 243;
+    --color-primary-500: 68, 136, 237;
+    --color-primary-600: 46, 106, 226;
+    --color-primary-700: 38, 87, 210;
+    --color-primary-800: 37, 71, 168;
+    --color-primary-900: 35, 62, 133;
+    --color-primary-950: 26, 40, 81;
+
+    --color-base-50: 246, 247, 249;
+    --color-base-100: 236, 238, 242;
+    --color-base-200: 213, 218, 226;
+    --color-base-300: 176, 186, 201;
+    --color-base-400: 133, 148, 171;
+    --color-base-500: 102, 119, 145;
+    --color-base-600: 81, 96, 120;
+    --color-base-700: 66, 78, 98;
+    --color-base-800: 57, 66, 83;
+    --color-base-900: 51, 58, 71;
+    --color-base-950: 34, 38, 47;
+
+    /* TRANSITIONS */
+    --transition-default: 0.2s ease-in-out all;
+    --transition-snap: 0.4s cubic-bezier(0,1,0,1) all;
 }

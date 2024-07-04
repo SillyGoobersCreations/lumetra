@@ -1,9 +1,12 @@
 <template>
-    <h1>Event Layout</h1>
-    <slot />
+    <EventNavigationBar />
+    <main>
+        <slot />
+    </main>
 </template>
 
 <script setup lang="ts">
+import EventNavigationBar from "@/Components/Event/EventNavigationBar.vue";
 </script>
 
 <style lang="scss" scoped>
