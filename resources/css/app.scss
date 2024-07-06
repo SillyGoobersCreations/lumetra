@@ -101,6 +101,19 @@ button, input[type="submit"], input[type="button"], .button {
             cursor: pointer;
         }
     }
+    &.danger {
+        background: rgb(var(--color-danger-600));
+        color: rgb(var(--color-danger-50));
+
+        &:not(:disabled):not(.disabled):hover {
+            background: rgb(var(--color-danger-800));
+            cursor: pointer;
+        }
+        &:not(:disabled):not(.disabled):active {
+            background: rgb(var(--color-danger-950));
+            cursor: pointer;
+        }
+    }
     &.reverse {
         background: rgb(var(--color-base-50));
         color: rgb(var(--color-base-900));

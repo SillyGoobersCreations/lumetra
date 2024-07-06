@@ -1,12 +1,68 @@
 <template>
     <DefaultLayout>
-        <h2>Events Overview</h2>
+        <div class="events-grid">
+            <Box
+                :key="event.id"
+                v-for="event in events"
+                padding="l"
+            >
+                <div class="banner"></div>
+                <h2>{{ event.title }}</h2>
+                <p>{{ event.description }}</p>
+                <p>Organized by: {{ event.organizer }}</p>
+
+                <Link :href="route('events.detail', { eventId: event.id })" class="button">
+                    <i class="ri-arrow-right-up-line"></i>
+                    <span>Go to event</span>
+                </Link>
+            </Box>
+        </div>
     </DefaultLayout>
 </template>
 
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
+import Box from "@/Components/Common/Box.vue";
+
+defineProps({
+    events: {
+        type: Array,
+        default: () => [],
+    }
+});
 </script>
 
 <style lang="scss" scoped>
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+
+    & .box {
+        & .banner {
+            aspect-ratio: 16 / 9;
+            background: rgb(var(--color-base-200));
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        & h2 {
+            font-size: 1.25rem;
+            margin-bottom: 5px;
+        }
+        & p {
+            margin-bottom: 5px;
+
+            &:last-of-type {
+                font-size: 0.75rem;
+                color: rgb(var(--color-base-400));
+                margin-bottom: 15px;
+            }
+        }
+        & a {
+            //align-self: flex-end;
+            justify-content: center;
+        }
+    }
+}
 </style>

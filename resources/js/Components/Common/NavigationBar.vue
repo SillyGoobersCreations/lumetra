@@ -22,7 +22,7 @@ import Wrapper from "@/Components/Common/Wrapper.vue";
 
 <style lang="scss" scoped>
 header {
-    height: 60px;
+    height: 80px;
     display: flex;
     align-items: center;
 

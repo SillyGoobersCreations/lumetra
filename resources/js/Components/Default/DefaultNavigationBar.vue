@@ -6,13 +6,13 @@
         </template>
         <template #main>
             <NavigationBarItem
-                href="/"
+                :href="route('index')"
                 icon="dashboard"
                 label="Home"
                 :active="$page.url === '/'"
             />
             <NavigationBarItem
-                href="/events"
+                :href="route('events.index')"
                 icon="coupon-3"
                 label="Events"
                 :active="$page.url.startsWith('/events')"
@@ -27,11 +27,11 @@
         </template>
         <template #user v-else>
             <NavigationBarItem
-                href="/login"
+                :href="route('login')"
                 label="Login"
             />
             <NavigationBarItem
-                href="/register"
+                :href="route('register')"
                 label="Register"
             />
         </template>

@@ -34,6 +34,12 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
+ * @property int $is_admin
+ * @property int $is_event_creator
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attendee> $attendees
+ * @property-read int|null $attendees_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereIsAdmin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereIsEventCreator($value)
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -49,6 +55,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_admin',
+        'is_event_creator',
     ];
 
     /**

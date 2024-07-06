@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('attendees', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('handle');
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
             $table->string('avatar_url')->nullable();
             $table->boolean('confirmed')->default(true);
             $table->uuid('confirmation_key')->nullable();
