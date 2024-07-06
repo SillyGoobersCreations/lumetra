@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <main class="layout-auth">
         <header>
             <img :src="LumetraLightLogo" alt="Lumetra Logo" class="logo only-light" />
             <img :src="LumetraDarkLogo" alt="Lumetra Logo" class="logo only-dark" />
@@ -17,7 +17,7 @@ import Box from "@/Components/Common/Box.vue";
 </script>
 
 <style lang="scss">
-#app {
+#app:has(.layout-auth) {
     display: flex;
     align-items: center;
     justify-content: center;

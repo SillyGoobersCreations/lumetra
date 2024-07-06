@@ -38,6 +38,12 @@ header {
             gap: 5px;
             align-items: center;
         }
+        & aside {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+        }
     }
 }
 </style>

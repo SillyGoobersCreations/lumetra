@@ -18,8 +18,22 @@
                 :active="$page.url.startsWith('/events')"
             />
         </template>
-        <template #user>
-            User
+        <template #user v-if="user">
+            <NavigationBarItem
+                href="/logout"
+                icon="door-closed"
+                label="Logout"
+            />
+        </template>
+        <template #user v-else>
+            <NavigationBarItem
+                href="/login"
+                label="Login"
+            />
+            <NavigationBarItem
+                href="/register"
+                label="Register"
+            />
         </template>
     </NavigationBar>
 </template>
@@ -29,6 +43,11 @@ import NavigationBar from "@/Components/Common/NavigationBar.vue";
 import LumetraLightLogo from "@/../img/lumetra-logo-onlight.svg";
 import LumetraDarkLogo from "@/../img/lumetra-logo-ondark.svg";
 import NavigationBarItem from "@/Components/Common/NavigationBarItem.vue";
+import {usePage} from "@inertiajs/vue3";
+import {computed, ref} from "vue";
+
+const page = usePage();
+const user = computed(() => page.props.auth.user);
 </script>
 
 <style lang="scss" scoped>

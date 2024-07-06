@@ -40,6 +40,10 @@ defineProps({
     border-radius: 100px;
     transition: var(--transition-default);
 
+    &:not(:has(i)) span {
+        margin-left: 3px;
+    }
+
     & i {
         width: 28px;
         height: 28px;
