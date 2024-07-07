@@ -22,11 +22,11 @@ class EventController extends Controller
 
     public function showDetail(string $eventId): Response {
         $event = Event::findOrFail($eventId);
-        $attendee = Attendee::where(['event_id' => $eventId, 'user_id' => Auth::user()->id])->first();
+        $userAttendee = Attendee::where(['event_id' => $eventId, 'user_id' => Auth::user()->id, 'active' => true])->first();
 
         return Inertia::render('Event/Detail', [
             'event' => $event,
-            'attendee' => $attendee ?? false,
+            'userAttendee' => $userAttendee ?? false,
         ]);
     }
 
@@ -45,10 +45,44 @@ class EventController extends Controller
     }
 
     public function doEnroll(string $eventId): RedirectResponse {
-        // TODO: Create attendee profile for the authenticated user and redirect to event detail page
+        $user = Auth::user();
+        $existingEnrollment = Attendee::where(['event_id' => $eventId, 'user_id' => $user->id])->first();
+
+        if($existingEnrollment != null) {
+            // Reactivate
+            if(!$existingEnrollment->active) {
+                $existingEnrollment->active = true;
+                $existingEnrollment->save();
+            }
+
+            return redirect(route('events.attendees.detail', [
+                'eventId' => $eventId,
+                'attendeeId' => $existingEnrollment->id,
+            ]));
+        } else {
+            // Create new Attendee
+            $newEnrollment = new Attendee();
+            $newEnrollment->handle = $user->id;
+            $newEnrollment->user_id = $user->id;
+            $newEnrollment->event_id = $eventId;
+            $newEnrollment->save();
+
+            return redirect(route('events.attendees.detail', [
+                'eventId' => $eventId,
+                'attendeeId' => $newEnrollment->id,
+            ]));
+        }
     }
 
     public function doLeave(string $eventId): RedirectResponse {
-        // TODO: Mark the authenticated users attendee profile as deleted and redirect to event detail page
+        $user = Auth::user();
+        $existingEnrollment = Attendee::where(['event_id' => $eventId, 'user_id' => $user->id])->firstOrFail();
+
+        $existingEnrollment->active = false;
+        $existingEnrollment->save();
+
+        return redirect(route('events.detail', [
+            'eventId' => $eventId,
+        ]));
     }
 }

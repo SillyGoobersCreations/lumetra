@@ -1,5 +1,5 @@
 <template>
-    <EventNavigationBar :event="event" :attendee="attendee" />
+    <EventNavigationBar :event="event" :userAttendee="userAttendee" />
 
     <Wrapper>
         <main>
@@ -17,7 +17,7 @@ defineProps({
         type: Object,
         required: true,
     },
-    attendee: {
+    userAttendee: {
         type: [Object, Boolean],
         default: false,
     }

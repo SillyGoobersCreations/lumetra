@@ -26,14 +26,14 @@ class AuthController extends Controller
     public function doLogin(AuthLoginRequest $request): RedirectResponse {
         $request->authenticate();
         $request->session()->regenerate();
-        return redirect()->intended('/');
+        return redirect()->intended();
     }
 
     public function doLogout(Request $request): RedirectResponse {
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        return redirect(route('index'));
     }
 
     public function showRegister(): Response {
@@ -48,6 +48,6 @@ class AuthController extends Controller
 
         event(new Registered($user));
         Auth::login($user);
-        return redirect('/');
+        return redirect(route('index'));
     }
 }

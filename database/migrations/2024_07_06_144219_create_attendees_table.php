@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('job_company')->nullable();
             $table->string('job_position')->nullable();
+            $table->boolean('active')->default(true);
             $table->enum('role', ['attendee', 'organizer'])->default('attendee');
             $table->timestamps();
         });

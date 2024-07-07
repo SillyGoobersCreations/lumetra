@@ -48,6 +48,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Attendee whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attendee whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attendee whereUserId($value)
+ * @property int $active
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendee whereActive($value)
  * @mixin \Eloquent
  */
 class Attendee extends Model

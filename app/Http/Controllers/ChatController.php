@@ -12,23 +12,23 @@ class ChatController extends Controller
         // TODO: Show all chats with authenticated user that are enrolled in the same event and have written before
     }
 
-    public function showDetail(string $eventId, string $userId): Response {
-        // TODO: Show the chat history with the authenticated user and the user in $userId from the event $eventId
+    public function showDetail(string $eventId, string $attendeeId): Response {
+        // TODO: Show the chat history with the authenticated user and the user in $attendeeId from the event $eventId
     }
 
-    public function getChat(string $eventId, string $userId): Response {
+    public function getChat(string $eventId, string $attendeeId): Response {
         // TODO: Respond with the chat history in JSON
     }
 
-    public function doSendMessage(string $eventId, string $userId): Response {
+    public function doSendMessage(string $eventId, string $attendeeId): Response {
         // TODO: Receives a message to send to the other chat participant
     }
 
-    public function doRoomSlotInviteSend(string $eventId, string $userId, string $slotId): Response {
+    public function doRoomSlotInviteSend(string $eventId, string $attendeeId, string $slotId): Response {
         // TODO: Create a room slot invite and send it to the other chat participant
     }
 
-    public function doRoomSlotInviteAnswer(string $eventId, string $userId, string $inviteId): Response {
+    public function doRoomSlotInviteAnswer(string $eventId, string $attendeeId, string $inviteId): Response {
         // TODO: Accept/Decline the invite and send the response to the other chat participant
     }
 }

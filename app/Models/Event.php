@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- *
+ * 
  *
  * @property string $id
  * @property string $title
@@ -53,6 +53,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereUpdatedAt($value)
+ * @property string $state
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereState($value)
  * @mixin \Eloquent
  */
 class Event extends Model

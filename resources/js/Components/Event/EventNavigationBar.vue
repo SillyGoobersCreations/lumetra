@@ -60,7 +60,7 @@ defineProps({
         type: Object,
         required: true,
     },
-    attendee: {
+    userAttendee: {
         type: [Object, Boolean],
         default: false,
     }

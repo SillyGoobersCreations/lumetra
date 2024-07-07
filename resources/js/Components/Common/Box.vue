@@ -9,7 +9,7 @@ enum PaddingValue { none, xs, s, m, l, xl }
 
 defineProps({
     padding: {
-        type: PaddingValue,
+        type: [PaddingValue, String],
         default: PaddingValue.none,
     },
 });

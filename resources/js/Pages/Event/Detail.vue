@@ -1,14 +1,14 @@
 <template>
-    <EventLayout :event="event" :attendee="attendee" v-if="attendee">
+    <EventLayout :event="event" :userAttendee="userAttendee" v-if="userAttendee">
         <Box padding="m">
             <h2>{{ event.title }}</h2>
             <p>{{ event.description }}</p>
         </Box>
         <Box padding="m">
-            <a href="" class="button danger">
+            <Link :href="route('events.detail.leave', { eventId: event.id })" class="button danger">
                 <i class="ri-coupon-3-line"></i>
                 <span>Leave Event</span>
-            </a>
+            </Link>
         </Box>
     </EventLayout>
     <DefaultLayout v-else>
@@ -17,15 +17,16 @@
             <p>{{ event.description }}</p>
         </Box>
         <Box padding="m">
-            <a href="" class="button primary">
+            <Link :href="route('events.detail.enroll', { eventId: event.id })" class="button primary">
                 <i class="ri-coupon-3-line"></i>
                 <span>Join Event</span>
-            </a>
+            </Link>
         </Box>
     </DefaultLayout>
 </template>
 
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import EventLayout from "@/Layouts/EventLayout.vue";
 import Wrapper from "@/Components/Common/Wrapper.vue";
 import Box from "@/Components/Common/Box.vue";
@@ -36,7 +37,7 @@ defineProps({
         type: Object,
         required: true,
     },
-    attendee: {
+    userAttendee: {
         type: [Object, Boolean],
         default: false,
     }
