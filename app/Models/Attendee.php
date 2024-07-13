@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * 
+ *
  *
  * @property string $id
  * @property string $handle
@@ -75,7 +75,7 @@ class Attendee extends Model
 
     public function event(): BelongsTo
     {
-        return $this->belongsTo(Event::class, 'id', 'event_id');
+        return $this->belongsTo(Event::class, 'event_id', 'id');
     }
 
     public function user(): BelongsTo

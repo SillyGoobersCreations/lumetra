@@ -6,7 +6,9 @@
                 v-for="event in events"
                 padding="l"
             >
-                <div class="banner"></div>
+                <div class="logo">
+                    <img v-if="event.logo" :src="event.logo" :alt="`${event.title} Logo`" />
+                </div>
                 <h2>{{ event.title }}</h2>
                 <p>{{ event.description }}</p>
                 <p>Organized by: {{ event.organizer }}</p>
@@ -40,11 +42,19 @@ defineProps({
     gap: 15px;
 
     & .box {
-        & .banner {
-            aspect-ratio: 16 / 9;
+        & .logo {
             background: rgb(var(--color-base-200));
             border-radius: 10px;
             margin-bottom: 25px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            & img {
+                max-width: 80%;
+                max-height: 80%;
+            }
         }
         & h2 {
             font-size: 1.25rem;

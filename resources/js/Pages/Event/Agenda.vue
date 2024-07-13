@@ -1,5 +1,5 @@
 ﻿<template>
-    <EventLayout :event="event" :userAttendee="userAttendee">
+    <EventLayout :event="event">
         <h2>Event Agenda</h2>
     </EventLayout>
 </template>
@@ -11,10 +11,6 @@ defineProps({
     event: {
         type: Object,
         required: true,
-    },
-    userAttendee: {
-        type: [Object, Boolean],
-        default: false,
     }
 });
 </script>

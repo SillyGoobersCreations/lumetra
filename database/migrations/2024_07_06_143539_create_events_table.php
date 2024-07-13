@@ -16,7 +16,7 @@ return new class extends Migration
             $table->enum('state', ['draft', 'public', 'hidden'])->default('draft');
             $table->string('title');
             $table->string('organizer');
-            $table->string('logo')->nullable();
+            $table->text('logo')->nullable();
             $table->longText('description')->nullable();
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();

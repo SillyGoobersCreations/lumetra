@@ -22,7 +22,9 @@ class EventController extends Controller
 
     public function showDetail(string $eventId): Response {
         $event = Event::findOrFail($eventId);
-        $userAttendee = Attendee::where(['event_id' => $eventId, 'user_id' => Auth::user()->id, 'active' => true])->first();
+        if(Auth::user()) {
+            $userAttendee = Attendee::where(['event_id' => $eventId, 'user_id' => Auth::user()->id, 'active' => true])->first();
+        }
 
         return Inertia::render('Event/Detail', [
             'event' => $event,
