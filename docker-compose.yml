@@ -4,6 +4,7 @@ services:
             context: ./vendor/laravel/sail/runtimes/8.3
             dockerfile: Dockerfile
             args:
+                WWWUSER: '${WWWUSER}'
                 WWWGROUP: '${WWWGROUP}'
         image: sail-8.3/app
         extra_hosts:
@@ -13,6 +14,7 @@ services:
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         environment:
             WWWUSER: '${WWWUSER}'
+            WWWGROUP: '${WWWGROUP}'
             LARAVEL_SAIL: 1
             XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
