@@ -76,5 +76,15 @@ defineProps({
             color: rgb(var(--color-base-400));
         }
     }
+    & .actions {
+        flex-grow: 1;
+        display: flex;
+        align-items: flex-end;
+        gap: 5px;
+
+        & button, & .button {
+            flex-grow: 1;
+        }
+    }
 }
 </style>
