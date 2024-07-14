@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
+ *
  *
  * @property string $id
  * @property string $state
@@ -45,16 +45,16 @@ class EventRoomSlotClaim extends Model
 
     public function slot(): BelongsTo
     {
-        return $this->belongsTo(EventRoomSlot::class, 'id', 'event_room_slot_id');
+        return $this->belongsTo(EventRoomSlot::class, 'event_room_slot_id', 'id');
     }
 
     public function inviter_attendee(): BelongsTo
     {
-        return $this->belongsTo(Attendee::class, 'id', 'inviter_attendee_id');
+        return $this->belongsTo(Attendee::class, 'inviter_attendee_id', 'id');
     }
 
     public function invitee_attendee(): BelongsTo
     {
-        return $this->belongsTo(Attendee::class, 'id', 'invitee_attendee_id');
+        return $this->belongsTo(Attendee::class, 'invitee_attendee_id', 'id');
     }
 }

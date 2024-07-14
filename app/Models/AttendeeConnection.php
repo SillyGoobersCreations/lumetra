@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
+ *
  *
  * @property string $id
  * @property string $state
@@ -47,11 +47,11 @@ class AttendeeConnection extends Model
 
     public function inviter_attendee(): BelongsTo
     {
-        return $this->belongsTo(Attendee::class, 'id', 'inviter_attendee_id');
+        return $this->belongsTo(Attendee::class, 'inviter_attendee_id', 'id');
     }
 
     public function invitee_attendee(): BelongsTo
     {
-        return $this->belongsTo(Attendee::class, 'id', 'invitee_attendee_id');
+        return $this->belongsTo(Attendee::class, 'invitee_attendee_id', 'id');
     }
 }

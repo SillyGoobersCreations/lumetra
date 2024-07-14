@@ -75,6 +75,11 @@ class Attendee extends Model
         'confirmation_key'
     ];
 
+    protected $appends = [
+        'name_full',
+        'name_initials',
+    ];
+
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class, 'event_id', 'id');
@@ -82,7 +87,7 @@ class Attendee extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function contact_infos(): HasMany
@@ -100,6 +105,34 @@ class Attendee extends Model
     {
         return EventRoomSlotClaim::where('invitee_attendee_id', $this->id)
             ->orWhere('inviter_attendee_id', $this->id);
+    }
+
+    public function getNameFullAttribute(): string
+    {
+        if($this->first_name && $this->last_name){
+            return "{$this->first_name} {$this->last_name}";
+        }
+        if($this->first_name){
+            return $this->first_name;
+        }
+        if($this->last_name) {
+            return $this->last_name;
+        }
+        return $this->handle;
+    }
+
+    public function getNameInitialsAttribute(): string
+    {
+        if($this->first_name && $this->last_name) {
+            return substr($this->first_name, 0, 1) . substr($this->last_name, 0, 1);
+        }
+        if($this->first_name){
+            return substr($this->first_name, 0, 2);
+        }
+        if($this->last_name) {
+            return substr($this->last_name, 0, 2);
+        }
+        return substr($this->handle, 0, 2);
     }
 
     public function searchableAs(): string
@@ -121,5 +154,10 @@ class Attendee extends Model
     protected function makeAllSearchableUsing(EloquentBuilder $query): EloquentBuilder
     {
         return $query->with(['user', 'event', 'contact_infos']);
+    }
+
+    public function shouldBeSearchable(): bool
+    {
+        return $this['active'];
     }
 }

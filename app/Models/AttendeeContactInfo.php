@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
+ *
  *
  * @property string $id
  * @property string $type
@@ -43,6 +43,6 @@ class AttendeeContactInfo extends Model
 
     public function attendee(): BelongsTo
     {
-        return $this->belongsTo(Attendee::class, 'id', 'attendee_id');
+        return $this->belongsTo(Attendee::class, 'attendee_id', 'id');
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
+ *
  *
  * @property string $id
  * @property string $title
@@ -43,6 +43,6 @@ class EventNote extends Model
 
     public function event(): BelongsTo
     {
-        return $this->belongsTo(Event::class, 'id', 'event_id');
+        return $this->belongsTo(Event::class, 'event_id', 'id');
     }
 }

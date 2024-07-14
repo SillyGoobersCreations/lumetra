@@ -138,8 +138,8 @@ return [
         'key' => env('MEILISEARCH_KEY'),
         'index-settings' => [
             Attendee::class => [
-                'filterableAttributes' => ['event_id', 'handle', 'first_name', 'last_name'],
-                'sortableAttributes' => ['first_name', 'last_name', 'created_at', 'updated_at'],
+                'filterableAttributes' => ['event_id', 'handle', 'first_name', 'last_name', 'job_company', 'job_position'],
+                'sortableAttributes' => ['handle', 'first_name', 'last_name', 'created_at', 'updated_at'],
             ]
         ],
     ],

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * 
+ *
  *
  * @property string $id
  * @property string $name
@@ -49,7 +49,7 @@ class EventRoom extends Model
 
     public function event(): BelongsTo
     {
-        return $this->belongsTo(Event::class, 'id', 'event_id');
+        return $this->belongsTo(Event::class, 'event_id', 'id');
     }
 
     public function slots(): HasMany

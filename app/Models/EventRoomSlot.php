@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * 
+ *
  *
  * @property string $id
  * @property string $start_date
@@ -49,7 +49,7 @@ class EventRoomSlot extends Model
 
     public function room(): BelongsTo
     {
-        return $this->belongsTo(EventRoom::class, 'id', 'event_room_id');
+        return $this->belongsTo(EventRoom::class, 'event_room_id', 'id');
     }
 
     public function claims(): HasOne

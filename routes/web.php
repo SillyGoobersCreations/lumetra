@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
 // PROFILE
 Route::middleware('auth')->group(function () {
     Route::get('/events/{eventId}/attendees', [AttendeeController::class, 'showOverview'])->name('events.attendees.index');
+    Route::get('/events/{eventId}/attendees/search', [AttendeeController::class, 'search'])->name('events.attendees.search');
     Route::get('/events/{eventId}/attendees/{attendeeId}', [AttendeeController::class, 'showDetail'])->name('events.attendees.detail');
 
     Route::post('/events/{eventId}/attendees/{attendeeId}/connect', [AttendeeController::class, 'doConnect'])->name('events.attendees.connect');

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
+ *
  *
  * @property string $id
  * @property string $message
@@ -44,11 +44,11 @@ class ChatMessage extends Model
 
     public function sender_attendee(): BelongsTo
     {
-        return $this->belongsTo(Attendee::class, 'id', 'sender_attendee_id');
+        return $this->belongsTo(Attendee::class, 'sender_attendee_id', 'id');
     }
 
     public function receiver_attendee(): BelongsTo
     {
-        return $this->belongsTo(Attendee::class, 'id', 'receiver_attendee_id');
+        return $this->belongsTo(Attendee::class, 'receiver_attendee_id', 'id');
     }
 }
