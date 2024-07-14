@@ -113,6 +113,7 @@ const currentAttendee = computed(() => {
 .dropdown {
     max-width: 250px;
     position: relative;
+    z-index: 100;
 
     & .selected, .item {
         height: 45px;

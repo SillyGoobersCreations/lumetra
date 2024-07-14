@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * 
+ *
  *
  * @property string $id
  * @property string $title
@@ -69,7 +69,6 @@ class Event extends Model
         'start_date',
         'end_date',
         'color_primary',
-        'color_secondary',
         'confirmation_required',
         'confirmation_personalized',
         'room_slot_max_claims',

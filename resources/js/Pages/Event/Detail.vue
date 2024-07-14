@@ -15,7 +15,6 @@
                     <pre>StartDate: {{ event.start_date ?? "null" }}</pre><br />
                     <pre>EndDate: {{ event.end_date ?? "null" }}</pre><br />
                     <pre>ColorPrimary: {{ event.color_primary ?? "null" }}</pre><br />
-                    <pre>ColorSecondary: {{ event.color_secondary ?? "null" }}</pre><br />
                     <pre>ConfirmationRequired: {{ event.confirmation_required ?? "null" }}</pre><br />
                     <pre>ConfirmationPersonalized: {{ event.confirmation_personalized ?? "null" }}</pre><br />
                     <pre>RoomSlotMaxPending: {{ event.room_slot_max_pending ?? "null" }}</pre><br />
