@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Searchable;
 
 /**
  *
@@ -54,7 +56,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Attendee extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, Searchable;
 
     protected $fillable = [
         'handle',
@@ -98,5 +100,26 @@ class Attendee extends Model
     {
         return EventRoomSlotClaim::where('invitee_attendee_id', $this->id)
             ->orWhere('inviter_attendee_id', $this->id);
+    }
+
+    public function searchableAs(): string
+    {
+        return 'attendees_index';
+    }
+
+    public function toSearchableArray(): array
+    {
+        $properties = $this->toArray();
+
+        unset($properties['confirmed']);
+        unset($properties['confirmation_key']);
+        unset($properties['role']);
+
+        return $properties;
+    }
+
+    protected function makeAllSearchableUsing(EloquentBuilder $query): EloquentBuilder
+    {
+        return $query->with(['user', 'event', 'contact_infos']);
     }
 }
