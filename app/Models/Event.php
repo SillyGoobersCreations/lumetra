@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ColorService;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -78,6 +79,10 @@ class Event extends Model
         'attendees_max'
     ];
 
+    protected $appends = [
+        'swatch',
+    ];
+
     public function attendees(): HasMany
     {
         return $this->hasMany(Attendee::class, 'event_id', 'id');
@@ -91,5 +96,9 @@ class Event extends Model
     public function notes(): HasMany
     {
         return $this->hasMany(EventNote::class, 'event_id', 'id');
+    }
+
+    public function getSwatchAttribute(): array {
+        return ColorService::fromSwatch($this->color_primary);
     }
 }

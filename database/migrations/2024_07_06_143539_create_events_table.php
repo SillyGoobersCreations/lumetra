@@ -20,7 +20,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
-            $table->string('color_primary', 6)->nullable();
+            $table->string('color_primary')->default('lumetra');
             $table->boolean('confirmation_required')->default(false);
             $table->boolean('confirmation_personalized')->default(false);
             $table->unsignedInteger('room_slot_max_pending')->nullable();

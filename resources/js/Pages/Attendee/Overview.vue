@@ -104,7 +104,7 @@ onMounted(() => {
 .attendee-directory {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 15px;
 
     & .search {
         display: flex;
@@ -131,7 +131,7 @@ onMounted(() => {
     & .results {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
+        gap: 15px;
     }
     & .loading {
         display: flex;

@@ -18,7 +18,7 @@ defineProps({
 <style lang="scss" scoped>
     .box {
         background: rgb(var(--color-base-50));
-        border-radius: 20px;
+        border-radius: 10px;
         display: flex;
         flex-direction: column;
 

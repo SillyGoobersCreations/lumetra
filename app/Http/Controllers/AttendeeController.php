@@ -23,7 +23,7 @@ class AttendeeController extends Controller
 
     public function showDetail(string $eventId, string $attendeeId): Response {
         $event = Event::findOrFail($eventId);
-        $attendee = Attendee::where(['id' => $attendeeId, 'active' => true])->firstOrFail();
+        $attendee = Attendee::where(['id' => $attendeeId, 'active' => true])->with(['event', 'contact_infos'])->firstOrFail();
 
         return Inertia::render('Attendee/Detail', [
             'event' => $event,

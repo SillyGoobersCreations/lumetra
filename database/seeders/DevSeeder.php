@@ -124,9 +124,23 @@ class DevSeeder extends Seeder
             'description' => 'I don\'t know what I am doing.',
             'job_company' => 'BlueRobot Games',
             'job_position' => 'Animator',
-            'active' => 1,
+            'active' => 0,
             'role' => 'attendee',
             'user_id' => $userUser3->id,
+            'event_id' => $eventGodotCon2024->id,
+        ]);
+        $user4Attendee = Attendee::create([
+            'id' => '90dfaecf-3f38-45e8-9ae1-e574acc37499',
+            'handle' => 'felix-frenchfry',
+            'first_name' => 'Felix',
+            'last_name' => 'Frenchfry',
+            'confirmed' => 1,
+            'description' => 'Please feel free to connect with me!',
+            'job_company' => 'BlueRobot Games',
+            'job_position' => 'UX Designer',
+            'active' => 1,
+            'role' => 'attendee',
+            'user_id' => $userUser4->id,
             'event_id' => $eventGodotCon2024->id,
         ]);
         $userOrganizerAttendee = Attendee::create([

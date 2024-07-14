@@ -1,10 +1,8 @@
 html, body {
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100dvh;
 }
 #app {
-    min-height: 100%;
-    overflow-y: auto;
+    min-height: 100dvh;
 }
 
 body {
@@ -152,28 +150,6 @@ input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type
         border-color: rgb(var(--color-primary-600));
     }
 }
-/*
-select {
-    appearance: none;
-    background: rgb(var(--color-base-50));
-    border: 0;
-    color: rgb(var(--color-base-900));
-    font-family: var(--font-family);
-    font-size: 1rem;
-    height: 40px;
-    padding: 0 12px;
-    border-radius: 5px;
-    transition: var(--transition-default);
-
-    &:hover {
-        background: rgb(var(--color-base-100));
-        cursor: pointer;
-    }
-    &:focus {
-        border-color: rgb(var(--color-primary-600));
-    }
-} */
-
 .select {
     position: relative;
     height: 40px;
