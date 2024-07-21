@@ -51,4 +51,15 @@ class ChatMessage extends Model
     {
         return $this->belongsTo(Attendee::class, 'receiver_attendee_id', 'id');
     }
+
+    public function scopeCheckConnection($query, $userAttendeeId, $attendeeId)
+    {
+        return $query->where(function ($query) use ($userAttendeeId, $attendeeId) {
+            $query->where('sender_attendee_id', $userAttendeeId)
+                ->where('receiver_attendee_id', $attendeeId);
+        })->orWhere(function ($query) use ($userAttendeeId, $attendeeId) {
+            $query->where('inviter_attendee_id', $attendeeId)
+                ->where('receiver_attendee_id', $userAttendeeId);
+        });
+    }
 }

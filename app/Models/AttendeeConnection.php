@@ -58,4 +58,15 @@ class AttendeeConnection extends Model
     {
         return $this->belongsTo(Attendee::class, 'invitee_attendee_id', 'id');
     }
+
+    public function scopeCheckConnection($query, $userAttendeeId, $attendeeId)
+    {
+        return $query->where(function ($query) use ($userAttendeeId, $attendeeId) {
+            $query->where('inviter_attendee_id', $userAttendeeId)
+                ->where('invitee_attendee_id', $attendeeId);
+        })->orWhere(function ($query) use ($userAttendeeId, $attendeeId) {
+            $query->where('inviter_attendee_id', $attendeeId)
+                ->where('invitee_attendee_id', $userAttendeeId);
+        });
+    }
 }

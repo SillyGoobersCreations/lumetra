@@ -3,8 +3,7 @@
         <section class="attendee-detail">
             <div>
                 <Box class="details">
-                    <div class="avatar" v-if="attendee.avatar_url"></div>
-                    <div class="avatar fallback" v-else>{{ attendee.name_initials }}</div>
+                    <Avatar :attendee="attendee" :size="128" />
                     <div class="name">{{ attendee.name_full }}</div>
                     <div class="job-info" v-if="attendee.job_position || attendee.job_company">
                         <span v-if="attendee.job_position">{{ attendee.job_position }}</span>
@@ -131,6 +130,7 @@ import AuthLayout from "@/Layouts/AuthLayout.vue";
 import {send} from "vite";
 import LoadingCircle from "@/Components/Common/LoadingCircle.vue";
 import {AttendeeConnection} from "@/types/models/AttendeeConnection";
+import Avatar from "@/Components/Common/Avatar.vue";
 
 const connectModal = ref<InstanceType<typeof Modal> | null>(null);
 
@@ -144,7 +144,7 @@ const props = defineProps({
         default: false,
     },
     connection: {
-        type: [Object as PropType<AttendeeConnection>, null],
+        type: Object as PropType<AttendeeConnection>,
         default: null,
     },
 });
@@ -200,21 +200,6 @@ function sendConnectRequest() {
 
     & .avatar {
         margin: 0 auto;
-        width: 128px;
-        height: 128px;
-        background: rgb(var(--color-base-200));
-        background-position: center;
-        background-size: cover;
-        border-radius: 100px;
-
-        &.fallback {
-            font-size: 2rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgb(var(--color-base-200));
-        }
     }
     & .name {
         font-size: 1.15rem;

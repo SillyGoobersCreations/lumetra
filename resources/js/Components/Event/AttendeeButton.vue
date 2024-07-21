@@ -1,7 +1,6 @@
 <template>
     <div class="attendee-button">
-        <div class="avatar" v-if="attendee.avatar_url"></div>
-        <div class="avatar fallback" v-else>{{ attendee.name_initials }}</div>
+        <Avatar :attendee="attendee" :size="128" />
         <div class="name">{{ attendee.name_full }}</div>
         <div class="job-info" v-if="attendee.job_position || attendee.job_company">
             <span v-if="attendee.job_position">{{ attendee.job_position }}</span>
@@ -18,11 +17,14 @@
 
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
+import {PropType} from "@vue/runtime-dom";
+import {Attendee} from "@/types/models/Attendee";
+import Avatar from "@/Components/Common/Avatar.vue";
 
 defineProps({
     attendee: {
-        type: Object,
-        required: true,
+        type: Object as PropType<Attendee>,
+        default: null,
     }
 });
 </script>
@@ -39,21 +41,6 @@ defineProps({
 
     & .avatar {
         margin: 0 auto;
-        width: 128px;
-        height: 128px;
-        background: rgb(var(--color-base-200));
-        background-position: center;
-        background-size: cover;
-        border-radius: 100px;
-
-        &.fallback {
-            font-size: 2rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgb(var(--color-base-200));
-        }
     }
     & .name {
         font-size: 1.15rem;

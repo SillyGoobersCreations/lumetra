@@ -29,10 +29,7 @@ class AttendeeController extends Controller
         $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->first();
         $event = Event::findOrFail($eventId);
         $attendee = Attendee::where(['id' => $attendeeId, 'active' => true])->with(['event', 'contact_infos'])->firstOrFail();
-        $attendeeConnection = AttendeeConnection
-            ::where(['inviter_attendee_id' => $userAttendee->id, 'invitee_attendee_id' => $attendee->id])
-            ->orWhere(['invitee_attendee_id' => $userAttendee->id, 'inviter_attendee_id' => $attendee->id])
-            ->first();
+        $attendeeConnection = AttendeeConnection::checkConnection($userAttendee->id, $attendee->id)->first();
 
         return Inertia::render('Attendee/Detail', [
             'event' => $event,
@@ -65,7 +62,7 @@ class AttendeeController extends Controller
             'inviter_attendee_id' => $inviterAttendee->id,
             'invitee_attendee_id' => $inviteeAttendee->id,
             'state' => AttendeeConnection::STATE_PENDING,
-            'text' => $request->validated('intro_text'),
+            'intro_text' => $request->validated('intro_text'),
         ]);
         $newRequest->save();
 
@@ -78,10 +75,7 @@ class AttendeeController extends Controller
         $inviteeAttendee = Attendee::where(['id' => $attendeeId, 'event_id' => $eventId])->firstOrFail();
 
         // If AttendeeConnection between these two attendees exists, remove it
-        AttendeeConnection
-            ::where(['inviter_attendee_id' => $inviterAttendee->id, 'invitee_attendee_id' => $inviteeAttendee->id])
-            ->orWhere(['invitee_attendee_id' => $inviterAttendee->id, 'inviter_attendee_id' => $inviteeAttendee->id])
-            ->delete();
+        AttendeeConnection::checkConnection($inviterAttendee->id, $inviteeAttendee->id)->delete();
 
         return Redirect::route('events.attendees.detail', ['eventId' => $eventId, 'attendeeId' => $attendeeId]);
     }
