@@ -131,7 +131,7 @@ button, input[type="submit"], input[type="button"], .button {
         cursor: not-allowed !important;
     }
 }
-input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="range"]) {
+input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="range"]), textarea {
     background: rgb(var(--color-base-50));
     border: 2px solid rgb(var(--color-base-300));
     font-family: var(--font-family);
@@ -149,6 +149,10 @@ input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type
     &:focus {
         border-color: rgb(var(--color-primary-600));
     }
+}
+textarea {
+    height: auto;
+    padding: 12px;
 }
 .select {
     position: relative;

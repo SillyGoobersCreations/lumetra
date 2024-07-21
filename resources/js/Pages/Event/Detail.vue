@@ -6,13 +6,13 @@
                 <EventOverviewProperties :event="event" />
             </div>
             <div>
-                <Box padding="m">
+                <Box>
                     TODO: Last 3 Chats, Button to Chat
                 </Box>
-                <Box padding="m">
+                <Box>
                     TODO: Upcoming Events, Button to Agenda
                 </Box>
-                <Box padding="m">
+                <Box>
                     <Link :href="route('events.detail.leave', { eventId: event.id })" class="button danger">
                         <i class="ri-coupon-3-line"></i>
                         <span>Leave Event</span>
@@ -28,7 +28,7 @@
                 <EventOverviewProperties :event="event" />
             </div>
             <div>
-                <Box padding="m">
+                <Box>
                     <Link :href="route('events.detail.enroll', { eventId: event.id })" class="button primary">
                         <i class="ri-coupon-3-line"></i>
                         <span>Join Event</span>

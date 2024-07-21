@@ -1,16 +1,14 @@
 <template>
-    <div :class="`box padding-${padding}`">
+    <div :class="`box ${!noPadding ? 'padding' : ''}`">
         <slot />
     </div>
 </template>
 
 <script setup lang="ts">
-enum PaddingValue { none, xs, s, m, l, xl }
-
 defineProps({
-    padding: {
-        type: [PaddingValue, String, Number],
-        default: PaddingValue.none,
+    noPadding: {
+        type: Boolean,
+        default: false,
     },
 });
 </script>
@@ -22,11 +20,6 @@ defineProps({
         display: flex;
         flex-direction: column;
 
-        &.padding-none { padding: 0; }
-        &.padding-xs { padding: 5px; }
-        &.padding-s { padding: 10px; }
-        &.padding-m { padding: 20px; }
-        &.padding-l { padding: 25px; }
-        &.padding-xl { padding: 50px; }
+        &.padding { padding: 20px; }
     }
 </style>

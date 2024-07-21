@@ -35,6 +35,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class AttendeeConnection extends Model
 {
+    const STATE_PENDING = 'pending';
+    const STATE_CONFIRMED = 'confirmed';
+    const STATE_DECLINED = 'declined';
+
     use HasFactory, HasUuids;
 
     protected $fillable = [

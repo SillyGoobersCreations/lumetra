@@ -4,7 +4,7 @@
             <img :src="LumetraLightLogo" alt="Lumetra Logo" class="logo only-light" />
             <img :src="LumetraDarkLogo" alt="Lumetra Logo" class="logo only-dark" />
         </header>
-        <Box padding="l">
+        <Box>
             <slot />
         </Box>
     </main>

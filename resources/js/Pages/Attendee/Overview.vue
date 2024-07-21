@@ -1,7 +1,7 @@
 <template>
     <EventLayout :event="event">
         <section class="attendee-directory">
-            <Box padding="m" class="search">
+            <Box class="search">
                 <input type="search" v-model="searchQuery" @keyup.enter="search" placeholder="Search..." />
                 <button class="primary" @click="search">
                     <i class="ri-search-line"></i>
@@ -86,6 +86,8 @@ async function search() {
     })).then(response => response.json());
 
     const [apiResult] = await Promise.all([apiCall, prematureEnd]);
+
+    console.log(props.event.id);
 
     results.value = apiResult;
     loading.value = false;

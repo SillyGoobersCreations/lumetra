@@ -1,6 +1,5 @@
 <template>
     <Box
-        padding="l"
         class="event-button"
     >
         <div class="logo">

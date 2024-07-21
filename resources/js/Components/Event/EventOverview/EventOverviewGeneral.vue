@@ -1,5 +1,5 @@
 <template>
-    <Box padding="l" class="general">
+    <Box class="general">
         <h1>{{ event.title }}</h1>
         <p>{{ event.description }}</p>
         <div class="organizer">Organized by: {{ event.organizer }}</div>

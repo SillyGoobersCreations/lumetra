@@ -33,6 +33,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/events/{eventId}/attendees/{attendeeId}/connect', [AttendeeController::class, 'doConnect'])->name('events.attendees.connect');
     Route::post('/events/{eventId}/attendees/{attendeeId}/disconnect', [AttendeeController::class, 'doDisconnect'])->name('events.attendees.disconnect');
+
+    Route::get('/events/{eventId}/attendees/{attendeeId}/acceptRequest/{requestId}', [AttendeeController::class, 'doAcceptRequest'])->name('events.attendees.connect.accept');
+    Route::get('/events/{eventId}/attendees/{attendeeId}/declineRequest/{requestId}', [AttendeeController::class, 'doDeclineRequest'])->name('events.attendees.connect.decline');
 });
 
 // CHATS

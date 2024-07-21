@@ -1,5 +1,5 @@
 <template>
-    <Box padding="l" class="properties">
+    <Box class="properties">
         <div v-if="event.start_date">
             <span>Starting</span>
             <span>{{ moment(event.start_date).format("D.MM.YYYY @ HH:mm") }}</span>
@@ -9,7 +9,7 @@
             <span>{{ moment(event.end_date).format("D.MM.YYYY @ HH:mm") }}</span>
         </div>
     </Box>
-    <Box padding="m">
+    <Box>
         <pre>State: {{ event.state ?? "null" }}</pre><br />
         <pre>ConfirmationRequired: {{ event.confirmation_required ?? "null" }}</pre><br />
         <pre>AttendeesMax: {{ event.attendees_max ?? "null" }}</pre><br />

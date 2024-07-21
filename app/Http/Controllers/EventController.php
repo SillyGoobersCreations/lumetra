@@ -63,11 +63,12 @@ class EventController extends Controller
             ]));
         } else {
             // Create new Attendee
-            $newEnrollment = new Attendee();
-            $newEnrollment->handle = $user->id;
-            $newEnrollment->user_id = $user->id;
-            $newEnrollment->event_id = $eventId;
-            $newEnrollment->save();
+            $newEnrollment = Attendee::create([
+                'handle' => $user->id,
+                'user_id' => $user->id,
+                'event_id' => $eventId,
+                'active' => true,
+            ]);
 
             return redirect(route('events.attendees.detail', [
                 'eventId' => $eventId,

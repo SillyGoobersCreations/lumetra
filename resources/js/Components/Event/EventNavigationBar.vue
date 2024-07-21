@@ -37,8 +37,7 @@
         <template #user v-if="user">
             <div class="dropdown">
                 <div class="selected" @click="dropdownOpen = !dropdownOpen">
-                    <span v-if="currentAttendee.first_name && currentAttendee.last_name">{{ currentAttendee.first_name }} {{ currentAttendee.last_name }}</span>
-                    <span v-else>{{ currentAttendee.handle }}</span>
+                    <span>{{ currentAttendee.name_full }}</span>
                     <span>{{ currentAttendee.event.title }}</span>
                 </div>
                 <div :class="`items ${dropdownOpen ? 'active' : ''}`">
@@ -46,8 +45,7 @@
                         Frontpage
                     </Link>
                     <Link :href="route('events.detail', { eventId: attendee.event.id })" class="item" v-for="attendee in attendees" :key="attendee.id">
-                        <span v-if="attendee.first_name && attendee.last_name">{{ attendee.first_name }} {{ attendee.last_name }}</span>
-                        <span v-else>{{ attendee.handle }}</span>
+                        <span>{{ attendee.name_full }}</span>
                         <span>{{ attendee.event.title }}</span>
                     </Link>
                 </div>
@@ -81,7 +79,7 @@ import {computed, ref} from "vue";
 
 const dropdownOpen = ref(false);
 
-defineProps({
+const props = defineProps({
     event: {
         type: Object,
         required: true,
@@ -95,7 +93,7 @@ const currentAttendee = computed(() => {
     let foundAttendee = null;
 
     attendees.value.forEach((attendee) => {
-        if(attendee.user_id === user.value.id) {
+        if(attendee.event_id === props.event.id) {
             foundAttendee = attendee;
         }
     })
