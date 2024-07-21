@@ -42,6 +42,7 @@ defineProps({
     }
 
     & .text {
+        line-height: 1.5rem;
     }
     & .actions {
         display: flex;
