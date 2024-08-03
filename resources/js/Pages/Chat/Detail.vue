@@ -42,10 +42,10 @@
                             :current-attendee-id="currentAttendee.id"
                         />
 
-                        <!-- TODO: This is where the messages need to be displayed with the Message component. -->
-                        <!-- TODO: "is-remote" means, it is not a message from yourself -->
-                        <!-- TODO: Ignore Room Invites for now -->
-                        <!-- TODO: Example:
+                        <!-- TODO Tara: This is where the messages need to be displayed with the Message component. -->
+                        <!-- TODO Tara: "is-remote" means, it is not a message from yourself -->
+                        <!-- TODO Tara: Ignore Room Invites for now -->
+                        <!-- TODO Tara: Example:
                                 <Message :is-remote="true">
                                     <template #default>
                                         Message here
@@ -54,8 +54,8 @@
                         -->
                     </main>
                     <footer>
-                        <!-- TODO: This needs a text input and a button to submit. Pressing enter in the text input should also submit -->
-                        <!-- TODO: The submit needs useForm to send to route('events.chats.sendMessage') and onFinish clear the text -->
+                        <!-- TODO Tara: This needs a text input and a button to submit. Pressing enter in the text input should also submit -->
+                        <!-- TODO Tara: The submit needs useForm to send to route('events.chats.sendMessage') and onFinish clear the text -->
                         Chat Box + Invite Button
                     </footer>
                 </Box>
@@ -125,11 +125,11 @@ const attendee = computed(() => {
     }
 });
 
-/* TODO: Form to Send to 'events.chats.sendMessage' */
-/* TODO: Function to send the form and clear the input */
+/* TODO Tara: Form to Send to 'events.chats.sendMessage' */
+/* TODO Tara: Function to send the form and clear the input */
 
 async function updateChat() {
-    // TODO: Call route('events.chats.receive') via fetch API (GET) and update messages
+    // TODO Tara: Call route('events.chats.receive') via fetch API (GET) and update messages
 }
 
 onMounted(() => {
