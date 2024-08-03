@@ -41,19 +41,15 @@
                             :connection="selectedConnection"
                             :current-attendee-id="currentAttendee.id"
                         />
-
-                        {{ messages }}
-
-                        <!-- TODO Tara: This is where the messages need to be displayed with the Message component. -->
-                        <!-- TODO Tara: "is-remote" means, it is not a message from yourself -->
-                        <!-- TODO Tara: Ignore Room Invites for now -->
-                        <!-- TODO Tara: Example:
-                                <Message :is-remote="true">
-                                    <template #default>
-                                        Message here
-                                    </template>
-                                </Message>
-                        -->
+                        <Message
+                            v-for="message in messages"
+                            :key="message.id"
+                            :is-remote="message.sender_attendee_id === currentAttendee.id"
+                        >
+                            <template #default>
+                                {{ message.message }}
+                            </template>
+                        </Message>
                     </main>
                     <footer>
                         <!-- TODO Tara: This needs a text input and a button to submit. Pressing enter in the text input should also submit -->
@@ -141,6 +137,7 @@ async function updateChat() {
 
 onMounted(() => {
     messageTimer = setInterval(updateChat, 2000);
+    updateChat();
 });
 onUnmounted(() => {
     clearInterval(messageTimer);
