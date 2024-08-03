@@ -45,16 +45,10 @@ class ChatController extends Controller
             ->with(['inviter_attendee', 'invitee_attendee'])
             ->first();
 
-        $chatMessages = ChatMessage
-            ::where(['sender_attendee_id' => $userAttendee->id, 'receiver_attendee_id' => $attendeeId])
-            ->orWhere(['receiver_attendee_id' => $userAttendee->id, 'sender_attendee_id' => $attendeeId])
-            ->get();
-
         return Inertia::render('Chat/Detail', [
             'event' => $event,
             'connections' => $attendeeConnections,
             'selectedConnection' => $attendeeConnection,
-            'messages' => $chatMessages,
         ]);
     }
 

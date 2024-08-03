@@ -42,6 +42,8 @@
                             :current-attendee-id="currentAttendee.id"
                         />
 
+                        {{ messages }}
+
                         <!-- TODO Tara: This is where the messages need to be displayed with the Message component. -->
                         <!-- TODO Tara: "is-remote" means, it is not a message from yourself -->
                         <!-- TODO Tara: Ignore Room Invites for now -->
@@ -129,7 +131,12 @@ const attendee = computed(() => {
 /* TODO Tara: Function to send the form and clear the input */
 
 async function updateChat() {
-    // TODO Tara: Call route('events.chats.receive') via fetch API (GET) and update messages
+    const url = route('events.chats.receive', {
+        eventId: props.event.id,
+        attendeeId: attendee.value?.id,
+    });
+    const response = await fetch(url);
+    messages.value = await response.json();
 }
 
 onMounted(() => {
