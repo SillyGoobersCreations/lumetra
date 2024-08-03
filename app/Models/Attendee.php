@@ -60,6 +60,8 @@ class Attendee extends Model
 
     protected $fillable = [
         'handle',
+        'user_id',
+        'event_id',
         'first_name',
         'last_name',
         'avatar_url',
