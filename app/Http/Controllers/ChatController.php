@@ -56,7 +56,7 @@ class ChatController extends Controller
         $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->first();
 
 
-        $chatMessages = ChatMessage::checkConnection($userAttendee->id, $attendeeId)->orderBy("updated_at", "asc")->get();
+        $chatMessages = ChatMessage::checkConnection($userAttendee->id, $attendeeId)->orderBy("updated_at", "desc")->get();
 
         return response()->json(
             $chatMessages

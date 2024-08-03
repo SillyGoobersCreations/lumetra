@@ -44,7 +44,7 @@
                         <Message
                             v-for="message in messages"
                             :key="message.id"
-                            :is-remote="message.sender_attendee_id === currentAttendee.id"
+                            :is-remote="message.sender_attendee_id !== currentAttendee.id"
                         >
                             <template #default>
                                 {{ message.message }}
