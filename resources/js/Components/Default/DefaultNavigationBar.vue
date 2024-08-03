@@ -20,7 +20,7 @@
         </template>
         <template #user v-if="user">
             <NavigationBarItem
-                href="/logout"
+                :href="route('logout')"
                 icon="door-closed"
                 label="Logout"
             />

@@ -35,11 +35,23 @@
             />
         </template>
         <template #user v-if="user">
+            <Link
+                :href="route('events.attendees.detail', { eventId: currentAttendee.event.id, attendeeId: currentAttendee.id })"
+            >
+                <Avatar :attendee="currentAttendee" />
+            </Link>
+
+            <Link
+                class="button"
+                :href="route('events.attendees.detail', { eventId: currentAttendee.event.id, attendeeId: currentAttendee.id })"
+            >
+                <i class="ri-settings-2-line"></i>
+            </Link>
+
             <div class="dropdown">
-                <div class="selected" @click="dropdownOpen = !dropdownOpen">
-                    <span>{{ currentAttendee.name_full }}</span>
-                    <span>{{ currentAttendee.event.title }}</span>
-                </div>
+                <button :class="`${dropdownOpen ? 'reverse' : ''}`" @click="dropdownOpen = !dropdownOpen">
+                    <i class="ri-coupon-3-line"></i>
+                </button>
                 <div :class="`items ${dropdownOpen ? 'active' : ''}`">
                     <Link :href="route('index')" class="item">
                         Frontpage
@@ -52,18 +64,18 @@
             </div>
 
             <NavigationBarItem
-                href="/logout"
+                :href="route('logout')"
                 icon="door-closed"
                 label="Logout"
             />
         </template>
         <template #user v-else>
             <NavigationBarItem
-                href="/login"
+                :href="route('login')"
                 label="Login"
             />
             <NavigationBarItem
-                href="/register"
+                :href="route('register')"
                 label="Register"
             />
         </template>
@@ -76,6 +88,8 @@ import NavigationBar from "@/Components/Common/NavigationBar.vue";
 import NavigationBarItem from "@/Components/Common/NavigationBarItem.vue";
 import {usePage} from "@inertiajs/vue3";
 import {computed, ref} from "vue";
+import AttendeeButton from "@/Components/Event/AttendeeButton.vue";
+import Avatar from "@/Components/Common/Avatar.vue";
 
 const dropdownOpen = ref(false);
 
