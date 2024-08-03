@@ -5,7 +5,7 @@
                 <Link
                     :key="attendee.id"
                     v-for="attendee in attendees"
-                    :href="'/'"
+                    :href="route('events.detail', { eventId: attendee.event?.id})"
                     class="button attendee-button"
                 >
                     <Avatar :attendee="attendee" />
