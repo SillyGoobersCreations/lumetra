@@ -242,3 +242,18 @@ a {
 * {
     outline: 0;
 }
+
+.list-move,
+.list-enter-active,
+.list-leave-active {
+    transition: var(--transition-default);
+}
+.list-enter-from,
+.list-leave-to {
+    opacity: 0;
+    transform: translateY(15px);
+}
+.list-leave-active {
+    position: absolute;
+    z-index: -1;
+}

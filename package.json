@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "@fontsource-variable/outfit": "^5.0.13",
+        "mitt": "^3.0.1",
         "moment": "^2.30.1",
         "remixicon": "^4.3.0"
     }

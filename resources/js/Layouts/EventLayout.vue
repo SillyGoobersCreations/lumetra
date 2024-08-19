@@ -6,12 +6,15 @@
             <slot />
         </main>
     </Wrapper>
+
+    <Snackbars />
 </template>
 
 <script setup lang="ts">
 import EventNavigationBar from "@/Components/Event/EventNavigationBar.vue";
 import Wrapper from "@/Components/Common/Wrapper.vue";
 import {computed} from "vue";
+import Snackbars from "@/Components/Common/Snackbars.vue";
 
 const props = defineProps({
     event: {

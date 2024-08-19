@@ -1,34 +1,28 @@
 <template>
-    <component :is="currentLayout" :event="currentLayout === EventLayout ? event : undefined">
+    <EventLayout :event="event">
         <section class="attendee-settings">
-            <aside>
-                <Link
-                    :href="route('settings.global')"
-                    class="button reverse"
-                >
-                    <span>General Settings</span>
-                </Link>
-
-                <Link
-                    v-for="attendee in user.attendees"
-                    :key="attendee.id"
-                    :href="route('settings.event', {eventId: attendee.event.id})"
-                    class="button reverse"
-                >
-                    <span>{{ attendee.event.title }}</span>
-                </Link>
-            </aside>
+            <Sidebar :attendees="user.attendees" />
             <div>
                 <Box>
-                    {{ user }}
+                    {{ attendee.handle }}<hr />
+                    {{ attendee.first_name }}<hr />
+                    {{ attendee.last_name }}
                 </Box>
-
-                <Box v-if="attendee">
-                    {{ attendee }}
+                <Box>
+                    {{ attendee.avatar_url }}<hr />
+                </Box>
+                <Box>
+                    {{ attendee.description }}<hr />
+                    {{ attendee.job_company }}<hr />
+                    {{ attendee.job_position }}<hr />
+                </Box>
+                <Box>
+                    {{ attendee.confirmed }}<hr />
+                    {{ attendee.confirmation_key }}
                 </Box>
             </div>
         </section>
-    </component>
+    </EventLayout>
 </template>
 
 <script setup lang="ts">
@@ -38,9 +32,8 @@ import Box from "@/Components/Common/Box.vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {Attendee} from "@/types/models/Attendee";
-import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import {User} from "@/types/models/User";
-import {computed} from "vue";
+import Sidebar from "@/Components/Settings/Sidebar.vue";
 
 const props = defineProps({
     user: {
@@ -56,8 +49,6 @@ const props = defineProps({
         default: null,
     },
 });
-
-const currentLayout = computed(() => props.event && props.attendee ? EventLayout : DefaultLayout);
 </script>
 
 <style lang="scss" scoped>

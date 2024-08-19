@@ -22,7 +22,6 @@
             <NavigationBarItem
                 :href="route('settings.global')"
                 icon="settings-2"
-                label="Settings"
                 :active="$page.url.startsWith('/settings') && $page.url.includes('settings')"
             />
 

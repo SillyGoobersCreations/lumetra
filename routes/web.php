@@ -24,10 +24,10 @@ Route::middleware('auth')->group(function () {
 
 // PROFILE
 Route::middleware('auth')->group(function () {
-    Route::get('/settings', [IndexController::class, 'showSettings'])->name('settings.global');
-    Route::get('/settings/{eventId}', [IndexController::class, 'showSettings'])->name('settings.event');
-    Route::post('/settings', [IndexController::class, 'doSaveSettings']);
-    Route::post('/settings/{eventId}', [IndexController::class, 'doSaveSettings']);
+    Route::get('/settings', [IndexController::class, 'showGlobalSettings'])->name('settings.global');
+    Route::get('/settings/{eventId}', [IndexController::class, 'showEventSettings'])->name('settings.event');
+    Route::post('/settings', [IndexController::class, 'doSaveGlobalSettings']);
+    Route::post('/settings/{eventId}', [IndexController::class, 'doSaveEventSettings']);
 
     Route::get('/events/{eventId}/attendees', [AttendeeController::class, 'showOverview'])->name('events.attendees.index');
     Route::get('/events/{eventId}/attendees/search', [AttendeeController::class, 'search'])->name('events.attendees.search');
