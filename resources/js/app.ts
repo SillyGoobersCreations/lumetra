@@ -20,7 +20,7 @@ createInertiaApp({
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
-            .provide('emitter', new mitt())
+            .provide('emitter', mitt())
             .mount(el);
     },
     progress: {

@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveAvatarSettingsEventRequest;
+use App\Http\Requests\SaveConfirmationSettingsEventRequest;
+use App\Http\Requests\SaveDescriptionSettingsEventRequest;
+use App\Http\Requests\SaveNameSettingsEventRequest;
 use App\Http\Requests\SaveSettingsGlobalRequest;
 use App\Models\Attendee;
 use App\Models\Event;
@@ -62,11 +66,48 @@ class IndexController extends Controller
         }
 
         $user->save();
-
-        return Redirect::back();
+        return redirect(route('settings.global'));
     }
 
-    public function doSaveEventSettings(string $eventId = null): RedirectResponse {
-        // TODO: Save attendee profile settings and general user settings
+    public function doSaveEventNameSettings(SaveNameSettingsEventRequest $request, string $eventId): RedirectResponse {
+        $user = Auth::user();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
+
+        $userAttendee->handle = $request->validated('handle');
+        $userAttendee->first_name = $request->validated('first_name');
+        $userAttendee->last_name = $request->validated('last_name');
+
+        $userAttendee->save();
+        return redirect(route('settings.event', ['eventId' => $eventId]));
+    }
+
+    public function doSaveEventAvatarSettings(SaveAvatarSettingsEventRequest $request, string $eventId): RedirectResponse {
+        $user = Auth::user();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
+
+        // TODO: Upload Avatar, optimize image
+
+        return redirect(route('settings.event', ['eventId' => $eventId]));
+    }
+
+    public function doSaveEventDescriptionSettings(SaveDescriptionSettingsEventRequest $request, string $eventId): RedirectResponse {
+        $user = Auth::user();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
+
+        $userAttendee->description = $request->validated('description');
+        $userAttendee->job_company = $request->validated('job_company');
+        $userAttendee->job_position = $request->validated('job_position');
+
+        $userAttendee->save();
+        return redirect(route('settings.event', ['eventId' => $eventId]));
+    }
+
+    public function doSaveEventConfirmationSettings(SaveConfirmationSettingsEventRequest $request, string $eventId): RedirectResponse {
+        $user = Auth::user();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
+
+        // TODO: Check and Save Confirmation
+
+        return redirect(route('settings.event', ['eventId' => $eventId]));
     }
 }

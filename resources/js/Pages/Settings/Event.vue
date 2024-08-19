@@ -106,6 +106,10 @@ import {Event} from "@/types/models/Event";
 import {Attendee} from "@/types/models/Attendee";
 import {User} from "@/types/models/User";
 import Sidebar from "@/Components/Settings/Sidebar.vue";
+import {SnackbarItem, TYPE_DANGER, TYPE_SUCCESSFUL} from "@/Components/Common/Snackbars";
+import {inject} from "vue";
+
+const emitter = inject('emitter');
 
 const props = defineProps({
     user: {
@@ -143,19 +147,76 @@ const confirmationForm = useForm({
 });
 
 function submitName() {
+    nameForm.post(route('settings.event.name', {eventId: props.event.id}), {
+        onSuccess: () => {
+            let snackbarItem: SnackbarItem = {
+                type: TYPE_SUCCESSFUL,
+                message: "Successfully saved.",
+                autohide: true,
+            };
 
+            emitter.emit('snackbar:addItem', snackbarItem);
+        },
+        onError: () => {
+            let snackbarItem: SnackbarItem = {
+                type: TYPE_DANGER,
+                message: "Could not save. Please try again later.",
+                autohide: false,
+            };
+
+            emitter.emit('snackbar:addItem', snackbarItem);
+        },
+    });
 }
 
 function submitAvatar() {
-
+    // TODO
 }
 
 function submitDescription() {
+    descriptionForm.post(route('settings.event.description', {eventId: props.event.id}), {
+        onSuccess: () => {
+            let snackbarItem: SnackbarItem = {
+                type: TYPE_SUCCESSFUL,
+                message: "Successfully saved.",
+                autohide: true,
+            };
 
+            emitter.emit('snackbar:addItem', snackbarItem);
+        },
+        onError: () => {
+            let snackbarItem: SnackbarItem = {
+                type: TYPE_DANGER,
+                message: "Could not save. Please try again later.",
+                autohide: false,
+            };
+
+            emitter.emit('snackbar:addItem', snackbarItem);
+        },
+    });
 }
 
 function submitConfirmation() {
+    confirmationForm.post(route('settings.event.confirmation', {eventId: props.event.id}), {
+        onSuccess: () => {
+            let snackbarItem: SnackbarItem = {
+                type: TYPE_SUCCESSFUL,
+                message: "Successfully saved.",
+                autohide: true,
+            };
 
+            emitter.emit('snackbar:addItem', snackbarItem);
+        },
+        onError: () => {
+            let snackbarItem: SnackbarItem = {
+                type: TYPE_DANGER,
+                message: "Could not save. Please try again later.",
+                autohide: false,
+            };
+
+            emitter.emit('snackbar:addItem', snackbarItem);
+        },
+    });
 }
 </script>
 
