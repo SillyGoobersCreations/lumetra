@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings/{eventId}', [IndexController::class, 'showEventSettings'])->name('settings.event');
     Route::post('/settings/{eventId}/name', [IndexController::class, 'doSaveEventNameSettings'])->name('settings.event.name');
     Route::post('/settings/{eventId}/avatar', [IndexController::class, 'doSaveEventAvatarSettings'])->name('settings.event.avatar');
+    Route::get('/settings/{eventId}/clearAvatar', [IndexController::class, 'doClearEventAvatarSettings'])->name('settings.event.avatar.clear');
     Route::post('/settings/{eventId}/description', [IndexController::class, 'doSaveEventDescriptionSettings'])->name('settings.event.description');
     Route::post('/settings/{eventId}/confirmation', [IndexController::class, 'doSaveEventConfirmationSettings'])->name('settings.event.confirmation');
 

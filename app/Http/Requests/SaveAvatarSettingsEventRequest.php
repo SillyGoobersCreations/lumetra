@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\File;
 
 class SaveAvatarSettingsEventRequest extends FormRequest
 {
@@ -21,6 +22,8 @@ class SaveAvatarSettingsEventRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'avatar' => ['required', File::image()]
+        ];
     }
 }

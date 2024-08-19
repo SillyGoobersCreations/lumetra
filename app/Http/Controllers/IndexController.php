@@ -9,13 +9,14 @@ use App\Http\Requests\SaveNameSettingsEventRequest;
 use App\Http\Requests\SaveSettingsGlobalRequest;
 use App\Models\Attendee;
 use App\Models\Event;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\RedirectResponse;
+use Nette\Utils\Image;
 
 class IndexController extends Controller
 {
@@ -85,7 +86,28 @@ class IndexController extends Controller
         $user = Auth::user();
         $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
 
-        // TODO: Upload Avatar, optimize image
+        $avatarFile = $request->validated('avatar');
+        $extension = $avatarFile->getClientOriginalExtension();
+        $filename = "$userAttendee->id.$extension";
+
+        $image = Image::fromFile($avatarFile->getRealPath());
+        $image->resize(350, 350, Image::Cover);
+        $image->save(Storage::disk('avatars')->path("$filename"));
+
+        $userAttendee->avatar_url = $filename;
+        $userAttendee->save();
+
+        return redirect(route('settings.event', ['eventId' => $eventId]));
+    }
+
+    public function doClearEventAvatarSettings(string $eventId): RedirectResponse {
+        $user = Auth::user();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
+
+        Storage::disk('avatars')->delete($userAttendee->avatar_url);
+
+        $userAttendee->avatar_url = null;
+        $userAttendee->save();
 
         return redirect(route('settings.event', ['eventId' => $eventId]));
     }

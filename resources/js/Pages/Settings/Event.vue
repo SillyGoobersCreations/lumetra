@@ -35,10 +35,16 @@
                         <!-- TODO -->
                         <div class="item">
                             <label for="avatar">Avatar</label>
-                            <input type="file" id="avatar" placeholder="Doe" />
+                            <input type="file" id="avatar" @input="avatarForm.avatar = $event.target.files[0]" />
                             <div class="error" v-if="avatarForm.errors.avatar">{{ avatarForm.errors.avatar }}</div>
                         </div>
                         <div class="item actions">
+                            <Link
+                                class="button danger"
+                                :href="route('settings.event.avatar.clear', {eventId: event.id})"
+                            >
+                                <span>Clear current</span>
+                            </Link>
                             <button class="primary">
                                 <span class="ri-save-2-line"></span>
                                 <span>Save</span>
@@ -133,7 +139,7 @@ const nameForm = useForm({
 });
 
 const avatarForm = useForm({
-    avatar: "",
+    avatar: null,
 });
 
 const descriptionForm = useForm({
@@ -170,7 +176,26 @@ function submitName() {
 }
 
 function submitAvatar() {
-    // TODO
+    avatarForm.post(route('settings.event.avatar', {eventId: props.event.id}), {
+        onSuccess: () => {
+            let snackbarItem: SnackbarItem = {
+                type: TYPE_SUCCESSFUL,
+                message: "Successfully saved.",
+                autohide: true,
+            };
+
+            emitter.emit('snackbar:addItem', snackbarItem);
+        },
+        onError: () => {
+            let snackbarItem: SnackbarItem = {
+                type: TYPE_DANGER,
+                message: "Could not save. Please try again later.",
+                autohide: false,
+            };
+
+            emitter.emit('snackbar:addItem', snackbarItem);
+        },
+    });
 }
 
 function submitDescription() {
