@@ -41,12 +41,11 @@
                 <Avatar :attendee="currentAttendee" />
             </Link>
 
-            <Link
-                class="button"
-                :href="route('events.attendees.detail', { eventId: currentAttendee.event.id, attendeeId: currentAttendee.id })"
-            >
-                <i class="ri-settings-2-line"></i>
-            </Link>
+            <NavigationBarItem
+                :href="route('settings.event', { eventId: currentAttendee.event.id })"
+                icon="settings-2"
+                :active="$page.url.startsWith('/settings') && $page.url.includes('settings')"
+            />
 
             <div class="dropdown">
                 <button :class="`${dropdownOpen ? 'reverse' : ''}`" @click="dropdownOpen = !dropdownOpen">
@@ -56,9 +55,9 @@
                     <Link :href="route('index')" class="item">
                         Frontpage
                     </Link>
-                    <Link :href="route('events.detail', { eventId: attendee.event.id })" class="item" v-for="attendee in attendees" :key="attendee.id">
+                    <Link :href="route('events.detail', { eventId: attendee?.event?.id ?? 0 })" class="item" v-for="attendee in attendees" :key="attendee.id">
                         <span>{{ attendee.name_full }}</span>
-                        <span>{{ attendee.event.title }}</span>
+                        <span>{{ attendee?.event?.title }}</span>
                     </Link>
                 </div>
             </div>

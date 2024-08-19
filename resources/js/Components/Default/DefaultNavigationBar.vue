@@ -20,6 +20,13 @@
         </template>
         <template #user v-if="user">
             <NavigationBarItem
+                :href="route('settings.global')"
+                icon="settings-2"
+                label="Settings"
+                :active="$page.url.startsWith('/settings') && $page.url.includes('settings')"
+            />
+
+            <NavigationBarItem
                 :href="route('logout')"
                 icon="door-closed"
                 label="Logout"
@@ -43,7 +50,7 @@ import NavigationBar from "@/Components/Common/NavigationBar.vue";
 import LumetraLightLogo from "@/../img/lumetra-logo-onlight.svg";
 import LumetraDarkLogo from "@/../img/lumetra-logo-ondark.svg";
 import NavigationBarItem from "@/Components/Common/NavigationBarItem.vue";
-import {usePage} from "@inertiajs/vue3";
+import {Link, usePage} from "@inertiajs/vue3";
 import {computed, ref} from "vue";
 
 const page = usePage();

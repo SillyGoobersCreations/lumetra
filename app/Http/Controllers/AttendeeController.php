@@ -113,12 +113,4 @@ class AttendeeController extends Controller
 
         return Redirect::route('events.attendees.detail', ['eventId' => $eventId, 'attendeeId' => $request->inviter_attendee_id]);
     }
-
-    public function showSettings(string $eventId): Response {
-        // TODO: Show attendee profile settings and general user settings
-    }
-
-    public function doSaveSettings(string $eventId): RedirectResponse {
-        // TODO: Save attendee profile settings and general user settings
-    }
 }
