@@ -21,17 +21,8 @@
 
 <script lang="ts" setup>
 import {inject, onMounted, onUnmounted, ref} from "vue";
+import {SnackbarItem} from "@/Components/Common/Snackbars";
 const emitter = inject('emitter');
-
-const TYPE_BASE = "base";
-const TYPE_DANGER = "danger";
-const TYPE_SUCCESSFUL = "successful";
-
-type SnackbarItem = {
-    type: string,
-    message: string,
-    autohide: boolean,
-}
 
 const items = ref<SnackbarItem[]>([]);
 
@@ -41,7 +32,7 @@ function addItem(item: SnackbarItem) {
     if(item.autohide) {
         setTimeout(() => {
             removeItem(item);
-        }, 1000);
+        }, 7500);
     }
 }
 

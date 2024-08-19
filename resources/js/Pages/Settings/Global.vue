@@ -46,7 +46,10 @@ import {PropType} from "@vue/runtime-dom";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import {User} from "@/types/models/User";
 import Sidebar from "@/Components/Settings/Sidebar.vue";
-import AuthLayout from "@/Layouts/AuthLayout.vue";
+import {inject} from "vue";
+import {SnackbarItem, TYPE_BASE, TYPE_DANGER, TYPE_SUCCESSFUL} from "@/Components/Common/Snackbars";
+
+const emitter = inject('emitter');
 
 const props = defineProps({
     user: {
@@ -64,6 +67,24 @@ const form = useForm({
 
 function submit () {
     form.post(route('settings.global'), {
+        onSuccess: () => {
+            let snackbarItem: SnackbarItem = {
+                type: TYPE_SUCCESSFUL,
+                message: "Successfully saved.",
+                autohide: true,
+            };
+
+            emitter.emit('snackbar:addItem', snackbarItem);
+        },
+        onError: () => {
+            let snackbarItem: SnackbarItem = {
+                type: TYPE_DANGER,
+                message: "Could not save. Please try again later.",
+                autohide: false,
+            };
+
+            emitter.emit('snackbar:addItem', snackbarItem);
+        },
         onFinish: () => {
             form.reset('password');
             form.reset('password_confirmation');
