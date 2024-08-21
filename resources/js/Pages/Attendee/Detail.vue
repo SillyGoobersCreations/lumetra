@@ -274,8 +274,6 @@ function getContactInfoLink(type: string, value: string) {
             return `https://www.facebook.com/${value}`;
         case "linkedin":
             return `https://www.linkedin.com/in/${value}`;
-        case "discord":
-            return "ri-discord-fill";
         case "mastodon":
             return value;
         case "github":
