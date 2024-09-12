@@ -2,6 +2,7 @@
     <Button
         :variant="`${active ? 'default' : 'ghost'}`"
         :size="label != false ? 'default' : 'icon'"
+        class="justify-start"
         as-child
     >
         <Link :href="href">

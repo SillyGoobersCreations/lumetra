@@ -1,28 +1,39 @@
 <template>
-    <Link
-        :href="route('events.chats.detail', {
-            eventId: attendee.event_id,
-            attendeeId: attendee.id,
-        })"
-        :class="`connection-button ${active ? 'active' : ''}`"
-        v-if="attendee !== null"
+    <Button
+        as-child
+        :variant="active ? 'secondary' : 'ghost'"
+        class="justify-start py-6"
     >
-        <Avatar :attendee="attendee" />
-        <div class="meta">
-            <div class="name">{{ attendee.name_full }}</div>
-            <div class="connected">Connected {{ moment(connection.created_at).fromNow() }}</div>
-        </div>
-    </Link>
+        <Link
+            :href="route('events.chats.detail', {
+                eventId: attendee.event_id,
+                attendeeId: attendee.id,
+            })"
+        >
+            <Avatar class="h-8 w-8 mr-2">
+                <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}`" alt="@shadcn" />
+                <AvatarFallback>{{ attendee.name_initials }}</AvatarFallback>
+            </Avatar>
+            <div class="flex flex-col space-y-1">
+                <p class="text-sm font-medium leading-none">
+                    {{ attendee.name_full }}
+                </p>
+                <p class="text-xs leading-none text-muted-foreground">
+                    Connected {{ moment(connection.created_at).fromNow() }}
+                </p>
+            </div>
+        </Link>
+    </Button>
 </template>
 
 <script setup lang="ts">
-import {Link, usePage} from '@inertiajs/vue3';
+import {Link} from '@inertiajs/vue3';
 import {PropType} from "@vue/runtime-dom";
 import {AttendeeConnection} from "@/types/models/AttendeeConnection";
 import {computed} from "vue";
 import moment from "moment/moment";
-import {Attendee} from "@/types/models/Attendee";
-import Avatar from "@/components/Common/Avatar.vue";
+import {Button} from "@/components/ui/button";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 
 const props = defineProps({
     currentAttendeeId: {
@@ -49,43 +60,4 @@ const attendee = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-.connection-button {
-    background: rgb(var(--color-base-50));
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 10px;
-    overflow: hidden;
-    text-decoration: none;
-    color: inherit;
-    height: 50px;
-    transition: var(--transition-default);
-
-    &.active {
-        background: rgb(var(--color-base-200));
-    }
-
-    & .meta {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        flex-grow: 1;
-
-        & .name {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            flex-grow: 1;
-        }
-        & .connected {
-            font-size: 0.75rem;
-            color: rgb(var(--color-base-400));
-        }
-    }
-
-    &:hover {
-        background: rgb(var(--color-base-100));
-    }
-}
 </style>

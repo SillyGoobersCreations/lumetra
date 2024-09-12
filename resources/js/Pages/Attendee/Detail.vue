@@ -198,29 +198,43 @@
             </div>
             <div>
                 <!-- TODO: Visibility -->
-                <Box
-                    v-if="attendee.contact_infos.length > 0"
-                    class="contact-infos"
-                    :noPadding="true"
-                >
-                    <div
-                        class="item"
-                        :key="contact_info.id"
-                        v-for="contact_info in attendee.contact_infos"
-                    >
-                        <i :class="getContactInfoIcon(contact_info.type)"></i>
-                        <span>{{ getContactInfoLabel(contact_info.type, contact_info.value) }}</span>
-                        <a
-                            :href="getContactInfoLink(contact_info.type, contact_info.value)"
-                            target="_blank"
-                            class="button"
-                            v-if="contact_info.type !== 'discord'"
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Contact information</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div
+                            v-if="attendee.contact_infos.length > 0"
+                            class="flex flex-col gap-4"
                         >
-                            <i class="ri-external-link-line"></i>
-                            <span>Visit</span>
-                        </a>
-                    </div>
-                </Box>
+                            <div
+                                class="flex gap-2 items-center"
+                                v-for="contact_info in attendee.contact_infos"
+                                :key="contact_info.id"
+                            >
+                                <i :class="`${getContactInfoIcon(contact_info.type)} text-lg`"></i>
+                                <span class="grow text-muted-foreground">{{ getContactInfoLabel(contact_info.type, contact_info.value) }}</span>
+                                <Button
+                                    v-if="contact_info.type !== 'discord'"
+                                    variant="secondary"
+                                    size="xs"
+                                    as-child
+                                >
+                                    <a
+                                        :href="getContactInfoLink(contact_info.type, contact_info.value)"
+                                        target="_blank"
+                                    >
+                                        <i class="ri-external-link-line mr-2 text-lg"></i>
+                                        <span>Visit</span>
+                                    </a>
+                                </Button>
+                            </div>
+                        </div>
+                        <div v-else class="text-muted-foreground">
+                            This user has not setup any contact information yet.
+                        </div>
+                    </CardContent>
+                </Card>
             </div>
         </section>
     </EventLayout>

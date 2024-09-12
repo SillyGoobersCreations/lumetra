@@ -52,8 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import {Link, useForm} from "@inertiajs/vue3";
-import Box from "@/components/Common/Box.vue";
+import {useForm} from "@inertiajs/vue3";
 import {PropType} from "@vue/runtime-dom";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import {User} from "@/types/models/User";
@@ -62,9 +61,7 @@ import {inject} from "vue";
 import { useToast } from '@/components/ui/toast/use-toast';
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
-import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
-import FormItem from "@/components/Common/FormRow.vue";
 import FormRow from "@/components/Common/FormRow.vue";
 
 const { toast } = useToast();

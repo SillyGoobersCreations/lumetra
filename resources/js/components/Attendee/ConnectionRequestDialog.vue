@@ -1,5 +1,5 @@
 <template>
-    <Dialog :open="dialogOpen">
+    <Dialog v-model:open="dialogOpen">
         <DialogTrigger as-child>
             <Button class="w-full">
                 <i class="ri-shake-hands-line mr-2 text-lg"></i>
@@ -52,7 +52,7 @@ import {Attendee} from "@/types/models/Attendee";
 import {useForm} from "@inertiajs/vue3";
 import {ref} from "vue";
 
-const dialogOpen = ref(undefined);
+const dialogOpen = ref(false);
 
 const props = defineProps({
     event: {

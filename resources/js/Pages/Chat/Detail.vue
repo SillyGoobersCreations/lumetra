@@ -5,38 +5,60 @@
             v-if="currentAttendee !== null"
         >
             <aside>
-                <Box :no-padding="true" class="connection-list">
-                    <ConnectionButton
-                        v-for="connection in connections"
-                        :key="connection.id"
-                        :current-attendee-id="currentAttendee.id"
-                        :active="connection.id === selectedConnection.id"
-                        :connection="connection"
-                    />
-                </Box>
+                <Card>
+                    <CardContent class="p-2 gap-2 flex flex-col">
+                        <ConnectionButton
+                            v-for="connection in connections"
+                            :key="connection.id"
+                            :current-attendee-id="currentAttendee.id"
+                            :active="connection.id === selectedConnection.id"
+                            :connection="connection"
+                        />
+                    </CardContent>
+                </Card>
 
-                <Link
-                    :href="route('events.attendees.index', {
-                        eventId: event.id,
-                    })"
-                    class="button primary more-button"
-                >
-                    <i class="ri-shake-hands-line"></i>
-                    <span>Connect with attendees</span>
-                </Link>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Connect with attendees</CardTitle>
+                    </CardHeader>
+                    <CardContent class="text-muted-foreground">
+                        By connecting with other attendees, you can chat and schedule meetups during the event.
+                    </CardContent>
+                    <CardFooter>
+                        <Button
+                            variant="secondary"
+                            class="w-full"
+                            as-child
+                        >
+                            <Link
+                                :href="route('events.attendees.index', {
+                                eventId: event.id,
+                            })"
+                            >
+                                <i class="ri-shake-hands-line mr-2 text-lg"></i>
+                                <span>Connect with attendees</span>
+                            </Link>
+                        </Button>
+                    </CardFooter>
+                </Card>
             </aside>
             <main>
-                <Box :no-padding="true">
-                    <header>
-                        <div class="attendee">
-                            <Avatar :attendee="attendee" />
-                            <div class="meta">
-                                <div class="name">{{ attendee.name_full }}</div>
-                                <div class="connected">Connected {{ moment(selectedConnection.created_at).fromNow() }}</div>
-                            </div>
+                <Card>
+                    <CardHeader class="flex-row items-center">
+                        <Avatar class="h-8 w-8 mr-2">
+                            <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}`" alt="@shadcn" />
+                            <AvatarFallback>{{ attendee.name_initials }}</AvatarFallback>
+                        </Avatar>
+                        <div class="flex flex-col space-y-1">
+                            <p class="text-sm font-medium leading-none">
+                                {{ attendee.name_full }}
+                            </p>
+                            <p class="text-xs leading-none text-muted-foreground">
+                                Connected {{ moment(selectedConnection.created_at).fromNow() }}
+                            </p>
                         </div>
-                    </header>
-                    <main>
+                    </CardHeader>
+                    <CardContent class="flex flex-col gap-2">
                         <MessageConnection
                             :connection="selectedConnection"
                             :current-attendee-id="currentAttendee.id"
@@ -50,13 +72,20 @@
                                 {{ message.message }}
                             </template>
                         </Message>
-                    </main>
-                    <footer>
+                    </CardContent>
+                    <CardFooter class="flex gap-2">
                         <!-- TODO Tara: This needs a text input and a button to submit. Pressing enter in the text input should also submit -->
                         <!-- TODO Tara: The submit needs useForm to send to route('events.chats.sendMessage') and onFinish clear the text -->
-                        Chat Box + Invite Button
-                    </footer>
-                </Box>
+                        <MeetDialog
+                            :event="event"
+                            :selectedConnection="selectedConnection"
+                        />
+                        <Input placeholder="Message..." />
+                        <Button>
+                            <span>Send</span>
+                        </Button>
+                    </CardFooter>
+                </Card>
             </main>
         </section>
     </EventLayout>
@@ -65,7 +94,6 @@
 <script setup lang="ts">
 import {Link, usePage} from '@inertiajs/vue3';
 import EventLayout from "@/Layouts/EventLayout.vue";
-import Box from "@/components/Common/Box.vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {AttendeeConnection} from "@/types/models/AttendeeConnection";
@@ -73,9 +101,13 @@ import ConnectionButton from "@/components/Chat/ConnectionButton.vue";
 import {computed, onMounted, onUnmounted, ref} from "vue";
 import {ChatMessage} from "@/types/models/ChatMessage";
 import moment from "moment";
-import Avatar from "@/components/Common/Avatar.vue";
 import MessageConnection from "@/components/Chat/MessageConnection.vue";
 import Message from "@/components/Chat/Message.vue";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Input} from "@/components/ui/input";
+import MeetDialog from "@/components/Chat/MeetDialog.vue";
 
 const messages = ref([]);
 let messageTimer : number|undefined;
@@ -146,11 +178,13 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .chat-overview {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 20px;
-    position: relative;
+    @apply flex flex-col lg:grid lg:grid-cols-[1fr_2fr] gap-5;
 
+    & aside {
+        @apply flex flex-col gap-5;
+    }
+
+    /*
     & > aside {
         display: flex;
         flex-direction: column;
@@ -227,6 +261,6 @@ onUnmounted(() => {
                 padding: 10px 20px;
             }
         }
-    }
+    } */
 }
 </style>

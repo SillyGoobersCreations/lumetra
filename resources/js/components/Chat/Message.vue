@@ -20,33 +20,16 @@ defineProps({
 
 <style lang="scss" scoped>
 .message {
-    border-radius: 10px;
-    min-width: 60%;
-    max-width: 90%;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding: 15px;
+    @apply rounded-xl min-w-[60%] max-w-[90%] flex flex-col gap-4 p-4;
 
     &.remote {
-        background: rgb(var(--color-base-200));
-        color: rgb(var(--color-base-950));
-        align-self: flex-start;
-        border-bottom-left-radius: 0;
+        @apply border self-start rounded-bl-none;
     }
     &.local {
-        background: rgb(var(--color-primary-200));
-        color: rgb(var(--color-primary-950));
-        align-self: flex-end;
-        border-bottom-right-radius: 0;
-    }
-
-    & .text {
-        line-height: 1.5rem;
+        @apply bg-muted text-muted-foreground self-end rounded-br-none;
     }
     & .actions {
-        display: flex;
-        gap: 5px;
+        @apply flex gap-2;
     }
 }
 </style>

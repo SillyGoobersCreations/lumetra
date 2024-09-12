@@ -5,29 +5,51 @@
             v-if="currentAttendee !== null"
         >
             <aside>
-                <Box :no-padding="true" class="connection-list">
-                    <ConnectionButton
-                        v-for="connection in connections"
-                        :key="connection.id"
-                        :current-attendee-id="currentAttendee.id"
-                        :connection="connection"
-                    />
-                </Box>
+                <Card>
+                    <CardContent class="p-2 gap-2 flex flex-col">
+                        <ConnectionButton
+                            v-for="connection in connections"
+                            :key="connection.id"
+                            :current-attendee-id="currentAttendee.id"
+                            :connection="connection"
+                        />
+                    </CardContent>
+                </Card>
 
-                <Link
-                    :href="route('events.attendees.index', {
-                        eventId: event.id,
-                    })"
-                    class="button primary more-button"
-                >
-                    <i class="ri-shake-hands-line"></i>
-                    <span>Connect with attendees</span>
-                </Link>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Connect with attendees</CardTitle>
+                    </CardHeader>
+                    <CardContent class="text-muted-foreground">
+                        By connecting with other attendees, you can chat and schedule meetups during the event.
+                    </CardContent>
+                    <CardFooter>
+                        <Button
+                            variant="secondary"
+                            class="w-full"
+                            as-child
+                        >
+                            <Link
+                                :href="route('events.attendees.index', {
+                                eventId: event.id,
+                            })"
+                            >
+                                <i class="ri-shake-hands-line mr-2 text-lg"></i>
+                                <span>Connect with attendees</span>
+                            </Link>
+                        </Button>
+                    </CardFooter>
+                </Card>
             </aside>
             <main>
-                <Box>
-                    Info
-                </Box>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Chat</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        Select an attendee to start chatting. Find other attendees in the attendee list and send them a connect request to be able to chat and schedule meetups.
+                    </CardContent>
+                </Card>
             </main>
         </section>
     </EventLayout>
@@ -36,12 +58,13 @@
 <script setup lang="ts">
 import {Link, usePage} from '@inertiajs/vue3';
 import EventLayout from "@/Layouts/EventLayout.vue";
-import Box from "@/components/Common/Box.vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {AttendeeConnection} from "@/types/models/AttendeeConnection";
 import ConnectionButton from "@/components/Chat/ConnectionButton.vue";
 import {computed} from "vue";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
 
 const page = usePage();
 const attendees = computed(() => page.props.auth.attendees);
@@ -71,25 +94,10 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .chat-overview {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 20px;
+    @apply flex flex-col lg:grid lg:grid-cols-[1fr_2fr] gap-5;
 
     & aside {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-
-        & .connection-list {
-            padding: 5px;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        & .more-button {
-            justify-content: center;
-        }
+        @apply flex flex-col gap-5;
     }
 }
 </style>
