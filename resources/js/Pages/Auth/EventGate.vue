@@ -1,27 +1,38 @@
 <template>
     <AuthLayout>
+        <AuthHeader
+            title="Select an event"
+        />
+
         <div class="event-gate">
             <div class="events">
-                <Link
-                    :key="attendee.id"
+                <Button
                     v-for="attendee in attendees"
-                    :href="route('events.detail', { eventId: attendee.event?.id})"
-                    class="button attendee-button"
+                    :key="attendee.id"
+                    class="attendee-item"
+                    variant="default"
+                    as-child
                 >
-                    <Avatar :attendee="attendee" />
-                    <div class="meta">
-                        <span>{{ attendee.name_full }}</span>
-                        <span>{{ attendee.event?.title }}</span>
-                    </div>
-                </Link>
+                    <Link
+                        :href="route('events.detail', { eventId: attendee.event?.id})"
+                        class="button attendee-button"
+                    >
+                        <Avatar :attendee="attendee" />
+                        <div class="meta">
+                            <span>{{ attendee.name_full }}</span>
+                            <span>{{ attendee.event?.title }}</span>
+                        </div>
+                    </Link>
+                </Button>
             </div>
-            <Link
-                :href="route('index')"
-                class="button"
-            >
-                <i class="ri-home-5-line"></i>
-                <span>Frontpage</span>
-            </Link>
+            <Button variant="secondary" as-child>
+                <Link
+                    :href="route('index')"
+                >
+                    <i class="ri-home-5-line mr-2 text-lg"></i>
+                    <span>Back to Frontpage</span>
+                </Link>
+            </Button>
         </div>
     </AuthLayout>
 </template>
@@ -30,7 +41,9 @@
 import {Link, usePage} from '@inertiajs/vue3';
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 import {computed} from "vue";
-import Avatar from "@/Components/Common/Avatar.vue";
+import Avatar from "@/components/Common/Avatar.vue";
+import AuthHeader from "@/components/Auth/AuthHeader.vue";
+import {Button} from "@/components/ui/button";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -39,31 +52,22 @@ const attendees = computed(() => page.props.auth.attendees);
 
 <style lang="scss" scoped>
 .event-gate {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    @apply flex flex-col gap-4;
 
     & .events {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
+        @apply flex flex-col gap-2;
 
-        & .attendee-button {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            justify-content: flex-start;
-            align-items: center;
-            height: 60px;
-            gap: 10px;
+        & .attendee-item {
+            @apply h-[60px] flex gap-2 justify-start;
 
             & .meta {
-                display: flex;
-                flex-direction: column;
-                gap: 5px;
+                @apply flex flex-col;
 
+                & span:nth-child(1) {
+                    @apply text-lg;
+                }
                 & span:nth-child(2) {
-                    font-size: 0.75rem;
-                    color: rgba(var(--color-base-500));
+                    @apply mt-[-5px] text-muted-foreground;
                 }
             }
         }

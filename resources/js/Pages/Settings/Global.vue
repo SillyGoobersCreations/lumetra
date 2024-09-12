@@ -2,53 +2,72 @@
     <DefaultLayout>
         <section class="attendee-settings">
             <Sidebar :attendees="user.attendees" />
-            <div>
-                <Box>
-                    <form @submit.prevent="submit">
-                        <h1>Security</h1>
-                        <div class="item">
-                            <label for="email">Email address</label>
-                            <input type="email" id="email" placeholder="john.doe@example.org" v-model="form.email" />
-                            <div class="error" v-if="form.errors.email">{{ form.errors.email }}</div>
-                        </div>
-                        <div class="item">
-                            <label for="current_password">Current Password</label>
-                            <input type="password" id="current_password" placeholder="Current Password" v-model="form.current_password" />
-                            <div class="error" v-if="form.errors.current_password">{{ form.errors.current_password }}</div>
-                        </div>
-                        <div class="item">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" placeholder="Password" v-model="form.password" />
-                            <div class="error" v-if="form.errors.password">{{ form.errors.password }}</div>
-                        </div>
-                        <div class="item">
-                            <label for="password_confirmation">Password Confirmation</label>
-                            <input type="password" id="password_confirmation" placeholder="Password" v-model="form.password_confirmation" />
-                            <div class="error" v-if="form.errors.password_confirmation">{{ form.errors.password_confirmation }}</div>
-                        </div>
-                        <div class="item actions">
-                            <button class="primary">
-                                <span class="ri-save-2-line"></span>
+            <main>
+                <form @submit.prevent="submit">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Security</CardTitle>
+                        </CardHeader>
+                        <CardContent class="flex flex-col gap-3">
+                            <FormRow
+                                label="Email adress"
+                                variant="wide"
+                                :error="form.errors.email"
+                            >
+                                <Input type="email" id="email" placeholder="Email adress" v-model="form.email" />
+                            </FormRow>
+                            <FormRow
+                                label="Current Password"
+                                variant="wide"
+                                :error="form.errors.current_password"
+                            >
+                                <Input type="password" id="current_password" placeholder="Current Password" v-model="form.current_password" />
+                            </FormRow>
+                            <FormRow
+                                label="New Password"
+                                variant="wide"
+                                :error="form.errors.password"
+                            >
+                                <Input type="password" id="password" placeholder="Password" v-model="form.password" />
+                            </FormRow>
+                            <FormRow
+                                label="New Password Confirmation"
+                                variant="wide"
+                                :error="form.errors.password_confirmation"
+                            >
+                                <Input type="password" id="password_confirmation" placeholder="Password" v-model="form.password_confirmation" />
+                            </FormRow>
+                        </CardContent>
+                        <CardFooter class="justify-end flex gap-2">
+                            <Button>
+                                <span class="ri-save-2-line mr-2 text-lg"></span>
                                 <span>Save</span>
-                            </button>
-                        </div>
-                    </form>
-                </Box>
-            </div>
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                </form>
+            </main>
         </section>
     </DefaultLayout>
 </template>
 
 <script setup lang="ts">
 import {Link, useForm} from "@inertiajs/vue3";
-import Box from "@/Components/Common/Box.vue";
+import Box from "@/components/Common/Box.vue";
 import {PropType} from "@vue/runtime-dom";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import {User} from "@/types/models/User";
-import Sidebar from "@/Components/Settings/Sidebar.vue";
+import Sidebar from "@/components/Settings/Sidebar.vue";
 import {inject} from "vue";
-import {SnackbarItem, TYPE_BASE, TYPE_DANGER, TYPE_SUCCESSFUL} from "@/Components/Common/Snackbars";
+import { useToast } from '@/components/ui/toast/use-toast';
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
+import FormItem from "@/components/Common/FormRow.vue";
+import FormRow from "@/components/Common/FormRow.vue";
 
+const { toast } = useToast();
 const emitter = inject('emitter');
 
 const props = defineProps({
@@ -77,13 +96,11 @@ function submit () {
             emitter.emit('snackbar:addItem', snackbarItem);
         },
         onError: () => {
-            let snackbarItem: SnackbarItem = {
-                type: TYPE_DANGER,
-                message: "Could not save. Please try again later.",
-                autohide: false,
-            };
-
-            emitter.emit('snackbar:addItem', snackbarItem);
+            toast({
+                title: "Could not save.",
+                description: "Please try again later.",
+                variant: "destructive"
+            });
         },
         onFinish: () => {
             form.reset('password');
@@ -95,48 +112,9 @@ function submit () {
 
 <style lang="scss" scoped>
 .attendee-settings {
-    display: grid;
-    grid-template-columns: 350px 1fr;
-    gap: 15px;
+    @apply flex flex-col lg:grid lg:grid-cols-[350px_1fr] gap-4;
 }
-.attendee-settings > div {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-h1 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-}
-.item {
-    display: flex;
-    gap: 10px;
-
-    &:not(.actions) {
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    &.one-row {
-        flex-direction: row;
-        align-items: center;
-
-        & label {
-            flex-grow: 1;
-        }
-    }
-    & .error {
-        color: rgb(var(--color-danger-500));
-        font-size: 0.85rem;
-    }
-    &.actions {
-        margin-top: 15px;
-        justify-content: flex-end;
-    }
+.attendee-settings > main {
+    @apply flex flex-col gap-4;
 }
 </style>

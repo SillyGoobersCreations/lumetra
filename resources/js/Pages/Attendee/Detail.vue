@@ -1,104 +1,200 @@
 <template>
     <EventLayout :event="event">
         <section class="attendee-deactivated" v-if="!attendee.active">
-            DEACTIVATED
-            <!-- TODO -->
+            <Alert variant="destructive">
+                <AlertTitle>Deactivated attendee</AlertTitle>
+                <AlertDescription>
+                    This attendee decided to leave this event. It is not possible to see this profile or chat with them anymore unless they re-join this event.
+                </AlertDescription>
+            </Alert>
         </section>
         <section class="attendee-detail" v-if="attendee.active">
             <div>
                 <div class="avatar-and-name">
-                    <Avatar :attendee="attendee" :size="128" />
-                    <div class="name">
-                        <span>{{ attendee.name_full }}</span>
-                        <span>{{ attendee.handle }}</span>
+                    <div class="flex w-full justify-center">
+                        <Avatar class="h-[128px] w-[128px]">
+                            <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}`" alt="@shadcn" />
+                            <AvatarFallback class="text-3xl">{{ attendee.name_initials }}</AvatarFallback>
+                        </Avatar>
                     </div>
+                    <div class="name">{{ attendee.name_full }}</div>
                 </div>
-                <Box class="details">
-                    <div class="info-item" v-if="attendee.job_position || attendee.job_company">
-                        <span v-if="attendee.job_position">{{ attendee.job_position }}</span>
-                        <span v-if="attendee.job_company">{{ attendee.job_company }}</span>
-                    </div>
-                    <div class="info-item">
-                        <span>Confirmation Status</span>
-                        <span>{{ attendee.confirmed ? 'Confirmed Attendee' : 'Unconfirmed Attendee' }}</span>
-                    </div>
-                    <div class="info-item">
-                        <span>Registered</span>
-                        <span>{{ moment(attendee.created_at).fromNow() }}</span>
-                    </div>
-                </Box>
-                <Box class="description">
-                    {{ attendee.description }}
-                </Box>
-                <div class="actions" v-if="attendee.id === currentAttendee.id">
-                    <Link
-                        :href="route('settings.event', {
+                <Card>
+                    <CardContent class="pt-6 flex flex-col gap-2">
+                        <div class="grid grid-cols-[1fr_2fr] gap-2 items-center" v-if="attendee.job_company">
+                            <Label>Company</Label>
+                            <span class="text-muted-foreground">{{ attendee.job_company }}</span>
+                        </div>
+                        <div class="grid grid-cols-[1fr_2fr] gap-2 items-center" v-if="attendee.job_position">
+                            <Label>Position</Label>
+                            <span class="text-muted-foreground">{{ attendee.job_position }}</span>
+                        </div>
+                        <div class="grid grid-cols-[1fr_2fr] gap-2 items-center">
+                            <Label>Registered</Label>
+                            <span class="text-muted-foreground">{{ moment(attendee.created_at).fromNow() }}</span>
+                        </div>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardContent
+                        v-if="attendee.description"
+                        class="pt-6"
+                    >
+                        {{ attendee.description }}
+                    </CardContent>
+                    <CardContent
+                        v-else
+                        class="pt-6 text-muted-foreground"
+                    >
+                        No description has been provided yet.
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Confirmation status</CardTitle>
+                    </CardHeader>
+                    <CardContent v-if="attendee.confirmed" class="text-green-400">This attendee is a confirmed attendee for this event.</CardContent>
+                    <CardContent v-if="!attendee.confirmed" class="text-red-400">This attendee is a not confirmed attendee for this event.</CardContent>
+                </Card>
+                <div class="flex flex-col gap-2">
+                    <Button
+                        v-if="attendee.id === currentAttendee.id"
+                        class="w-full justify-start"
+                        variant="secondary"
+                        as-child
+                    >
+                        <Link
+                            :href="route('settings.event', {
                             eventId: event.id,
                         })"
-                        class="button primary"
-                    >
-                        <i class="ri-settings-2-line"></i>
-                        <span>Profile Settings</span>
-                    </Link>
+                        >
+                            <i class="ri-settings-2-line mr-2 text-lg"></i>
+                            <span>Profile Settings</span>
+                        </Link>
+                    </Button>
+
+                    <template v-if="attendee.id !== currentAttendee.id">
+                        <!-- Users are not connected, show modal -->
+                        <Card
+                            v-if="connection == null"
+                        >
+                            <CardHeader>
+                                <CardTitle>Connection</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                Connect with this attendee to chat and schedule in-person meetings.
+                            </CardContent>
+                            <CardFooter>
+                                <ConnectionRequestDialog
+                                    :event="event"
+                                    :attendee="attendee"
+                                />
+                            </CardFooter>
+                        </Card>
+                        <template v-if="connection !== null">
+                            <Card
+                                v-if="connection.state === 'confirmed'"
+                            >
+                                <CardHeader>
+                                    <CardTitle>Connection</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    You and this attendee have been connected for {{ moment(connection.updated_at).fromNow(true) }}
+                                </CardContent>
+                                <CardFooter>
+                                    <Button
+                                        as-child
+                                        class="w-full"
+                                        variant="destructive"
+                                    >
+                                        <!-- Users are connected, show disconnect -->
+                                        <Link
+                                            :href="route('events.attendees.disconnect', {
+                                                eventId: event.id,
+                                                attendeeId: attendee.id,
+                                            })"
+                                            method="post"
+                                            as="button"
+                                            type="button"
+                                        >
+                                            <i class="ri-delete-bin-line"></i>
+                                            <span>Disconnect</span>
+                                        </Link>
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                            <template v-else>
+                                <!-- User was the one requesting, show pending -->
+                                <Card
+                                    v-if="connection.inviter_attendee_id === currentAttendee.id"
+                                >
+                                    <CardHeader>
+                                        <CardTitle>Connection request</CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        This attendee did not accept or decline your request yet.
+                                    </CardContent>
+                                    <CardFooter>
+                                        <Button
+                                            disabled
+                                            class="w-full"
+                                        >
+                                            <span>Request pending</span>
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                                <!-- User was the one to be requested, show request and accept/decline -->
+                                <template v-if="connection.inviter_attendee_id !== currentAttendee.id && connection.state === 'pending'">
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle>Connect request</CardTitle>
+                                        </CardHeader>
+                                        <CardContent>{{ connection.intro_text }}</CardContent>
+                                        <CardFooter class="flex gap-2">
+                                            <Button class="grow" variant="destructive" as-child>
+                                                <Link
+                                                    :href="route('events.attendees.connect.decline', {
+                                                        eventId: event.id,
+                                                        attendeeId: attendee.id,
+                                                        requestId: connection.id,
+                                                    })"
+                                                >
+                                                    <i class="ri-delete-bin-line mr-2 text-lg"></i>
+                                                    <span>Decline</span>
+                                                </Link>
+                                            </Button>
+                                            <Button class="grow" as-child>
+                                                <Link
+                                                    :href="route('events.attendees.connect.accept', {
+                                                        eventId: event.id,
+                                                        attendeeId: attendee.id,
+                                                        requestId: connection.id,
+                                                    })"
+                                                >
+                                                    <i class="ri-shake-hands-line mr-2 text-lg"></i>
+                                                    <span>Accept</span>
+                                                </Link>
+                                            </Button>
+                                        </CardFooter>
+                                    </Card>
+                                </template>
+                            </template>
+                        </template>
+                    </template>
                 </div>
+
+                <!-- OLD -->
+                <!--
                 <div class="actions" v-if="attendee.id !== currentAttendee.id">
                     <button
                         @click="connectModal?.open()"
                         class="primary"
                         v-if="connection === null"
                     >
-                        <i class="ri-shake-hands-line"></i>
-                        <span>Connect</span>
                     </button>
                     <template v-if="connection !== null">
-                        <Link
-                            :href="route('events.attendees.disconnect', {
-                                eventId: event.id,
-                                attendeeId: attendee.id,
-                            })"
-                            v-if="connection.state === 'confirmed'"
-                            method="post"
-                            as="button"
-                            type="button"
-                            class="danger"
-                        >
-                            <i class="ri-delete-bin-line"></i>
-                            <span>Disconnect</span>
-                        </Link>
-                        <template v-else>
-                            <button
-                                disabled
-                                v-if="connection.inviter_attendee_id === currentAttendee.id"
-                            >
-                                <span>Connect request pending</span>
-                            </button>
-                            <template v-if="connection.inviter_attendee_id !== currentAttendee.id && connection.state === 'pending'">
-                                <Link
-                                    :href="route('events.attendees.connect.accept', {
-                                        eventId: event.id,
-                                        attendeeId: attendee.id,
-                                        requestId: connection.id,
-                                    })"
-                                    class="button primary"
-                                >
-                                    <i class="ri-shake-hands-line"></i>
-                                    <span>Accept</span>
-                                </Link>
-                                <Link
-                                    :href="route('events.attendees.connect.decline', {
-                                        eventId: event.id,
-                                        attendeeId: attendee.id,
-                                        requestId: connection.id,
-                                    })"
-                                    class="button danger"
-                                >
-                                    <i class="ri-delete-bin-line"></i>
-                                    <span>Decline</span>
-                                </Link>
-                            </template>
-                        </template>
                     </template>
-                </div>
+                </div> -->
             </div>
             <div>
                 <!-- TODO: Visibility -->
@@ -128,53 +224,24 @@
             </div>
         </section>
     </EventLayout>
-
-    <Modal
-        ref="connectModal"
-        class="modal-connect"
-        size="s"
-        :title="`Connect with ${ attendee.name_full }`"
-        :can-close="!connectRequestForm.processing"
-        @closed="connectRequestForm.clearErrors('intro_text')"
-    >
-        <template #actions>
-            <button class="primary" :disabled="connectRequestForm.processing" @click="sendConnectRequest">
-                <i class="ri-send-plane-2-line"></i>
-                <span>Send Request</span>
-            </button>
-        </template>
-        <template #default>
-            <div class="loading" v-show="connectRequestForm.processing">
-                <LoadingCircle />
-            </div>
-            <form
-                @submit.prevent="sendConnectRequest"
-                v-show="!connectRequestForm.processing"
-            >
-                <textarea
-                    v-model="connectRequestForm.intro_text"
-                    :disabled="connectRequestForm.processing"
-                    placeholder="Hey, let's connect!"
-                ></textarea>
-                <div class="error" v-if="connectRequestForm.errors.intro_text">{{ connectRequestForm.errors.intro_text }}</div>
-            </form>
-        </template>
-    </Modal>
 </template>
 
 <script setup lang="ts">
 import moment from "moment";
 import EventLayout from "@/Layouts/EventLayout.vue";
-import Box from "@/Components/Common/Box.vue";
 import {Link, useForm, usePage} from "@inertiajs/vue3";
-import Modal from "@/Components/Common/Modal.vue";
+import Modal from "@/components/Common/Modal.vue";
 import {computed, ref} from "vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {Attendee} from "@/types/models/Attendee";
-import LoadingCircle from "@/Components/Common/LoadingCircle.vue";
 import {AttendeeConnection} from "@/types/models/AttendeeConnection";
-import Avatar from "@/Components/Common/Avatar.vue";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Label} from "@/components/ui/label";
+import {Button} from "@/components/ui/button";
+import ConnectionRequestDialog from "@/components/Attendee/ConnectionRequestDialog.vue";
 
 const connectModal = ref<InstanceType<typeof Modal> | null>(null);
 
@@ -206,23 +273,6 @@ const currentAttendee = computed(() => {
 
     return foundAttendee;
 });
-
-/* CONNECT REQUEST */
-const connectRequestForm = useForm({
-    intro_text: '',
-});
-
-function sendConnectRequest() {
-    connectRequestForm.post(route('events.attendees.connect', {
-        eventId: props.event.id,
-        attendeeId: props.attendee.id,
-    }), {
-        onSuccess: () => {
-            connectRequestForm.reset('intro_text');
-            connectModal.value?.close();
-        },
-    })
-}
 
 function getContactInfoIcon(type: string) {
     switch(type) {
@@ -287,18 +337,33 @@ function getContactInfoLink(type: string, value: string) {
 </script>
 
 <style lang="scss" scoped>
+.attendee-deactivated {
+    @apply my-10 md:my-20 max-w-xl mx-auto;
+}
 .attendee-detail {
-    display: grid;
-    grid-template-columns: 2fr 3fr;
-    gap: 15px;
-    margin: 30px auto;
+    @apply grid grid-cols-[2fr_3fr] gap-4 my-8;
 
     & > div {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
+        @apply flex flex-col gap-4;
+    }
+
+    & .avatar-and-name {
+        @apply flex flex-col gap-2;
+
+        & .name {
+            @apply line-clamp-1 text-center mt-2 font-bold;
+        }
     }
 }
+.connect-dialog {
+    & .loading {
+        @apply w-full flex justify-center py-10;
+    }
+    & .error {
+        @apply mt-2 text-sm text-red-400;
+    }
+}
+/*
 .avatar-and-name {
     display: flex;
     flex-direction: column;
@@ -413,5 +478,5 @@ function getContactInfoLink(type: string, value: string) {
         padding: 50px 0;
         height: 100%;
     }
-}
+} */
 </style>

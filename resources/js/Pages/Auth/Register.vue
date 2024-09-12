@@ -1,31 +1,42 @@
 <template>
     <AuthLayout>
+        <AuthHeader
+            title="Create an account"
+            subtitle="Enter your email below to create your account"
+        />
+
         <form @submit.prevent="submit">
-            <h1>Register</h1>
-            <div class="item">
-                <label for="email">Email address</label>
-                <input type="email" id="email" placeholder="john.doe@example.org" v-model="form.email" />
-                <div class="error" v-if="form.errors.email">{{ form.errors.email }}</div>
-            </div>
-            <div class="item">
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Password" v-model="form.password" />
-                <div class="error" v-if="form.errors.password">{{ form.errors.password }}</div>
-            </div>
-            <div class="item">
-                <label for="password_confirmation">Password Confirmation</label>
-                <input type="password" id="password_confirmation" placeholder="Password" v-model="form.password_confirmation" />
-                <div class="error" v-if="form.errors.password_confirmation">{{ form.errors.password_confirmation }}</div>
-            </div>
-            <div class="item actions">
-                <Link href="/login" class="button transparent">
-                    <i class="ri-login-box-line"></i>
-                    <span>Login</span>
-                </Link>
-                <button class="primary">
-                    <i class="ri-key-fill"></i>
-                    <span>Register</span>
-                </button>
+            <AuthFormItem
+                label="Email adress"
+                :error="form.errors.email"
+            >
+                <Input id="email" type="email" placeholder="john.doe@example.org" v-model="form.email" />
+            </AuthFormItem>
+
+            <AuthFormItem
+                label="Password"
+                :error="form.errors.password"
+            >
+                <Input id="password" type="password" placeholder="Password" v-model="form.password" />
+            </AuthFormItem>
+
+            <AuthFormItem
+                label="Password confirmation"
+                :error="form.errors.password_confirmation"
+            >
+                <Input id="password_confirmation" type="password" placeholder="Password" v-model="form.password_confirmation" />
+            </AuthFormItem>
+
+            <div class="actions">
+                <Button variant="link" as-child>
+                    <Link href="/login">
+                        I already have an account
+                    </Link>
+                </Button>
+                <Button>
+                    <i class="ri-key-fill mr-2 text-lg"></i>
+                    Register
+                </Button>
             </div>
         </form>
     </AuthLayout>
@@ -35,6 +46,10 @@
 import { Link } from '@inertiajs/vue3';
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 import {useForm} from "@inertiajs/vue3";
+import AuthHeader from "@/components/Auth/AuthHeader.vue";
+import {Input} from "@/components/ui/input";
+import AuthFormItem from "@/components/Common/FormRow.vue";
+import {Button} from "@/components/ui/button";
 
 const form = useForm({
     email: '',
@@ -54,38 +69,9 @@ function submit () {
 
 <style lang="scss" scoped>
 form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    @apply flex flex-col gap-5;
 }
-h1 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-}
-.item {
-    display: flex;
-    gap: 10px;
-
-    &:not(.actions) {
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    &.one-row {
-        flex-direction: row;
-        align-items: center;
-
-        & label {
-            flex-grow: 1;
-        }
-    }
-    & .error {
-        color: rgb(var(--color-danger-500));
-        font-size: 0.85rem;
-    }
-    &.actions {
-        margin-top: 15px;
-        justify-content: flex-end;
-    }
+.actions {
+    @apply flex gap-2 justify-end mt-4;
 }
 </style>

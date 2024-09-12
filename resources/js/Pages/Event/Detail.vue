@@ -1,39 +1,126 @@
 <template>
     <EventLayout :event="event" v-if="userAttendee">
+        <Alert v-if="event.state !== 'public'" variant="destructive" class="mb-5">
+            <AlertTitle>This event is not public.</AlertTitle>
+            <AlertDescription>You can see this event, because you are an event organizer.</AlertDescription>
+        </Alert>
         <section class="event-detail-enrolled">
             <div>
                 <EventOverviewGeneral :event="event" />
                 <EventOverviewProperties :event="event" />
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Leave event</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p>Your account will not be shown in the attendee list, other attendees will not be able to chat with you anymore. You can re-join this event at any time.</p>
+                    </CardContent>
+                    <CardFooter>
+                        <Button
+                            class="w-full justify-start"
+                            variant="destructive"
+                            as-child
+                        >
+                            <Link :href="route('events.detail.leave', { eventId: event.id })">
+                                <i class="ri-coupon-3-line mr-2 text-lg"></i>
+                                <span>Leave event</span>
+                            </Link>
+                        </Button>
+                    </CardFooter>
+                </Card>
             </div>
             <div>
-                <Box>
-                    TODO: Last 3 Chats, Button to Chat
-                </Box>
-                <Box>
-                    TODO: Upcoming Events, Button to Agenda
-                </Box>
-                <Box>
-                    <Link :href="route('events.detail.leave', { eventId: event.id })" class="button danger">
-                        <i class="ri-coupon-3-line"></i>
-                        <span>Leave Event</span>
-                    </Link>
-                </Box>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Recent Chats</CardTitle>
+                    </CardHeader>
+                    <CardContent class="flex flex-col gap-2">
+                        <Card
+                            v-for="n in 2"
+                            :key="n"
+                        >
+                            <CardContent
+                                class="p-4 px-4 gap-2 grid grid-cols-[1fr_auto] items-center"
+                            >
+                                <div class="flex flex-col gap-1">
+                                    <CardTitle>Username here</CardTitle>
+                                    <CardDescription class="line-clamp-2">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam</CardDescription>
+                                </div>
+                                <Button>
+                                    Open
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </CardContent>
+                    <CardFooter class="justify-end">
+                        <Button variant="secondary">
+                            Show all chats
+                        </Button>
+                    </CardFooter>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Upcoming</CardTitle>
+                        <CardDescription>Events and meetups</CardDescription>
+                    </CardHeader>
+                    <CardContent class="flex flex-col gap-2">
+                        <Card
+                            v-for="n in 3"
+                            :key="n"
+                        >
+                            <CardContent class="p-4 px-4 gap-2 grid grid-cols-[1fr_auto] items-center">
+                                <div class="flex flex-col gap-0">
+                                    <CardTitle>Lorem</CardTitle>
+                                    <CardDescription>Lorem Ipsum</CardDescription>
+                                </div>
+                                <Button>
+                                    More
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </CardContent>
+                    <CardFooter class="justify-end">
+                        <Button variant="secondary" as-child>
+                            <Link :href="route('events.detail.agenda', { eventId: event.id })">
+                                <span>Go to your agenda</span>
+                            </Link>
+                        </Button>
+                    </CardFooter>
+                </Card>
             </div>
         </section>
     </EventLayout>
     <DefaultLayout v-else>
+        <Alert v-if="event.state !== 'public'" variant="destructive" class="mb-5">
+            <AlertTitle>This event is not public.</AlertTitle>
+            <AlertDescription>You can see this event, because you are an event organizer.</AlertDescription>
+        </Alert>
         <section class="event-detail">
             <div>
                 <EventOverviewGeneral :event="event" />
                 <EventOverviewProperties :event="event" />
             </div>
             <div>
-                <Box>
-                    <Link :href="route('events.detail.enroll', { eventId: event.id })" class="button primary">
-                        <i class="ri-coupon-3-line"></i>
-                        <span>Join Event</span>
-                    </Link>
-                </Box>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Join Event</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p>Join this event to connect with other attendees and keep up-to-date with {{ event.title }}</p>
+                        <p class="text-muted-foreground mt-2" v-if="event.confirmation_required">This event requires a confirmation key.</p>
+                        <p class="text-muted-foreground mt-2" v-else>This event does not require a confirmation key.</p>
+                    </CardContent>
+                    <CardFooter>
+                        <Button class="w-full" as-child>
+                            <Link :href="route('events.detail.enroll', { eventId: event.id })">
+                                Join Event
+                            </Link>
+                        </Button>
+                        <!-- <Button class="w-full" disabled>
+                            This event is full
+                        </Button> -->
+                    </CardFooter>
+                </Card>
             </div>
         </section>
     </DefaultLayout>
@@ -42,10 +129,13 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import EventLayout from "@/Layouts/EventLayout.vue";
-import Box from "@/Components/Common/Box.vue";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
-import EventOverviewGeneral from "@/Components/Event/EventOverview/EventOverviewGeneral.vue";
-import EventOverviewProperties from "@/Components/Event/EventOverview/EventOverviewProperties.vue";
+import EventOverviewGeneral from "@/components/Event/EventOverview/EventOverviewGeneral.vue";
+import EventOverviewProperties from "@/components/Event/EventOverview/EventOverviewProperties.vue";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import NavigationBarItem from "@/components/Common/NavigationBarItem.vue";
 
 defineProps({
     event: {
@@ -61,18 +151,12 @@ defineProps({
 
 <style lang="scss" scoped>
 .event-detail-enrolled {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    @apply flex flex-col gap-4 lg:grid lg:grid-cols-2;
 }
 .event-detail {
-    display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: 15px;
+    @apply flex flex-col gap-4 lg:grid lg:grid-cols-[1fr_350px];
 }
 .event-detail-enrolled > div, .event-detail > div {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    @apply flex flex-col gap-4;
 }
 </style>

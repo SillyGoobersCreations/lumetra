@@ -1,30 +1,40 @@
 <template>
     <AuthLayout>
+        <AuthHeader
+            title="Log into an existing account"
+            subtitle="Enter your credentials to login"
+        />
+
         <form @submit.prevent="submit">
-            <h1>Login</h1>
-            <div class="item">
-                <label for="email">Email address</label>
-                <input type="email" id="email" placeholder="john.doe@example.org" v-model="form.email" />
-                <div class="error" v-if="form.errors.email">{{ form.errors.email }}</div>
+            <AuthFormItem
+                label="Email adress"
+                :error="form.errors.email"
+            >
+                <Input id="email" type="email" placeholder="john.doe@example.org" v-model="form.email" />
+            </AuthFormItem>
+
+            <AuthFormItem
+                label="Password"
+                :error="form.errors.password"
+            >
+                <Input id="password" type="password" placeholder="Password" v-model="form.password" />
+            </AuthFormItem>
+
+            <div class="items-top flex gap-x-2">
+                <Checkbox id="remember" :checked="form.remember" @update:checked="(e) => { form.remember = e; }" />
+                <Label for="remember">Stay logged in</Label>
             </div>
-            <div class="item">
-                <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Password" v-model="form.password" />
-                <div class="error" v-if="form.errors.password">{{ form.errors.password }}</div>
-            </div>
-            <div class="item one-row">
-                <label for="remember">Stay logged in</label>
-                <input id="remember" type="checkbox" class="toggle" v-model="form.remember" />
-            </div>
-            <div class="item actions">
-                <Link href="/register" class="button transparent">
-                    <i class="ri-key-fill"></i>
-                    <span>Register</span>
-                </Link>
-                <button class="primary">
-                    <i class="ri-login-box-line"></i>
-                    <span>Login</span>
-                </button>
+
+            <div class="actions">
+                <Button variant="link" as-child>
+                    <Link href="/register">
+                        Create a new account
+                    </Link>
+                </Button>
+                <Button>
+                    <i class="ri-login-box-line mr-2 text-lg"></i>
+                    Login
+                </Button>
             </div>
         </form>
     </AuthLayout>
@@ -34,6 +44,13 @@
 import { Link } from '@inertiajs/vue3';
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 import {useForm} from "@inertiajs/vue3";
+import AuthHeader from "@/components/Auth/AuthHeader.vue";
+import AuthFormItem from "@/components/Common/FormRow.vue";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+import {CheckboxIndicator, CheckboxRoot} from "radix-vue";
+import {Checkbox} from "@/components/ui/checkbox";
+import {Label} from "@/components/ui/label";
 
 const form = useForm({
     email: '',
@@ -50,38 +67,9 @@ function submit () {
 
 <style lang="scss" scoped>
 form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    @apply flex flex-col gap-5;
 }
-h1 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-}
-.item {
-    display: flex;
-    gap: 10px;
-
-    &:not(.actions) {
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    &.one-row {
-        flex-direction: row;
-        align-items: center;
-
-        & label {
-            flex-grow: 1;
-        }
-    }
-    & .error {
-        color: rgb(var(--color-danger-500));
-        font-size: 0.85rem;
-    }
-    &.actions {
-        margin-top: 15px;
-        justify-content: flex-end;
-    }
+.actions {
+    @apply flex gap-2 justify-end mt-4;
 }
 </style>

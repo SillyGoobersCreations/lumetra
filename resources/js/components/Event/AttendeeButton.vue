@@ -1,0 +1,108 @@
+<template>
+    <Card class="attendee-button">
+        <CardContent class="flex flex-col gap-2 pt-6 grow">
+            <div class="flex w-full justify-center">
+                <Avatar class="h-[128px] w-[128px]">
+                    <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}`" alt="@shadcn" />
+                    <AvatarFallback class="text-3xl">{{ attendee.name_initials }}</AvatarFallback>
+                </Avatar>
+            </div>
+            <div class="name">{{ attendee.name_full }}</div>
+            <div class="job-info" v-if="attendee.job_position || attendee.job_company">
+                <div v-if="attendee.job_position">{{ attendee.job_position }}</div>
+                <div v-if="attendee.job_company">{{ attendee.job_company }}</div>
+            </div>
+        </CardContent>
+        <CardFooter>
+            <Button
+                class="w-full justify-start"
+                variant="secondary"
+                as-child
+            >
+                <Link :href="route('events.attendees.detail', { eventId: attendee.event.id, attendeeId: attendee.id })">
+                    <i class="ri-arrow-right-up-line mr-2 text-lg"></i>
+                    <span>Go to profile</span>
+                </Link>
+            </Button>
+        </CardFooter>
+    </Card>
+</template>
+
+<script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
+import {PropType} from "@vue/runtime-dom";
+import {Attendee} from "@/types/models/Attendee";
+import {Card, CardContent, CardFooter} from "@/components/ui/card";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Button} from "@/components/ui/button";
+
+defineProps({
+    attendee: {
+        type: Object as PropType<Attendee>,
+        default: null,
+    }
+});
+</script>
+
+<style lang="scss" scoped>
+.attendee-button {
+    & .name {
+        @apply line-clamp-1 text-center mt-2 font-bold;
+    }
+    & .job-info {
+        @apply flex flex-col mt-2;
+
+        & div {
+            @apply line-clamp-1;
+        }
+        & div:nth-child(2) {
+            @apply text-muted-foreground text-xs;
+        }
+    }
+}
+/*
+.attendee-button {
+    background: rgb(var(--color-base-50));
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    overflow: hidden;
+
+    & .avatar {
+        margin: 0 auto;
+    }
+    & .name {
+        font-size: 1.15rem;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    & .job-info {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        & span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        & span:nth-child(2) {
+            color: rgb(var(--color-base-400));
+        }
+    }
+    & .actions {
+        flex-grow: 1;
+        display: flex;
+        align-items: flex-end;
+        gap: 5px;
+
+        & button, & .button {
+            flex-grow: 1;
+        }
+    }
+} */
+</style>

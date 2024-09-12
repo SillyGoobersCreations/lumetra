@@ -1,43 +1,53 @@
 <template>
-    <main class="layout-auth">
-        <header>
-            <img :src="LumetraLightLogo" alt="Lumetra Logo" class="logo only-light" />
-            <img :src="LumetraDarkLogo" alt="Lumetra Logo" class="logo only-dark" />
-        </header>
-        <Box>
-            <slot />
-        </Box>
-    </main>
+    <section class="layout-auth">
+        <aside>
+            <div class="top-left">
+                <img :src="LumetraLightLogo" alt="Lumetra Logo" class="logo dark:hidden block" />
+                <img :src="LumetraDarkLogo" alt="Lumetra Logo" class="logo dark:block hidden" />
+            </div>
+            <div class="version">
+                Version 1.0.0
+            </div>
+        </aside>
+        <main>
+            <div class="content">
+                <slot />
+            </div>
+        </main>
+    </section>
+
+    <Toaster />
 </template>
 
 <script setup lang="ts">
 import LumetraLightLogo from "@/../img/lumetra-logo-onlight.svg";
 import LumetraDarkLogo from "@/../img/lumetra-logo-ondark.svg";
-import Box from "@/Components/Common/Box.vue";
+import Toaster from '@/components/ui/toast/Toaster.vue';
 </script>
 
-<style lang="scss">
-#app:has(.layout-auth) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-</style>
-
 <style lang="scss" scoped>
-main {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: calc(100% - 40px);
-    max-width: 450px;
+.layout-auth {
+    @apply container relative min-h-[100vh] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0;
 
-    & header {
-        display: flex;
+    & aside {
+        @apply relative hidden h-full flex-col bg-accent p-10 text-white lg:flex;
+    }
+    & main {
+        @apply lg:p-8;
+
+        & .content {
+            @apply mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px];
+        }
+    }
+    & .top-left {
+        @apply relative z-20 flex items-center text-lg font-medium;
 
         & .logo {
-            height: 30px;
+            @apply h-5;
         }
+    }
+    & .version {
+        @apply relative z-20 mt-auto text-muted-foreground;
     }
 }
 </style>

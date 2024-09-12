@@ -67,17 +67,17 @@
 <script setup lang="ts">
 import {Link, usePage} from '@inertiajs/vue3';
 import EventLayout from "@/Layouts/EventLayout.vue";
-import Box from "@/Components/Common/Box.vue";
+import Box from "@/components/Common/Box.vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {AttendeeConnection} from "@/types/models/AttendeeConnection";
-import ConnectionButton from "@/Components/Chat/ConnectionButton.vue";
+import ConnectionButton from "@/components/Chat/ConnectionButton.vue";
 import {computed, onMounted, onUnmounted, ref} from "vue";
 import {ChatMessage} from "@/types/models/ChatMessage";
 import moment from "moment";
-import Avatar from "@/Components/Common/Avatar.vue";
-import MessageConnection from "@/Components/Chat/MessageConnection.vue";
-import Message from "@/Components/Chat/Message.vue";
+import Avatar from "@/components/Common/Avatar.vue";
+import MessageConnection from "@/components/Chat/MessageConnection.vue";
+import Message from "@/components/Chat/Message.vue";
 
 const messages = ref([]);
 let messageTimer : number|undefined;

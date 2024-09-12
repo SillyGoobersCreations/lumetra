@@ -1,44 +1,55 @@
 <template>
     <EventLayout :event="event">
         <section class="attendee-directory">
-            <Box class="search">
-                <input type="search" v-model="searchQuery" @keyup.enter="search" placeholder="Search..." />
-                <button class="primary" @click="search">
-                    <i class="ri-search-line"></i>
-                    <span>Search</span>
-                </button>
-            </Box>
-            <Box class="loading" v-if="loading">
-                <LoadingCircle />
-            </Box>
+            <Card>
+                <CardContent class="pt-6 flex gap-2">
+                    <Input type="search" v-model="searchQuery" @keyup.enter="search" placeholder="Search..." class="grow" />
+                    <Button @click="search">
+                        <i class="ri-search-line mr-2 text-lg"></i>
+                        <span>Search</span>
+                    </Button>
+                </CardContent>
+            </Card>
+            <Card v-if="loading">
+                <CardContent class="pt-6 flex items-center justify-center py-16">
+                    <LoadingCircle />
+                </CardContent>
+            </Card>
             <template v-else>
                 <div class="sorting">
-                    <span>{{ results.length }} results</span>
+                    <Label>{{ results.length }} results</Label>
 
                     <div class="actions">
-                        <div class="select">
-                            <select v-model="searchSortBy">
-                                <option value="handle">Handle</option>
-                                <option value="first_name">First name</option>
-                                <option value="last_name">First name</option>
-                                <option value="updated_at">Last activity</option>
-                                <option value="created_at">Join date</option>
-                            </select>
-                        </div>
-                        <button
+                        <Select v-model="searchSortBy">
+                            <SelectTrigger class="w-[180px]">
+                                <SelectValue placeholder="Select...">{{ searchSortFields[searchSortBy] }}</SelectValue>
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectLabel>Sort by</SelectLabel>
+                                <SelectItem
+                                    v-for="(value, key) in searchSortFields"
+                                    :key="key"
+                                    :value="key"
+                                >{{ value }}</SelectItem>
+                            </SelectContent>
+                        </Select>
+
+                        <Button
                             v-if="searchSortType != 'DESC'"
                             @click="searchSortType = 'DESC'"
-                            class="primary"
+                            variant="secondary"
                         >
-                            <i class="ri-sort-desc"></i>
-                        </button>
-                        <button
+                            <i class="ri-sort-desc mr-2 text-lg"></i>
+                            <span>Descending</span>
+                        </Button>
+                        <Button
                             v-if="searchSortType != 'ASC'"
                             @click="searchSortType = 'ASC'"
-                            class="primary"
+                            variant="secondary"
                         >
-                            <i class="ri-sort-asc"></i>
-                        </button>
+                            <i class="ri-sort-asc mr-2 text-lg"></i>
+                            <span>Ascending</span>
+                        </Button>
                     </div>
                 </div>
                 <div class="results">
@@ -54,11 +65,15 @@
 
 <script setup lang="ts">
 import EventLayout from "@/Layouts/EventLayout.vue";
-import AttendeeButton from "@/Components/Event/AttendeeButton.vue";
+import AttendeeButton from "@/components/Event/AttendeeButton.vue";
 import {ref, onMounted} from "vue";
-import Box from "@/Components/Common/Box.vue";
-import LoadingCircle from "@/Components/Common/LoadingCircle.vue";
+import LoadingCircle from "@/components/Common/LoadingCircle.vue";
 import { watch } from "vue";
+import {Card, CardContent} from "@/components/ui/card";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+import {Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Label} from "@/components/ui/label";
 
 const props = defineProps({
     event: {
@@ -72,6 +87,14 @@ const results = ref([]);
 const searchQuery = ref("");
 const searchSortBy = ref("updated_at");
 const searchSortType = ref("DESC");
+
+const searchSortFields = {
+    handle: "Handle",
+    first_name: "First name",
+    last_name: "Last name",
+    updated_at: "Last activity",
+    created_at: "Join date",
+};
 
 async function search() {
     results.value = [];
@@ -104,42 +127,17 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .attendee-directory {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    @apply flex flex-col gap-4;
 
-    & .search {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-
-        & input {
-            flex-grow: 1;
-        }
-    }
     & .sorting {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        @apply flex items-center gap-2 justify-between;
 
-        & > span {
-            flex-grow: 1;
-        }
         & .actions {
-            display: flex;
-            gap: 5px;
+            @apply flex items-center gap-2;
         }
     }
     & .results {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-    }
-    & .loading {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 75px 0;
+        @apply flex flex-col sm:grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4;
     }
 }
 </style>

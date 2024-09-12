@@ -28,7 +28,7 @@ class AttendeeController extends Controller
         $user = Auth::user();
         $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->first();
         $event = Event::findOrFail($eventId);
-        $attendee = Attendee::where(['id' => $attendeeId, 'active' => true])->with(['event', 'contact_infos'])->firstOrFail();
+        $attendee = Attendee::where(['id' => $attendeeId])->with(['event', 'contact_infos'])->firstOrFail();
         $attendeeConnection = AttendeeConnection::checkConnection($userAttendee->id, $attendee->id)->first();
 
         return Inertia::render('Attendee/Detail', [

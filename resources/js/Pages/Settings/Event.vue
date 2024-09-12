@@ -2,103 +2,140 @@
     <EventLayout :event="event">
         <section class="attendee-settings">
             <Sidebar :attendees="user.attendees" />
-            <div>
-                <Box>
-                    <form @submit.prevent="submitName">
-                        <h1>Name</h1>
-                        <div class="item">
-                            <label for="handle">Handle</label>
-                            <input type="text" id="handle" placeholder="@johndoe" v-model="nameForm.handle" />
-                            <div class="error" v-if="nameForm.errors.handle">{{ nameForm.errors.handle }}</div>
-                        </div>
-                        <div class="item">
-                            <label for="first_name">First name</label>
-                            <input type="text" id="first_name" placeholder="John" v-model="nameForm.first_name" />
-                            <div class="error" v-if="nameForm.errors.first_name">{{ nameForm.errors.first_name }}</div>
-                        </div>
-                        <div class="item">
-                            <label for="last_name">Last name</label>
-                            <input type="text" id="last_name" placeholder="Doe" v-model="nameForm.last_name" />
-                            <div class="error" v-if="nameForm.errors.last_name">{{ nameForm.errors.last_name }}</div>
-                        </div>
-                        <div class="item actions">
-                            <button class="primary">
-                                <span class="ri-save-2-line"></span>
-                                <span>Save</span>
-                            </button>
-                        </div>
-                    </form>
-                </Box>
-                <Box>
-                    <form @submit.prevent="submitAvatar">
-                        <h1>Avatar</h1>
-                        <!-- TODO -->
-                        <div class="item">
-                            <label for="avatar">Avatar</label>
-                            <input type="file" id="avatar" @input="avatarForm.avatar = $event.target.files[0]" />
-                            <div class="error" v-if="avatarForm.errors.avatar">{{ avatarForm.errors.avatar }}</div>
-                        </div>
-                        <div class="item actions">
-                            <Link
-                                class="button danger"
-                                :href="route('settings.event.avatar.clear', {eventId: event.id})"
+            <main>
+                <form @submit.prevent="submitName">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Identity</CardTitle>
+                        </CardHeader>
+                        <CardContent class="flex flex-col gap-3">
+                            <FormRow
+                                label="Handle"
+                                :error="nameForm.errors.handle"
+                                variant="wide"
                             >
-                                <span>Clear current</span>
-                            </Link>
-                            <button class="primary">
-                                <span class="ri-save-2-line"></span>
+                                <Input type="text" id="handle" placeholder="@johndoe" v-model="nameForm.handle" />
+                            </FormRow>
+                            <FormRow
+                                label="First name"
+                                :error="nameForm.errors.first_name"
+                                variant="wide"
+                            >
+                                <Input type="text" id="first_name" placeholder="John" v-model="nameForm.first_name" />
+                            </FormRow>
+                            <FormRow
+                                label="Last name"
+                                :error="nameForm.errors.last_name"
+                                variant="wide"
+                            >
+                                <Input type="text" id="last_name" placeholder="Doe" v-model="nameForm.last_name" />
+                            </FormRow>
+                        </CardContent>
+                        <CardFooter class="justify-end flex gap-2">
+                            <Button>
+                                <span class="ri-save-2-line mr-2 text-lg"></span>
                                 <span>Save</span>
-                            </button>
-                        </div>
-                    </form>
-                </Box>
-                <Box>
-                    <form @submit.prevent="submitDescription">
-                        <h1>Description</h1>
-                        <div class="item">
-                            <label for="description">Description</label>
-                            <textarea v-model="descriptionForm.description"></textarea>
-                            <div class="error" v-if="descriptionForm.errors.description">{{ descriptionForm.errors.description }}</div>
-                        </div>
-                        <div class="item">
-                            <label for="job_company">Company</label>
-                            <input type="text" id="job_company" v-model="descriptionForm.job_company" />
-                            <div class="error" v-if="descriptionForm.errors.job_company">{{ descriptionForm.errors.job_company }}</div>
-                        </div>
-                        <div class="item">
-                            <label for="job_position">Position</label>
-                            <input type="text" id="job_position" v-model="descriptionForm.job_position" />
-                            <div class="error" v-if="descriptionForm.errors.job_position">{{ descriptionForm.errors.job_position }}</div>
-                        </div>
-                        <div class="item actions">
-                            <button class="primary">
-                                <span class="ri-save-2-line"></span>
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                </form>
+
+                <form @submit.prevent="submitAvatar">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Avatar</CardTitle>
+                        </CardHeader>
+                        <CardContent class="flex flex-col gap-3">
+                            <FormRow
+                                label="Avatar"
+                                :error="avatarForm.errors.avatar"
+                                variant="wide"
+                            >
+                                <Input type="file" id="avatar" @input="avatarForm.avatar = $event.target.files[0]" />
+                            </FormRow>
+                        </CardContent>
+                        <CardFooter class="justify-end flex gap-2">
+                            <Button variant="destructive" as-child>
+                                <Link
+                                    :href="route('settings.event.avatar.clear', {eventId: event.id})"
+                                >
+                                    <span>Clear current</span>
+                                </Link>
+                            </Button>
+                            <Button>
+                                <span class="ri-save-2-line mr-2 text-lg"></span>
                                 <span>Save</span>
-                            </button>
-                        </div>
-                    </form>
-                </Box>
-                <Box v-if="attendee.confirmed">
-                    <h1>Confirmation</h1>
-                    <p>Your attendance was confirmed.</p>
-                </Box>
-                <Box v-if="!attendee.confirmed">
-                    <form @submit.prevent="submitConfirmation">
-                        <h1>Confirmation</h1>
-                        <div class="item">
-                            <label for="confirmation_key">Confirmation Key</label>
-                            <input type="text" id="confirmation_key" v-model="confirmationForm.confirmation_key" />
-                            <div class="error" v-if="confirmationForm.errors.confirmation_key">{{ confirmationForm.errors.confirmation_key }}</div>
-                        </div>
-                        <div class="item actions">
-                            <button class="primary">
-                                <span class="ri-save-2-line"></span>
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                </form>
+                <form @submit.prevent="submitDescription">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>About you</CardTitle>
+                        </CardHeader>
+                        <CardContent class="flex flex-col gap-3">
+                            <FormRow
+                                label="Description"
+                                :error="descriptionForm.errors.description"
+                                variant="wide"
+                            >
+                                <Textarea v-model="descriptionForm.description" />
+                            </FormRow>
+                            <FormRow
+                                label="Company"
+                                :error="descriptionForm.errors.job_company"
+                                variant="wide"
+                            >
+                                <Input type="text" id="job_company" v-model="descriptionForm.job_company" />
+                            </FormRow>
+                            <FormRow
+                                label="Position"
+                                :error="descriptionForm.errors.job_position"
+                                variant="wide"
+                            >
+                                <Input type="text" id="job_position" v-model="descriptionForm.job_position" />
+                            </FormRow>
+                        </CardContent>
+                        <CardFooter class="justify-end flex gap-2">
+                            <Button>
+                                <span class="ri-save-2-line mr-2 text-lg"></span>
                                 <span>Save</span>
-                            </button>
-                        </div>
-                    </form>
-                </Box>
-            </div>
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                </form>
+
+                <Card v-if="attendee.confirmed">
+                    <CardHeader>
+                        <CardTitle>Confirmation</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div class="text-green-400">Great news, your attendance was confirmed.</div>
+                    </CardContent>
+                </Card>
+
+                <form v-if="!attendee.confirmed" @submit.prevent="submitConfirmation">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Confirmation</CardTitle>
+                        </CardHeader>
+                        <CardContent class="flex flex-col gap-3">
+                            <div class="item">
+                                <label for="confirmation_key">Confirmation Key</label>
+                                <input type="text" id="confirmation_key" v-model="confirmationForm.confirmation_key" />
+                                <div class="error" v-if="confirmationForm.errors.confirmation_key">{{ confirmationForm.errors.confirmation_key }}</div>
+                            </div>
+                        </CardContent>
+                        <CardFooter class="justify-end flex gap-2">
+                            <Button>
+                                <span class="ri-save-2-line mr-2 text-lg"></span>
+                                <span>Save</span>
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                </form>
+            </main>
         </section>
     </EventLayout>
 </template>
@@ -106,15 +143,21 @@
 <script setup lang="ts">
 import {Link, useForm} from "@inertiajs/vue3";
 import EventLayout from "@/Layouts/EventLayout.vue";
-import Box from "@/Components/Common/Box.vue";
+import Box from "@/components/Common/Box.vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {Attendee} from "@/types/models/Attendee";
 import {User} from "@/types/models/User";
-import Sidebar from "@/Components/Settings/Sidebar.vue";
-import {SnackbarItem, TYPE_DANGER, TYPE_SUCCESSFUL} from "@/Components/Common/Snackbars";
+import Sidebar from "@/components/Settings/Sidebar.vue";
 import {inject} from "vue";
+import { useToast } from '@/components/ui/toast/use-toast';
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import FormRow from "@/components/Common/FormRow.vue";
+import {Input} from "@/components/ui/input";
+import {Textarea} from "@/components/ui/textarea";
 
+const { toast } = useToast();
 const emitter = inject('emitter');
 
 const props = defineProps({
@@ -155,22 +198,15 @@ const confirmationForm = useForm({
 function submitName() {
     nameForm.post(route('settings.event.name', {eventId: props.event.id}), {
         onSuccess: () => {
-            let snackbarItem: SnackbarItem = {
-                type: TYPE_SUCCESSFUL,
-                message: "Successfully saved.",
-                autohide: true,
-            };
-
-            emitter.emit('snackbar:addItem', snackbarItem);
+            toast({
+                description: "Successfully saved."
+            });
         },
         onError: () => {
-            let snackbarItem: SnackbarItem = {
-                type: TYPE_DANGER,
-                message: "Could not save. Please try again later.",
-                autohide: false,
-            };
-
-            emitter.emit('snackbar:addItem', snackbarItem);
+            toast({
+                description: "Could not save. Please try again later.",
+                variant: "destructive"
+            });
         },
     });
 }
@@ -178,22 +214,15 @@ function submitName() {
 function submitAvatar() {
     avatarForm.post(route('settings.event.avatar', {eventId: props.event.id}), {
         onSuccess: () => {
-            let snackbarItem: SnackbarItem = {
-                type: TYPE_SUCCESSFUL,
-                message: "Successfully saved.",
-                autohide: true,
-            };
-
-            emitter.emit('snackbar:addItem', snackbarItem);
+            toast({
+                description: "Successfully saved."
+            });
         },
         onError: () => {
-            let snackbarItem: SnackbarItem = {
-                type: TYPE_DANGER,
-                message: "Could not save. Please try again later.",
-                autohide: false,
-            };
-
-            emitter.emit('snackbar:addItem', snackbarItem);
+            toast({
+                description: "Could not save. Please try again later.",
+                variant: "destructive"
+            });
         },
     });
 }
@@ -201,22 +230,15 @@ function submitAvatar() {
 function submitDescription() {
     descriptionForm.post(route('settings.event.description', {eventId: props.event.id}), {
         onSuccess: () => {
-            let snackbarItem: SnackbarItem = {
-                type: TYPE_SUCCESSFUL,
-                message: "Successfully saved.",
-                autohide: true,
-            };
-
-            emitter.emit('snackbar:addItem', snackbarItem);
+            toast({
+                description: "Successfully saved."
+            });
         },
         onError: () => {
-            let snackbarItem: SnackbarItem = {
-                type: TYPE_DANGER,
-                message: "Could not save. Please try again later.",
-                autohide: false,
-            };
-
-            emitter.emit('snackbar:addItem', snackbarItem);
+            toast({
+                description: "Could not save. Please try again later.",
+                variant: "destructive"
+            });
         },
     });
 }
@@ -224,22 +246,15 @@ function submitDescription() {
 function submitConfirmation() {
     confirmationForm.post(route('settings.event.confirmation', {eventId: props.event.id}), {
         onSuccess: () => {
-            let snackbarItem: SnackbarItem = {
-                type: TYPE_SUCCESSFUL,
-                message: "Successfully saved.",
-                autohide: true,
-            };
-
-            emitter.emit('snackbar:addItem', snackbarItem);
+            toast({
+                description: "Successfully saved."
+            });
         },
         onError: () => {
-            let snackbarItem: SnackbarItem = {
-                type: TYPE_DANGER,
-                message: "Could not save. Please try again later.",
-                autohide: false,
-            };
-
-            emitter.emit('snackbar:addItem', snackbarItem);
+            toast({
+                description: "Could not save. Please try again later.",
+                variant: "destructive"
+            });
         },
     });
 }
@@ -247,48 +262,9 @@ function submitConfirmation() {
 
 <style lang="scss" scoped>
 .attendee-settings {
-    display: grid;
-    grid-template-columns: 350px 1fr;
-    gap: 15px;
+    @apply flex flex-col lg:grid lg:grid-cols-[350px_1fr] gap-4;
 }
-.attendee-settings > div {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-h1 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-}
-.item {
-    display: flex;
-    gap: 10px;
-
-    &:not(.actions) {
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    &.one-row {
-        flex-direction: row;
-        align-items: center;
-
-        & label {
-            flex-grow: 1;
-        }
-    }
-    & .error {
-        color: rgb(var(--color-danger-500));
-        font-size: 0.85rem;
-    }
-    &.actions {
-        margin-top: 15px;
-        justify-content: flex-end;
-    }
+.attendee-settings > main {
+    @apply flex flex-col gap-4;
 }
 </style>
