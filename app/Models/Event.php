@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\ColorService;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -100,5 +101,22 @@ class Event extends Model
 
     public function getSwatchAttribute(): array {
         return ColorService::fromSwatch($this->color_primary);
+    }
+
+    public function getRemainingDaysAttribute()
+    {
+        if ($this->end_date) {
+            $currentDate = Carbon::now();
+
+            if (Carbon::parse($this->start_date)->isFuture()) {
+                $currentDate = Carbon::parse($this->start_date);
+            }
+
+            $endDate = Carbon::parse($this->end_date);
+            $remainingDays = $currentDate->diffInDays($endDate->addDay(), false);
+
+            return max($remainingDays, 0);
+        }
+        return null;
     }
 }

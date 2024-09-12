@@ -8,7 +8,9 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div :class="cn('flex flex-col gap-y-1.5 p-6 pb-4', props.class)">
-    <slot />
+  <div class="relative w-full overflow-auto">
+    <table :class="cn('w-full caption-bottom text-sm', props.class)">
+      <slot />
+    </table>
   </div>
 </template>

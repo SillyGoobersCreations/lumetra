@@ -10,7 +10,8 @@
                     </SheetTrigger>
                     <SheetContent side="left">
                         <SheetContent class="flex flex-col gap-0 p-0 overflow-y-auto">
-                            <div class="flex flex-col gap-2 p-4 pt-12">
+                            <div class="flex flex-col gap-2 p-4">
+                                <ThemeSwitcher />
                                 <slot name="main" />
                             </div>
                             <Separator />
@@ -27,6 +28,7 @@
 
             <aside>
                 <slot name="user" />
+                <ThemeSwitcher />
             </aside>
         </Wrapper>
     </header>
@@ -38,6 +40,7 @@ import {onMounted, onUnmounted, ref} from "vue";
 import { Button } from '@/components/ui/button';
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {Separator} from "@/components/ui/separator";
+import ThemeSwitcher from "@/components/Common/ThemeSwitcher.vue";
 
 const isFloating = ref(false);
 
@@ -72,7 +75,7 @@ header {
         }
 
         & nav, & aside {
-            @apply hidden lg:flex gap-1;
+            @apply hidden lg:flex gap-2 items-center;
         }
     }
 }

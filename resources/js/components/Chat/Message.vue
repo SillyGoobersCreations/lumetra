@@ -26,7 +26,7 @@ defineProps({
         @apply border self-start rounded-bl-none;
     }
     &.local {
-        @apply bg-muted text-muted-foreground self-end rounded-br-none;
+        @apply bg-muted self-end rounded-br-none;
     }
     & .actions {
         @apply flex gap-2;
