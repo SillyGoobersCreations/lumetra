@@ -10,11 +10,14 @@
 
             <nav>
                 <Button
-                    variant="ghost"
+                    :variant="$page.url.endsWith('/admin') ? 'secondary' : 'ghost'"
                     class="justify-start"
+                    as-child
                 >
-                    <i class="ri-home-3-line mr-2 text-lg"></i>
-                    <span>Dashboard</span>
+                    <Link :href="route('events.admin', {eventId: event.id })">
+                        <i class="ri-home-3-line mr-2 text-lg"></i>
+                        <span>Dashboard</span>
+                    </Link>
                 </Button>
                 <Button
                     variant="ghost"
@@ -38,11 +41,14 @@
                     <span>Rooms</span>
                 </Button>
                 <Button
-                    variant="ghost"
+                    :variant="$page.url.includes('attendees') ? 'secondary' : 'ghost'"
                     class="justify-start"
+                    as-child
                 >
-                    <i class="ri-user-line mr-2 text-lg"></i>
-                    <span>Attendees</span>
+                    <Link :href="route('events.admin.attendees', {eventId: event.id })">
+                        <i class="ri-user-line mr-2 text-lg"></i>
+                        <span>Attendees</span>
+                    </Link>
                 </Button>
             </nav>
         </aside>
@@ -123,7 +129,7 @@ defineProps({
         }
 
         & .content {
-            @apply p-5 flex flex-col gap-2;
+            @apply flex flex-col;
         }
     }
 }

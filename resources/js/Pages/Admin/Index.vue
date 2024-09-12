@@ -76,6 +76,6 @@ defineProps({
 
 <style lang="scss" scoped>
 .page-dashboard {
-    @apply flex flex-col gap-4;
+    @apply flex flex-col gap-4 p-5;
 }
 </style>

@@ -77,9 +77,8 @@ import NavigationBar from "@/components/Common/NavigationBar.vue";
 import LumetraLightLogo from "../../../img/lumetra-logo-onlight.svg";
 import LumetraDarkLogo from "../../../img/lumetra-logo-ondark.svg";
 import NavigationBarItem from "@/components/Common/NavigationBarItem.vue";
-import {Link, usePage} from "@inertiajs/vue3";
-import {computed, ref} from "vue";
-import {Button} from "@/components/ui/button";
+import {usePage} from "@inertiajs/vue3";
+import {computed} from "vue";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);

@@ -73,6 +73,14 @@
                                 <span>Settings</span>
                             </Link>
                         </DropdownMenuItem>
+                        <DropdownMenuItem as-child>
+                            <Link
+                                :href="route('events.admin', { eventId: currentAttendee.event.id })"
+                            >
+                                <i class="ri-key-line mr-2 text-lg"></i>
+                                <span>Admin</span>
+                            </Link>
+                        </DropdownMenuItem>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
@@ -154,6 +162,11 @@
                     :href="route('settings.event', { eventId: currentAttendee.event.id })"
                     icon="settings-2"
                     label="Settings"
+                />
+                <NavigationBarItem
+                    :href="route('events.admin', { eventId: currentAttendee.event.id })"
+                    icon="key"
+                    label="Admin"
                 />
                 <NavigationBarItem
                     :href="route('logout')"
