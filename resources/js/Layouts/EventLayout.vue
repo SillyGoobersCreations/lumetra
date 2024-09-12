@@ -14,12 +14,14 @@
 import EventNavigationBar from "@/components/Event/EventNavigationBar.vue";
 import Wrapper from "@/components/Common/Wrapper.vue";
 import Toaster from '@/components/ui/toast/Toaster.vue';
+import {PropType} from "@vue/runtime-dom";
+import {Event} from "@/types/models/Event";
 
 const props = defineProps({
     event: {
-        type: Object,
+        type: Object as PropType<Event>,
         required: true,
-    }
+    },
 });
 </script>
 

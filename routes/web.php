@@ -63,3 +63,6 @@ Route::middleware('auth')->group(function () {
 
 // AUTH
 require __DIR__.'/auth.php';
+
+// ADMIN
+require __DIR__.'/admin.php';
