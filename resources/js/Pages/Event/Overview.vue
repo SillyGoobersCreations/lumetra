@@ -11,9 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
-import Box from "@/components/Common/Box.vue";
 import EventButton from "@/components/Event/EventButton.vue";
 
 defineProps({

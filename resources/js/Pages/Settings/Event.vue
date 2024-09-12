@@ -143,7 +143,6 @@
 <script setup lang="ts">
 import {Link, useForm} from "@inertiajs/vue3";
 import EventLayout from "@/Layouts/EventLayout.vue";
-import Box from "@/components/Common/Box.vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {Attendee} from "@/types/models/Attendee";

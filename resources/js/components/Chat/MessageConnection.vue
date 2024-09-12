@@ -4,28 +4,38 @@
             {{ connection.intro_text }}
         </template>
         <template v-if="isRemote && connection.state === 'pending'" #actions>
-            <Link
-                :href="route('events.attendees.connect.accept', {
+            <Button
+                as-child
+                variant="secondary"
+                size="xs"
+            >
+                <Link
+                    :href="route('events.attendees.connect.accept', {
                     eventId: attendee?.event_id,
                     attendeeId: attendee?.id,
                     requestId: connection.id,
                 })"
-                class="button primary"
+                >
+                    <i class="ri-shake-hands-line mr-2 text-lg"></i>
+                    <span>Accept</span>
+                </Link>
+            </Button>
+            <Button
+                as-child
+                size="xs"
+                variant="destructive"
             >
-                <i class="ri-shake-hands-line"></i>
-                <span>Accept</span>
-            </Link>
-            <Link
-                :href="route('events.attendees.connect.decline', {
+                <Link
+                    :href="route('events.attendees.connect.decline', {
                     eventId: attendee?.event_id,
                     attendeeId: attendee?.id,
                     requestId: connection.id,
                 })"
-                class="button danger"
-            >
-                <i class="ri-delete-bin-line"></i>
-                <span>Decline</span>
-            </Link>
+                >
+                    <i class="ri-delete-bin-line mr-2 text-lg"></i>
+                    <span>Decline</span>
+                </Link>
+            </Button>
         </template>
     </Message>
     <MessageSystem>
@@ -40,6 +50,7 @@ import {computed} from "vue";
 import Message from "@/components/Chat/Message.vue";
 import MessageSystem from "@/components/Chat/MessageSystem.vue";
 import {Link} from "@inertiajs/vue3";
+import {Button} from "@/components/ui/button";
 
 const props = defineProps({
     currentAttendeeId: {
