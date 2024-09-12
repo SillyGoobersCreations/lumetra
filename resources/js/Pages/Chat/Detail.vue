@@ -41,21 +41,19 @@
                             :connection="selectedConnection"
                             :current-attendee-id="currentAttendee.id"
                         />
-
-                        <!-- TODO: This is where the messages need to be displayed with the Message component. -->
-                        <!-- TODO: "is-remote" means, it is not a message from yourself -->
-                        <!-- TODO: Ignore Room Invites for now -->
-                        <!-- TODO: Example:
-                                <Message :is-remote="true">
-                                    <template #default>
-                                        Message here
-                                    </template>
-                                </Message>
-                        -->
+                        <Message
+                            v-for="message in messages"
+                            :key="message.id"
+                            :is-remote="message.sender_attendee_id !== currentAttendee.id"
+                        >
+                            <template #default>
+                                {{ message.message }}
+                            </template>
+                        </Message>
                     </main>
                     <footer>
-                        <!-- TODO: This needs a text input and a button to submit. Pressing enter in the text input should also submit -->
-                        <!-- TODO: The submit needs useForm to send to route('events.chats.sendMessage') and onFinish clear the text -->
+                        <!-- TODO Tara: This needs a text input and a button to submit. Pressing enter in the text input should also submit -->
+                        <!-- TODO Tara: The submit needs useForm to send to route('events.chats.sendMessage') and onFinish clear the text -->
                         Chat Box + Invite Button
                     </footer>
                 </Box>
@@ -125,15 +123,21 @@ const attendee = computed(() => {
     }
 });
 
-/* TODO: Form to Send to 'events.chats.sendMessage' */
-/* TODO: Function to send the form and clear the input */
+/* TODO Tara: Form to Send to 'events.chats.sendMessage' */
+/* TODO Tara: Function to send the form and clear the input */
 
 async function updateChat() {
-    // TODO: Call route('events.chats.receive') via fetch API (GET) and update messages
+    const url = route('events.chats.receive', {
+        eventId: props.event.id,
+        attendeeId: attendee.value?.id,
+    });
+    const response = await fetch(url);
+    messages.value = await response.json();
 }
 
 onMounted(() => {
     messageTimer = setInterval(updateChat, 2000);
+    updateChat();
 });
 onUnmounted(() => {
     clearInterval(messageTimer);

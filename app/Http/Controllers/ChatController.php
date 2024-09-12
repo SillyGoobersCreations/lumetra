@@ -6,6 +6,7 @@ use App\Models\Attendee;
 use App\Models\AttendeeConnection;
 use App\Models\ChatMessage;
 use App\Models\Event;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -44,34 +45,30 @@ class ChatController extends Controller
             ->with(['inviter_attendee', 'invitee_attendee'])
             ->first();
 
-        $chatMessages = ChatMessage
-            ::where(['sender_attendee_id' => $userAttendee->id, 'receiver_attendee_id' => $attendeeId])
-            ->orWhere(['receiver_attendee_id' => $userAttendee->id, 'sender_attendee_id' => $attendeeId])
-            ->get();
-
         return Inertia::render('Chat/Detail', [
             'event' => $event,
             'connections' => $attendeeConnections,
             'selectedConnection' => $attendeeConnection,
-            'messages' => $chatMessages,
         ]);
-        // TODO: Show the chat history with the authenticated user and the user in $attendeeId from the event $eventId
     }
 
-    public function getChat(string $eventId, string $attendeeId): Response {
-        $user = Auth::user();
+    public function getChat(string $eventId, string $attendeeId): JsonResponse {
         $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->first();
 
-        // TODO: Respond with the chat history in JSON, Get all ChatMessage between $userAttendee->id and $attendeeId
-        // TODO: Example: ChatMessage::checkConnection($userAttendee->id, $attendeeId)
+
+        $chatMessages = ChatMessage::checkConnection($userAttendee->id, $attendeeId)->orderBy("updated_at", "desc")->get();
+
+        return response()->json(
+            $chatMessages
+        );
     }
 
     public function doSendMessage(string $eventId, string $attendeeId): Response {
         $user = Auth::user();
         $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->first();
 
-        // TODO: Create a new ChatMessage with the values provided, message needs to be get through a Request (example for requests: AttendeeDoConnectRequest)
-        // TODO: Then redirect to the route('events.chats.detail')
+        // TODO Tara: Create a new ChatMessage with the values provided, message needs to be get through a Request (example for requests: AttendeeDoConnectRequest)
+        // TODO Tara: Then redirect to the route('events.chats.detail')
         // TODO: Ignore Room Invites for now
     }
 
