@@ -36,11 +36,11 @@
 <script setup lang="ts">
 import {Link, usePage} from '@inertiajs/vue3';
 import EventLayout from "@/Layouts/EventLayout.vue";
-import Box from "@/Components/Common/Box.vue";
+import Box from "@/components/Common/Box.vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {AttendeeConnection} from "@/types/models/AttendeeConnection";
-import ConnectionButton from "@/Components/Chat/ConnectionButton.vue";
+import ConnectionButton from "@/components/Chat/ConnectionButton.vue";
 import {computed} from "vue";
 
 const page = usePage();

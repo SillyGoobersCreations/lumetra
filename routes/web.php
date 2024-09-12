@@ -20,13 +20,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/events/{eventId}/notifications', [EventController::class, 'showNotifications'])->name('events.detail.notifications');
     Route::get('/events/{eventId}/enroll', [EventController::class, 'doEnroll'])->name('events.detail.enroll');
     Route::get('/events/{eventId}/leave', [EventController::class, 'doLeave'])->name('events.detail.leave');
-
-    Route::get('/events/{eventId}/settings', [AttendeeController::class, 'showSettings'])->name('events.settings');
-    Route::post('/events/{eventId}/settings', [AttendeeController::class, 'doSaveSettings']);
 });
 
 // PROFILE
 Route::middleware('auth')->group(function () {
+    Route::get('/settings', [IndexController::class, 'showGlobalSettings'])->name('settings.global');
+    Route::post('/settings', [IndexController::class, 'doSaveGlobalSettings'])->name('settings.global');
+
+    Route::get('/settings/{eventId}', [IndexController::class, 'showEventSettings'])->name('settings.event');
+    Route::post('/settings/{eventId}/name', [IndexController::class, 'doSaveEventNameSettings'])->name('settings.event.name');
+    Route::post('/settings/{eventId}/avatar', [IndexController::class, 'doSaveEventAvatarSettings'])->name('settings.event.avatar');
+    Route::get('/settings/{eventId}/clearAvatar', [IndexController::class, 'doClearEventAvatarSettings'])->name('settings.event.avatar.clear');
+    Route::post('/settings/{eventId}/description', [IndexController::class, 'doSaveEventDescriptionSettings'])->name('settings.event.description');
+    Route::post('/settings/{eventId}/confirmation', [IndexController::class, 'doSaveEventConfirmationSettings'])->name('settings.event.confirmation');
+
     Route::get('/events/{eventId}/attendees', [AttendeeController::class, 'showOverview'])->name('events.attendees.index');
     Route::get('/events/{eventId}/attendees/search', [AttendeeController::class, 'search'])->name('events.attendees.search');
     Route::get('/events/{eventId}/attendees/{attendeeId}', [AttendeeController::class, 'showDetail'])->name('events.attendees.detail');

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Attendee;
+use App\Models\AttendeeContactInfo;
 use App\Models\Event;
 use App\Models\EventNote;
 use App\Models\User;
@@ -158,6 +159,68 @@ class DevSeeder extends Seeder
             'event_id' => $eventGodotCon2024->id,
         ]);
         $this->command->comment('[DevSeeder] Created Attendees');
+
+        // CONTACT INFOS
+        $webContactInfo = AttendeeContactInfo::create([
+            'type' => 'web',
+            'value' => 'https://example.org',
+            'visibility' => 'public',
+            'attendee_id' => $user1Attendee->id,
+        ]);
+        $twitterContactInfo = AttendeeContactInfo::create([
+            'type' => 'twitter',
+            'value' => 'godotengine',
+            'visibility' => 'public',
+            'attendee_id' => $user1Attendee->id,
+        ]);
+        $blueskyContactInfo = AttendeeContactInfo::create([
+            'type' => 'bluesky',
+            'value' => 'godotengine.bsky.social',
+            'visibility' => 'public',
+            'attendee_id' => $user1Attendee->id,
+        ]);
+        $facebookContactInfo = AttendeeContactInfo::create([
+            'type' => 'facebook',
+            'value' => 'dietwitterperlen',
+            'visibility' => 'public',
+            'attendee_id' => $user1Attendee->id,
+        ]);
+        $linkedinContactInfo = AttendeeContactInfo::create([
+            'type' => 'linkedin',
+            'value' => 'laura-heimann',
+            'visibility' => 'public',
+            'attendee_id' => $user1Attendee->id,
+        ]);
+        $discordContactInfo = AttendeeContactInfo::create([
+            'type' => 'discord',
+            'value' => 'laura.sofia',
+            'visibility' => 'public',
+            'attendee_id' => $user1Attendee->id,
+        ]);
+        $mastodonContactInfo = AttendeeContactInfo::create([
+            'type' => 'mastodon',
+            'value' => 'https://mastodon.social/@thatanimeweirdo',
+            'visibility' => 'public',
+            'attendee_id' => $user1Attendee->id,
+        ]);
+        $githubContactInfo = AttendeeContactInfo::create([
+            'type' => 'github',
+            'value' => 'LauraWebdev',
+            'visibility' => 'public',
+            'attendee_id' => $user1Attendee->id,
+        ]);
+        $youtubeContactInfo = AttendeeContactInfo::create([
+            'type' => 'youtube',
+            'value' => 'thatanimeweirdo',
+            'visibility' => 'public',
+            'attendee_id' => $user1Attendee->id,
+        ]);
+        $redditContactInfo = AttendeeContactInfo::create([
+            'type' => 'reddit',
+            'value' => 'GodotTeam',
+            'visibility' => 'public',
+            'attendee_id' => $user1Attendee->id,
+        ]);
 
         // EVENT NOTES
         $eventNote = EventNote::create([

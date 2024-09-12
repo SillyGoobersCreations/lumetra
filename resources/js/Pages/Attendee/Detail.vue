@@ -1,136 +1,247 @@
 <template>
     <EventLayout :event="event">
-        <section class="attendee-detail">
+        <section class="attendee-deactivated" v-if="!attendee.active">
+            <Alert variant="destructive">
+                <AlertTitle>Deactivated attendee</AlertTitle>
+                <AlertDescription>
+                    This attendee decided to leave this event. It is not possible to see this profile or chat with them anymore unless they re-join this event.
+                </AlertDescription>
+            </Alert>
+        </section>
+        <section class="attendee-detail" v-if="attendee.active">
             <div>
-                <Box class="details">
-                    <Avatar :attendee="attendee" :size="128" />
-                    <div class="name">{{ attendee.name_full }}</div>
-                    <div class="job-info" v-if="attendee.job_position || attendee.job_company">
-                        <span v-if="attendee.job_position">{{ attendee.job_position }}</span>
-                        <span v-if="attendee.job_company">{{ attendee.job_company }}</span>
+                <div class="avatar-and-name">
+                    <div class="flex w-full justify-center">
+                        <Avatar class="h-[128px] w-[128px]">
+                            <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}`" alt="@shadcn" />
+                            <AvatarFallback class="text-3xl">{{ attendee.name_initials }}</AvatarFallback>
+                        </Avatar>
                     </div>
-                    <div class="actions" v-if="attendee.id !== currentAttendee.id">
-                        <button
-                            @click="connectModal?.open()"
-                            class="primary"
-                            v-if="connection === null"
+                    <div class="name">{{ attendee.name_full }}</div>
+                </div>
+                <Card>
+                    <CardContent class="pt-6 flex flex-col gap-2">
+                        <div class="grid grid-cols-[1fr_2fr] gap-2 items-center" v-if="attendee.job_company">
+                            <Label>Company</Label>
+                            <span class="text-muted-foreground">{{ attendee.job_company }}</span>
+                        </div>
+                        <div class="grid grid-cols-[1fr_2fr] gap-2 items-center" v-if="attendee.job_position">
+                            <Label>Position</Label>
+                            <span class="text-muted-foreground">{{ attendee.job_position }}</span>
+                        </div>
+                        <div class="grid grid-cols-[1fr_2fr] gap-2 items-center">
+                            <Label>Registered</Label>
+                            <span class="text-muted-foreground">{{ moment(attendee.created_at).fromNow() }}</span>
+                        </div>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardContent
+                        v-if="attendee.description"
+                        class="pt-6"
+                    >
+                        {{ attendee.description }}
+                    </CardContent>
+                    <CardContent
+                        v-else
+                        class="pt-6 text-muted-foreground"
+                    >
+                        No description has been provided yet.
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Confirmation status</CardTitle>
+                    </CardHeader>
+                    <CardContent v-if="attendee.confirmed" class="text-green-400">This attendee is a confirmed attendee for this event.</CardContent>
+                    <CardContent v-if="!attendee.confirmed" class="text-red-400">This attendee is a not confirmed attendee for this event.</CardContent>
+                </Card>
+                <div class="flex flex-col gap-2">
+                    <Button
+                        v-if="attendee.id === currentAttendee.id"
+                        class="w-full justify-start"
+                        variant="secondary"
+                        as-child
+                    >
+                        <Link
+                            :href="route('settings.event', {
+                            eventId: event.id,
+                        })"
                         >
-                            <i class="ri-shake-hands-line"></i>
-                            <span>Connect</span>
-                        </button>
+                            <i class="ri-settings-2-line mr-2 text-lg"></i>
+                            <span>Profile Settings</span>
+                        </Link>
+                    </Button>
+
+                    <template v-if="attendee.id !== currentAttendee.id">
+                        <!-- Users are not connected, show modal -->
+                        <Card
+                            v-if="connection == null"
+                        >
+                            <CardHeader>
+                                <CardTitle>Connection</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                Connect with this attendee to chat and schedule in-person meetings.
+                            </CardContent>
+                            <CardFooter>
+                                <ConnectionRequestDialog
+                                    :event="event"
+                                    :attendee="attendee"
+                                />
+                            </CardFooter>
+                        </Card>
                         <template v-if="connection !== null">
-                            <Link
-                                :href="route('events.attendees.disconnect', {
-                                    eventId: event.id,
-                                    attendeeId: attendee.id,
-                                })"
+                            <Card
                                 v-if="connection.state === 'confirmed'"
-                                method="post"
-                                as="button"
-                                type="button"
-                                class="danger"
                             >
-                                <i class="ri-delete-bin-line"></i>
-                                <span>Disconnect</span>
-                            </Link>
+                                <CardHeader>
+                                    <CardTitle>Connection</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    You and this attendee have been connected for {{ moment(connection.updated_at).fromNow(true) }}
+                                </CardContent>
+                                <CardFooter>
+                                    <Button
+                                        as-child
+                                        class="w-full"
+                                        variant="destructive"
+                                    >
+                                        <!-- Users are connected, show disconnect -->
+                                        <Link
+                                            :href="route('events.attendees.disconnect', {
+                                                eventId: event.id,
+                                                attendeeId: attendee.id,
+                                            })"
+                                            method="post"
+                                            as="button"
+                                            type="button"
+                                        >
+                                            <i class="ri-delete-bin-line"></i>
+                                            <span>Disconnect</span>
+                                        </Link>
+                                    </Button>
+                                </CardFooter>
+                            </Card>
                             <template v-else>
-                                <button
-                                    disabled
+                                <!-- User was the one requesting, show pending -->
+                                <Card
                                     v-if="connection.inviter_attendee_id === currentAttendee.id"
                                 >
-                                    <span>Connect request pending</span>
-                                </button>
+                                    <CardHeader>
+                                        <CardTitle>Connection request</CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        This attendee did not accept or decline your request yet.
+                                    </CardContent>
+                                    <CardFooter>
+                                        <Button
+                                            disabled
+                                            class="w-full"
+                                        >
+                                            <span>Request pending</span>
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                                <!-- User was the one to be requested, show request and accept/decline -->
                                 <template v-if="connection.inviter_attendee_id !== currentAttendee.id && connection.state === 'pending'">
-                                    <Link
-                                        :href="route('events.attendees.connect.accept', {
-                                            eventId: event.id,
-                                            attendeeId: attendee.id,
-                                            requestId: connection.id,
-                                        })"
-                                        class="button primary"
-                                    >
-                                        <i class="ri-shake-hands-line"></i>
-                                        <span>Accept</span>
-                                    </Link>
-                                    <Link
-                                        :href="route('events.attendees.connect.decline', {
-                                            eventId: event.id,
-                                            attendeeId: attendee.id,
-                                            requestId: connection.id,
-                                        })"
-                                        class="button danger"
-                                    >
-                                        <i class="ri-delete-bin-line"></i>
-                                        <span>Decline</span>
-                                    </Link>
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle>Connect request</CardTitle>
+                                        </CardHeader>
+                                        <CardContent>{{ connection.intro_text }}</CardContent>
+                                        <CardFooter class="flex gap-2">
+                                            <Button class="grow" variant="destructive" as-child>
+                                                <Link
+                                                    :href="route('events.attendees.connect.decline', {
+                                                        eventId: event.id,
+                                                        attendeeId: attendee.id,
+                                                        requestId: connection.id,
+                                                    })"
+                                                >
+                                                    <i class="ri-delete-bin-line mr-2 text-lg"></i>
+                                                    <span>Decline</span>
+                                                </Link>
+                                            </Button>
+                                            <Button class="grow" as-child>
+                                                <Link
+                                                    :href="route('events.attendees.connect.accept', {
+                                                        eventId: event.id,
+                                                        attendeeId: attendee.id,
+                                                        requestId: connection.id,
+                                                    })"
+                                                >
+                                                    <i class="ri-shake-hands-line mr-2 text-lg"></i>
+                                                    <span>Accept</span>
+                                                </Link>
+                                            </Button>
+                                        </CardFooter>
+                                    </Card>
                                 </template>
                             </template>
                         </template>
-                    </div>
-                </Box>
+                    </template>
+                </div>
+
+                <!-- OLD -->
+                <!--
+                <div class="actions" v-if="attendee.id !== currentAttendee.id">
+                    <button
+                        @click="connectModal?.open()"
+                        class="primary"
+                        v-if="connection === null"
+                    >
+                    </button>
+                    <template v-if="connection !== null">
+                    </template>
+                </div> -->
             </div>
             <div>
-                <Box>
-                    {{ attendee.description }}
-                </Box>
-                <Box>
-                    <pre>Handle: {{ attendee.handle ? attendee.handle : "null" }}</pre><br />
-                    <pre>Confirmed: {{ attendee.confirmed ? attendee.confirmed : "null" }}</pre><br />
-                    <pre>Active: {{ attendee.active ? attendee.active : "null" }}</pre><br />
-                    <pre>Role: {{ attendee.role ? attendee.role : "null" }}</pre><br />
-                    <pre>ContactInfos: {{ attendee.contact_infos }}</pre><br />
+                <!-- TODO: Visibility -->
+                <Box
+                    v-if="attendee.contact_infos.length > 0"
+                    class="contact-infos"
+                    :noPadding="true"
+                >
+                    <div
+                        class="item"
+                        :key="contact_info.id"
+                        v-for="contact_info in attendee.contact_infos"
+                    >
+                        <i :class="getContactInfoIcon(contact_info.type)"></i>
+                        <span>{{ getContactInfoLabel(contact_info.type, contact_info.value) }}</span>
+                        <a
+                            :href="getContactInfoLink(contact_info.type, contact_info.value)"
+                            target="_blank"
+                            class="button"
+                            v-if="contact_info.type !== 'discord'"
+                        >
+                            <i class="ri-external-link-line"></i>
+                            <span>Visit</span>
+                        </a>
+                    </div>
                 </Box>
             </div>
         </section>
     </EventLayout>
-
-    <Modal
-        ref="connectModal"
-        class="modal-connect"
-        size="s"
-        :title="`Connect with ${ attendee.name_full }`"
-        :can-close="!connectRequestForm.processing"
-        @closed="connectRequestForm.clearErrors('intro_text')"
-    >
-        <template #actions>
-            <button class="primary" :disabled="connectRequestForm.processing" @click="sendConnectRequest">
-                <i class="ri-send-plane-2-line"></i>
-                <span>Send Request</span>
-            </button>
-        </template>
-        <template #default>
-            <div class="loading" v-show="connectRequestForm.processing">
-                <LoadingCircle />
-            </div>
-            <form
-                @submit.prevent="sendConnectRequest"
-                v-show="!connectRequestForm.processing"
-            >
-                <textarea
-                    v-model="connectRequestForm.intro_text"
-                    :disabled="connectRequestForm.processing"
-                    placeholder="Hey, let's connect!"
-                ></textarea>
-                <div class="error" v-if="connectRequestForm.errors.intro_text">{{ connectRequestForm.errors.intro_text }}</div>
-            </form>
-        </template>
-    </Modal>
 </template>
 
 <script setup lang="ts">
+import moment from "moment";
 import EventLayout from "@/Layouts/EventLayout.vue";
-import Box from "@/Components/Common/Box.vue";
 import {Link, useForm, usePage} from "@inertiajs/vue3";
-import Modal from "@/Components/Common/Modal.vue";
+import Modal from "@/components/Common/Modal.vue";
 import {computed, ref} from "vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {Attendee} from "@/types/models/Attendee";
-import AuthLayout from "@/Layouts/AuthLayout.vue";
-import {send} from "vite";
-import LoadingCircle from "@/Components/Common/LoadingCircle.vue";
 import {AttendeeConnection} from "@/types/models/AttendeeConnection";
-import Avatar from "@/Components/Common/Avatar.vue";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Label} from "@/components/ui/label";
+import {Button} from "@/components/ui/button";
+import ConnectionRequestDialog from "@/components/Attendee/ConnectionRequestDialog.vue";
 
 const connectModal = ref<InstanceType<typeof Modal> | null>(null);
 
@@ -163,52 +274,132 @@ const currentAttendee = computed(() => {
     return foundAttendee;
 });
 
-/* CONNECT REQUEST */
-const connectRequestForm = useForm({
-    intro_text: '',
-});
+function getContactInfoIcon(type: string) {
+    switch(type) {
+        case "web":
+            return "ri-earth-fill";
+        case "twitter":
+            return "ri-twitter-fill";
+        case "bluesky":
+            return "ri-bluesky-fill";
+        case "facebook":
+            return "ri-facebook-fill";
+        case "linkedin":
+            return "ri-linkedin-fill";
+        case "discord":
+            return "ri-discord-fill";
+        case "mastodon":
+            return "ri-mastodon-fill";
+        case "github":
+            return "ri-github-fill";
+        case "youtube":
+            return "ri-youtube-fill";
+        case "reddit":
+            return "ri-reddit-fill";
+    }
+}
 
-function sendConnectRequest() {
-    connectRequestForm.post(route('events.attendees.connect', {
-        eventId: props.event.id,
-        attendeeId: props.attendee.id,
-    }), {
-        onSuccess: () => {
-            connectRequestForm.reset('intro_text');
-            connectModal.value?.close();
-        },
-    })
+function getContactInfoLabel(type: string, value: string) {
+    switch(type) {
+        case "web":
+            return "Website";
+        case "mastodon":
+            return "Mastodon";
+        case "reddit":
+            return `/u/${value}`;
+        default:
+            return `@${value}`;
+    }
+}
+
+function getContactInfoLink(type: string, value: string) {
+    switch(type) {
+        case "web":
+            return value;
+        case "twitter":
+            return `https://x.com/${value}`;
+        case "bluesky":
+            return `https://bsky.app/profile/${value}`;
+        case "facebook":
+            return `https://www.facebook.com/${value}`;
+        case "linkedin":
+            return `https://www.linkedin.com/in/${value}`;
+        case "mastodon":
+            return value;
+        case "github":
+            return `https://github.com/${value}`;
+        case "youtube":
+            return `https://www.youtube.com/@${value}`;
+        case "reddit":
+            return `https://reddit.com/u/${value}`;
+    }
 }
 </script>
 
 <style lang="scss" scoped>
+.attendee-deactivated {
+    @apply my-10 md:my-20 max-w-xl mx-auto;
+}
 .attendee-detail {
-    display: grid;
-    grid-template-columns: 350px 1fr;
-    gap: 15px;
+    @apply grid grid-cols-[2fr_3fr] gap-4 my-8;
+
+    & > div {
+        @apply flex flex-col gap-4;
+    }
+
+    & .avatar-and-name {
+        @apply flex flex-col gap-2;
+
+        & .name {
+            @apply line-clamp-1 text-center mt-2 font-bold;
+        }
+    }
 }
-.attendee-detail > div {
+.connect-dialog {
+    & .loading {
+        @apply w-full flex justify-center py-10;
+    }
+    & .error {
+        @apply mt-2 text-sm text-red-400;
+    }
+}
+/*
+.avatar-and-name {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-}
-.details {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    overflow: hidden;
+    gap: 20px;
 
     & .avatar {
         margin: 0 auto;
     }
     & .name {
-        font-size: 1.15rem;
         text-align: center;
         overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        & span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            &:nth-child(1) {
+                font-size: 1.15rem;
+            }
+            &:nth-child(2) {
+                color: rgb(var(--color-base-400));
+            }
+        }
     }
-    & .job-info {
+}
+.details {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow: hidden;
+
+    & .info-item {
         display: flex;
         flex-direction: column;
         gap: 5px;
@@ -222,14 +413,45 @@ function sendConnectRequest() {
             color: rgb(var(--color-base-400));
         }
     }
-    & .actions {
-        flex-grow: 1;
-        display: flex;
-        align-items: flex-end;
-        gap: 5px;
+}
+.description {
+    line-height: 1.5rem;
+}
+.actions {
+    display: flex;
+    gap: 5px;
 
-        & button, & .button {
-            flex-grow: 1;
+    & button, & .button {
+        flex-grow: 1;
+    }
+}
+.contact-infos {
+    display: flex;
+    flex-direction: column;
+
+    & .item {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 10px;
+        align-items: center;
+        padding: 10px;
+
+        &:not(:last-of-type) {
+            border-bottom: 1px solid rgb(var(--color-base-200));
+        }
+
+        & > *[class^="ri-"] {
+            font-size: 22px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 100px;
+            background: rgb(var(--color-primary-500));
+            color: rgb(var(--color-primary-50));
+        }
+        & > span:nth-child(2) {
         }
     }
 }
@@ -256,5 +478,5 @@ function sendConnectRequest() {
         padding: 50px 0;
         height: 100%;
     }
-}
+} */
 </style>

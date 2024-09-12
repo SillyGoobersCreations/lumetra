@@ -28,7 +28,7 @@ class AttendeeController extends Controller
         $user = Auth::user();
         $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->first();
         $event = Event::findOrFail($eventId);
-        $attendee = Attendee::where(['id' => $attendeeId, 'active' => true])->with(['event', 'contact_infos'])->firstOrFail();
+        $attendee = Attendee::where(['id' => $attendeeId])->with(['event', 'contact_infos'])->firstOrFail();
         $attendeeConnection = AttendeeConnection::checkConnection($userAttendee->id, $attendee->id)->first();
 
         return Inertia::render('Attendee/Detail', [
@@ -112,13 +112,5 @@ class AttendeeController extends Controller
         // TODO: Notification to inviter_attendee_id
 
         return Redirect::route('events.attendees.detail', ['eventId' => $eventId, 'attendeeId' => $request->inviter_attendee_id]);
-    }
-
-    public function showSettings(string $eventId): Response {
-        // TODO: Show attendee profile settings and general user settings
-    }
-
-    public function doSaveSettings(string $eventId): RedirectResponse {
-        // TODO: Save attendee profile settings and general user settings
     }
 }

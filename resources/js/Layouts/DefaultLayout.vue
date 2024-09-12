@@ -6,16 +6,18 @@
             <slot />
         </main>
     </Wrapper>
+
+    <Toaster />
 </template>
 
 <script setup lang="ts">
-import DefaultNavigationBar from "@/Components/Default/DefaultNavigationBar.vue";
-import Wrapper from "@/Components/Common/Wrapper.vue";
+import DefaultNavigationBar from "@/components/Default/DefaultNavigationBar.vue";
+import Wrapper from "@/components/Common/Wrapper.vue";
+import Toaster from '@/components/ui/toast/Toaster.vue';
 </script>
 
 <style lang="scss" scoped>
 main {
-    display: flex;
-    flex-direction: column;
+    @apply flex flex-col mb-12;
 }
 </style>

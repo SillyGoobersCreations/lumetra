@@ -1,14 +1,16 @@
 <template>
     <DefaultLayout>
-        <Box>
-            <h2>Index</h2>
-        </Box>
+        <Card>
+            <CardContent class="pt-6">
+                Index
+            </CardContent>
+        </Card>
     </DefaultLayout>
 </template>
 
 <script setup lang="ts">
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
-import Box from "@/Components/Common/Box.vue";
+import {Card, CardContent} from "@/components/ui/card";
 </script>
 
 <style lang="scss" scoped>
