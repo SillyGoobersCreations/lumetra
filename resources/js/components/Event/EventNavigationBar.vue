@@ -2,7 +2,7 @@
     <NavigationBar>
         <template #branding>
             <div v-if="event.logo" class="logo">
-                <img :src="event.logo" :alt="`${event.title} logo`" />
+                <img :src="`/storage/logos/${event.logo}`" :alt="`${event.title} logo`" />
             </div>
             <div v-else>
                 {{ event.title }}

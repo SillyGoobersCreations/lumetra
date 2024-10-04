@@ -1,7 +1,7 @@
 <template>
     <Card class="card">
         <CardHeader>
-            <img v-if="event.logo" class="logo" :src="event.logo" :alt="`${event.title} Logo`" />
+            <img v-if="event.logo" class="logo" :src="`/storage/logos/${event.logo}`" :alt="`${event.title} Logo`" />
             <CardTitle>{{ event.title }}</CardTitle>
             <CardDescription>Organized by: {{ event.organizer }}</CardDescription>
         </CardHeader>

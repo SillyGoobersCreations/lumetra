@@ -27,11 +27,14 @@
                     <span>Notes</span>
                 </Button>
                 <Button
-                    variant="ghost"
+                    :variant="$page.url.endsWith('/eventSettings') ? 'secondary' : 'ghost'"
                     class="justify-start"
+                    as-child
                 >
-                    <i class="ri-calendar-event-line mr-2 text-lg"></i>
-                    <span>Event</span>
+                    <Link :href="route('events.admin.eventSettings', {eventId: event.id })">
+                        <i class="ri-calendar-event-line mr-2 text-lg"></i>
+                        <span>Event Settings</span>
+                    </Link>
                 </Button>
                 <Button
                     variant="ghost"
@@ -56,6 +59,8 @@
             <header>
                 <h4>{{ title }}</h4>
 
+                <slot name="header" />
+
                 <Button
                     variant="secondary"
                     as-child
@@ -74,6 +79,8 @@
             </section>
         </main>
     </section>
+
+    <Toaster />
 </template>
 
 <script setup lang="ts">
@@ -85,6 +92,7 @@ import {Link} from "@inertiajs/vue3";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import ThemeSwitcher from "@/components/Common/ThemeSwitcher.vue";
+import Toaster from "../components/ui/toast/Toaster.vue";
 
 defineProps({
     title: {
