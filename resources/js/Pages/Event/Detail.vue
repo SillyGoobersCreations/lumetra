@@ -111,14 +111,14 @@
                         <p class="text-muted-foreground mt-2" v-else>This event does not require a confirmation key.</p>
                     </CardContent>
                     <CardFooter>
-                        <Button class="w-full" as-child>
+                        <Button class="w-full" disabled v-if="!canJoin">
+                            This event is full
+                        </Button>
+                        <Button class="w-full" as-child v-else>
                             <Link :href="route('events.detail.enroll', { eventId: event.id })">
                                 Join Event
                             </Link>
                         </Button>
-                        <!-- <Button class="w-full" disabled>
-                            This event is full
-                        </Button> -->
                     </CardFooter>
                 </Card>
             </div>
@@ -135,12 +135,15 @@ import EventOverviewProperties from "@/components/Event/EventOverview/EventOverv
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
-import NavigationBarItem from "@/components/Common/NavigationBarItem.vue";
 
 defineProps({
     event: {
         type: Object,
         required: true,
+    },
+    canJoin: {
+        type: Boolean,
+        default: true,
     },
     userAttendee: {
         type: [Object, Boolean],

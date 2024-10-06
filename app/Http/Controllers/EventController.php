@@ -22,24 +22,29 @@ class EventController extends Controller
 
     public function showDetail(string $eventId): Response {
         $event = Event::findOrFail($eventId);
+
         if(Auth::user()) {
             $userAttendee = Attendee::where(['event_id' => $eventId, 'user_id' => Auth::user()->id, 'active' => true])->first();
         }
 
+        $confirmedAttendeesCount = Attendee::where(['event_id' => $eventId, 'confirmed' => true])->count();
+        $canJoin = $event->attendees_max == null || $confirmedAttendeesCount < $event->attendees_max;
+
         return Inertia::render('Event/Detail', [
             'event' => $event,
+            'canJoin' => $canJoin,
             'userAttendee' => $userAttendee ?? false,
         ]);
     }
 
     public function showAgenda(string $eventId): Response {
-        // TODO: Show all confirmed room invites
-        return Inertia::render('Event/Agenda');
-    }
+        $event = Event::findOrFail($eventId);
 
-    public function showNotes(string $eventId): Response {
-        // TODO: Show all notes from the event organizers
-        return Inertia::render('Event/Notes');
+        // TODO: Show all confirmed room invites
+
+        return Inertia::render('Event/Agenda', [
+            'event' => $event,
+        ]);
     }
 
     public function showNotifications(string $eventId): Response {

@@ -12,7 +12,6 @@ class SaveSettingsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // TODO: Permission Check
         return true;
     }
 

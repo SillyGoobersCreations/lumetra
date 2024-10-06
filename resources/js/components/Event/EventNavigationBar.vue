@@ -1,12 +1,14 @@
 <template>
     <NavigationBar>
         <template #branding>
-            <div v-if="event.logo" class="logo">
-                <img :src="`/storage/logos/${event.logo}`" :alt="`${event.title} logo`" />
-            </div>
-            <div v-else>
-                {{ event.title }}
-            </div>
+            <Link :href="route('events.detail', { eventId: event.id })">
+                <div v-if="event.logo" class="logo">
+                    <img :src="`/storage/logos/${event.logo}`" :alt="`${event.title} logo`" />
+                </div>
+                <div v-else>
+                    {{ event.title }}
+                </div>
+            </Link>
         </template>
         <template #main>
             <NavigationBarItem

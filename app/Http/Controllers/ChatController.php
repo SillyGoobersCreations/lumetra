@@ -82,7 +82,6 @@ class ChatController extends Controller
             'eventId' => $eventId,
             'attendeeId' => $attendeeId,
         ]));
-        // TODO: Ignore Room Invites for now
     }
 
     public function doRoomSlotInviteSend(string $eventId, string $attendeeId, string $slotId): Response {

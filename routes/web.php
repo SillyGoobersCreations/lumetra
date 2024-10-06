@@ -13,7 +13,6 @@ Route::get('/', [IndexController::class, 'showIndex'])->name('index');
 // EVENTS
 Route::get('/events', [EventController::class, 'showOverview'])->name('events.index');
 Route::get('/events/{eventId}', [EventController::class, 'showDetail'])->name('events.detail');
-Route::get('/events/{eventId}/notes', [EventController::class, 'showNotes'])->name('events.detail.notes');
 
 Route::middleware('auth')->group(function () {
     Route::get('/events/{eventId}/agenda', [EventController::class, 'showAgenda'])->name('events.detail.agenda');
@@ -53,12 +52,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/events/{eventId}/chats/{attendeeId}/sendMessage', [ChatController::class, 'doSendMessage'])->name('events.chats.sendMessage');
     Route::post('/events/{eventId}/chats/{attendeeId}/roomSlotInvite/{slotId}/send', [ChatController::class, 'doRoomSlotInviteSend'])->name('events.chats.roomSlotInvite.send');
     Route::post('/events/{eventId}/chats/{attendeeId}/roomSlotInvite/{inviteId}/answer', [ChatController::class, 'doRoomSlotInviteAnswer'])->name('events.chats.roomSlotInvite.answer');
-});
-
-// ROOMS
-Route::middleware('auth')->group(function () {
-    Route::get('/events/{eventId}/rooms', [RoomController::class, 'showOverview'])->name('events.rooms.index');
-    Route::get('/events/{eventId}/rooms/{roomId}', [RoomController::class, 'showDetail'])->name('events.rooms.detail');
 });
 
 // AUTH
