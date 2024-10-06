@@ -22,9 +22,12 @@
                 <Button
                     variant="ghost"
                     class="justify-start"
+                    as-child
                 >
-                    <i class="ri-sticky-note-line mr-2 text-lg"></i>
-                    <span>Notes</span>
+                    <Link :href="route('events.admin.notes', {eventId: event.id })">
+                        <i class="ri-sticky-note-line mr-2 text-lg"></i>
+                        <span>Notes</span>
+                    </Link>
                 </Button>
                 <Button
                     :variant="$page.url.includes('eventSettings') ? 'secondary' : 'ghost'"

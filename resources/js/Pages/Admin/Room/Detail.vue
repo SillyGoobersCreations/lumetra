@@ -108,10 +108,4 @@ defineProps({
         @apply max-w-3xl w-full;
     }
 }
-
-@media screen and (max-width: 1400px) {
-    .page-rooms-detail {
-        @apply grid-cols-1;
-    }
-}
 </style>
