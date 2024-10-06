@@ -3,16 +3,13 @@
         v-model:open="dialogOpen"
     >
         <DialogTrigger as-child>
-            <Button>
-                <i class="ri-add-line text-lg mr-2"></i>
-                <span>Create new</span>
-            </Button>
+            <slot />
         </DialogTrigger>
         <DialogContent>
             <DialogHeader>
-                <DialogTitle>Create new room</DialogTitle>
+                <DialogTitle>Update {{ room.name }}</DialogTitle>
             </DialogHeader>
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-4 mb-4">
                 <FormRow label="Name" :error="form.errors.name">
                     <Input placeholder="eg. Room #1 - Table #2" v-model="form.name" />
                 </FormRow>
@@ -26,9 +23,31 @@
                     <Switch :checked="form.available" @update:checked="(val) => { form.available = val; }" />
                 </FormRow>
             </div>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Danger Zone</CardTitle>
+                    <CardDescription>Deleting this room will also remove all slots and slot claims.</CardDescription>
+                </CardHeader>
+                <CardFooter>
+                    <Button
+                        as-child
+                        variant="destructive"
+                    >
+                        <Link
+                            :href="route('events.admin.rooms.delete', {
+                                eventId: event.id,
+                                roomId: room.id,
+                            })"
+                        >
+                            <span>Delete</span>
+                        </Link>
+                    </Button>
+                </CardFooter>
+            </Card>
             <DialogFooter>
                 <Button @click="sendForm">
-                    <span>Create</span>
+                    <span>Update</span>
                 </Button>
             </DialogFooter>
         </DialogContent>
@@ -42,10 +61,12 @@ import {ref} from "vue";
 import FormRow from "@/components/Common/FormRow.vue";
 import {Input} from "@/components/ui/input";
 import {Switch} from "@/components/ui/switch";
-import {useForm} from "@inertiajs/vue3";
+import {Link, useForm} from "@inertiajs/vue3";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {toast} from "@/components/ui/toast";
+import {EventRoom} from "@/types/models/EventRoom";
+import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 
 const dialogOpen = ref(false);
 
@@ -54,18 +75,23 @@ const props = defineProps({
         type: Object as PropType<Event>,
         required: true,
     },
+    room: {
+        type: Object as PropType<EventRoom>,
+        required: true,
+    },
 });
 
 const form = useForm({
-    name: '',
-    location: '',
-    notes: '',
-    available: false,
+    name: props.room?.name,
+    location: props.room?.location,
+    notes: props.room?.notes,
+    available: props.room?.available,
 });
 
 function sendForm() {
-    form.post(route('events.admin.rooms.create', {
+    form.post(route('events.admin.rooms.update', {
         eventId: props.event.id,
+        roomId: props.room.id,
     }), {
         onSuccess: () => {
             dialogOpen.value = false;

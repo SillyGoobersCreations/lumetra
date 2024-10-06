@@ -20,6 +20,7 @@ Route::middleware(['auth', AdminAccess::class])->group(function () {
 
     Route::get('/events/{eventId}/admin/rooms', [RoomController::class, 'showIndex'])->name('events.admin.rooms');
     Route::post('/events/{eventId}/admin/rooms/create', [RoomController::class, 'doCreate'])->name('events.admin.rooms.create');
-    Route::post('/events/{eventId}/admin/rooms/update/{roomId}', [RoomController::class, 'doUpdate'])->name('events.admin.rooms.update');
-    Route::get('/events/{eventId}/admin/rooms/delete/{roomId}', [RoomController::class, 'doDelete'])->name('events.admin.rooms.delete');
+    Route::post('/events/{eventId}/admin/rooms/{roomId}/update', [RoomController::class, 'doUpdate'])->name('events.admin.rooms.update');
+    Route::get('/events/{eventId}/admin/rooms/{roomId}/delete', [RoomController::class, 'doDelete'])->name('events.admin.rooms.delete');
+    Route::get('/events/{eventId}/admin/rooms/{roomId}', [RoomController::class, 'showDetail'])->name('events.admin.rooms.detail');
 });

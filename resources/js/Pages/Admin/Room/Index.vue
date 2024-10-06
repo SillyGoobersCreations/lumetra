@@ -25,8 +25,14 @@
                             <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger as-child>
-                                        <Button variant="secondary" size="icon">
-                                            <i class="ri-calendar-view text-lg"></i>
+                                        <Button
+                                            as-child
+                                            variant="secondary"
+                                            size="icon"
+                                        >
+                                            <Link :href="route('events.admin.rooms.detail', {eventId: event.id, roomId: room.id })">
+                                                <i class="ri-calendar-view text-lg"></i>
+                                            </Link>
                                         </Button>
                                     </TooltipTrigger>
                                     <TooltipContent>
@@ -34,18 +40,11 @@
                                     </TooltipContent>
                                 </Tooltip>
                             </TooltipProvider>
-                            <TooltipProvider>
-                                <Tooltip>
-                                    <TooltipTrigger as-child>
-                                        <Button variant="secondary" size="icon">
-                                            <i class="ri-pencil-line text-lg"></i>
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <p>Edit / Delete</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
+                            <EditDialog :room="room" :event="event">
+                                <Button variant="secondary" size="icon">
+                                    <i class="ri-pencil-line text-lg"></i>
+                                </Button>
+                            </EditDialog>
                         </div>
                     </div>
                 </CardContent>
@@ -63,6 +62,9 @@ import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
 import AddDialog from "@/components/Admin/Rooms/AddDialog.vue";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+import EditDialog from "@/components/Admin/Rooms/EditDialog.vue";
+import {Link} from "@inertiajs/vue3";
+import {DialogTrigger} from "@/components/ui/dialog";
 
 defineProps({
     event: {
