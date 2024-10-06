@@ -54,16 +54,16 @@
                         <FormRow label="ID" variant="wide">
                             <div class="text-muted-foreground">{{ event.id }}</div>
                         </FormRow>
-                        <FormRow label="Title" variant="wide">
+                        <FormRow label="Title" variant="wide" :error="form.errors.title">
                             <Input v-model="form.title" />
                         </FormRow>
-                        <FormRow label="Description" variant="wide">
+                        <FormRow label="Description" variant="wide" :error="form.errors.description">
                             <Textarea v-model="form.description" />
                         </FormRow>
-                        <FormRow label="Organizer" variant="wide">
+                        <FormRow label="Organizer" variant="wide" :error="form.errors.organizer">
                             <Input v-model="form.organizer" />
                         </FormRow>
-                        <FormRow label="Start Date" variant="wide">
+                        <FormRow label="Start Date" variant="wide" :error="form.errors.start_date">
                             <Popover>
                                 <PopoverTrigger as-child>
                                     <Button
@@ -81,7 +81,7 @@
                                 </PopoverContent>
                             </Popover>
                         </FormRow>
-                        <FormRow label="End Date" variant="wide">
+                        <FormRow label="End Date" variant="wide" :error="form.errors.end_date">
                             <Popover>
                                 <PopoverTrigger as-child>
                                     <Button
@@ -99,7 +99,7 @@
                                 </PopoverContent>
                             </Popover>
                         </FormRow>
-                        <FormRow label="Maximum amount of attendees" variant="wide">
+                        <FormRow label="Maximum amount of attendees" variant="wide" :error="form.errors.attendees_max">
                             <Input type="number" v-model="form.attendees_max" />
                         </FormRow>
                     </CardContent>
