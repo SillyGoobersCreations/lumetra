@@ -74,14 +74,14 @@
                         </Message>
                     </CardContent>
                     <CardFooter class="flex gap-2">
-                        <!-- TODO Tara: This needs a text input and a button to submit. Pressing enter in the text input should also submit -->
+
                         <!-- TODO Tara: The submit needs useForm to send to route('events.chats.sendMessage') and onFinish clear the text -->
                         <MeetDialog
                             :event="event"
                             :selectedConnection="selectedConnection"
                         />
-                        <Input placeholder="Message..." />
-                        <Button>
+                        <Input placeholder="Message..." v-model="messageForm.message" @keyup.enter="sendChat"/>
+                        <Button @click="sendChat">
                             <span>Send</span>
                         </Button>
                     </CardFooter>
@@ -92,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import {Link, usePage} from '@inertiajs/vue3';
+import {Link, useForm, usePage} from '@inertiajs/vue3';
 import EventLayout from "@/Layouts/EventLayout.vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
@@ -155,6 +155,21 @@ const attendee = computed(() => {
     }
 });
 
+const messageForm = useForm({
+    message: '',
+});
+
+async function sendChat() {
+    messageForm.post(route('events.chats.sendMessage', {
+        eventId: props.event.id,
+        attendeeId: attendee.value.id,
+    }), {
+        onSuccess: () => {
+            messageForm.reset('message');
+            updateChat();
+        },
+    });
+}
 /* TODO Tara: Form to Send to 'events.chats.sendMessage' */
 /* TODO Tara: Function to send the form and clear the input */
 

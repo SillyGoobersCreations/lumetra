@@ -78,6 +78,6 @@ function sendConnectRequest() {
             connectRequestForm.reset('intro_text');
             dialogOpen.value = false;
         },
-    })
+    });
 }
 </script>
