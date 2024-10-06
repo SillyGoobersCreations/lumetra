@@ -7,7 +7,6 @@ use App\Models\Attendee;
 use App\Models\Event;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -29,7 +28,7 @@ class AttendeeController extends Controller
         $attendee->confirmed = true;
         $attendee->save();
 
-        return Redirect::route('events.admin.attendees', ['eventId' => $eventId]);
+        return redirect(route('events.admin.attendees', ['eventId' => $eventId]));
     }
 
     public function doRevokeConfirmation(string $eventId, string $attendeeId): RedirectResponse {
@@ -38,6 +37,24 @@ class AttendeeController extends Controller
         $attendee->confirmed = false;
         $attendee->save();
 
-        return Redirect::route('events.admin.attendees', ['eventId' => $eventId]);
+        return redirect(route('events.admin.attendees', ['eventId' => $eventId]));
+    }
+
+    public function doMakeOrganizer(string $eventId, string $attendeeId): RedirectResponse {
+        $attendee = Attendee::where(['id' => $attendeeId, 'event_id' => $eventId])->firstOrFail();
+
+        $attendee->role = 'organizer';
+        $attendee->save();
+
+        return redirect(route('events.admin.attendees', ['eventId' => $eventId]));
+    }
+
+    public function doRemoveOrganizer(string $eventId, string $attendeeId): RedirectResponse {
+        $attendee = Attendee::where(['id' => $attendeeId, 'event_id' => $eventId])->firstOrFail();
+
+        $attendee->role = 'attendee';
+        $attendee->save();
+
+        return redirect(route('events.admin.attendees', ['eventId' => $eventId]));
     }
 }

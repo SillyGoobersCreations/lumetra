@@ -20,7 +20,52 @@
         </template>
 
         <section class="page-rooms-detail">
-            {{ room.slots }}
+            <Card
+                v-for="(slots, date) in groupedSlots"
+                :key="date"
+            >
+                <CardHeader>
+                    <CardTitle>{{ date }}</CardTitle>
+                    <CardDescription class="flex gap-1">
+                        <Badge variant="secondary">{{ slots.length }} Slots</Badge>
+                        <Badge variant="secondary">{{ slots.length }} Claims</Badge>
+                        <Badge variant="default">{{ slots.length }} Pending</Badge>
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <template v-if="slots.length === 0">
+                        <Card>
+                            <CardContent class="p-3 py-6 flex flex-col gap-1 items-center">
+                                <i class="ri-calendar-close-line text-4xl mb-2"></i>
+                                <h1>No slot setup yet</h1>
+                                <p class="text-muted-foreground">You have not set up any room slots yet.</p>
+                            </CardContent>
+                        </Card>
+                    </template>
+                    <div class="flex flex-col gap-1" v-else>
+                        <template
+                            v-for="slot in slots"
+                            :key="slot"
+                        >
+                            <EventRoomSlot :slot="slot" :room="room" :event="event" />
+                        </template>
+                    </div>
+                </CardContent>
+                <CardFooter class="justify-end flex gap-2">
+                    <SetupSlotsDialog
+                        v-if="slots.length === 0"
+                        :room="room"
+                        :event="event"
+                        :date="date"
+                    >
+                        <Button variant="secondary">Set up slots now</Button>
+                    </SetupSlotsDialog>
+
+                    <CreateSlotDialog v-else :room="room" :event="event">
+                        <Button variant="secondary">Create slot</Button>
+                    </CreateSlotDialog>
+                </CardFooter>
+            </Card>
         </section>
     </AdminLayout>
 </template>
@@ -33,7 +78,11 @@ import AdminLayout from "@/Layouts/AdminLayout.vue";
 import {Button} from "@/components/ui/button";
 import {Link} from "@inertiajs/vue3";
 import EditDialog from "@/components/Admin/Rooms/EditDialog.vue";
-import {DialogTrigger} from "@/components/ui/dialog";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Badge} from "@/components/ui/badge";
+import SetupSlotsDialog from "@/components/Admin/Rooms/SetupSlotsDialog.vue";
+import EventRoomSlot from "@/components/Admin/Rooms/EventRoomSlot.vue";
+import CreateSlotDialog from "@/components/Admin/Rooms/CreateSlotDialog.vue";
 
 defineProps({
     event: {
@@ -44,12 +93,20 @@ defineProps({
         type: Object as PropType<EventRoom>,
         required: true,
     },
+    groupedSlots: {
+        type: Object,
+        required: true,
+    },
 });
 </script>
 
 <style lang="scss" scoped>
 .page-rooms-detail {
-    @apply grid grid-cols-[2fr_2fr] gap-4 p-5;
+    @apply flex flex-col gap-4 p-5 items-center;
+
+    & > * {
+        @apply max-w-3xl w-full;
+    }
 }
 
 @media screen and (max-width: 1400px) {

@@ -12,6 +12,8 @@ Route::middleware(['auth', AdminAccess::class])->group(function () {
     Route::get('/events/{eventId}/admin/attendees', [AttendeeController::class, 'showOverview'])->name('events.admin.attendees');
     Route::get('/events/{eventId}/admin/attendees/{attendeeId}/confirmation/confirm', [AttendeeController::class, 'doConfirmConfirmation'])->name('events.admin.attendees.confirmation.confirm');
     Route::get('/events/{eventId}/admin/attendees/{attendeeId}/confirmation/revoke', [AttendeeController::class, 'doRevokeConfirmation'])->name('events.admin.attendees.confirmation.revoke');
+    Route::get('/events/{eventId}/admin/attendees/{attendeeId}/organizer/make', [AttendeeController::class, 'doMakeOrganizer'])->name('events.admin.attendees.organizer.make');
+    Route::get('/events/{eventId}/admin/attendees/{attendeeId}/organizer/remove', [AttendeeController::class, 'doRemoveOrganizer'])->name('events.admin.attendees.organizer.remove');
 
     Route::get('/events/{eventId}/admin/eventSettings', [EventSettingsController::class, 'showIndex'])->name('events.admin.eventSettings');
     Route::post('/events/{eventId}/admin/eventSettings', [EventSettingsController::class, 'doSave'])->name('events.admin.eventSettings.doSave');
@@ -23,4 +25,8 @@ Route::middleware(['auth', AdminAccess::class])->group(function () {
     Route::post('/events/{eventId}/admin/rooms/{roomId}/update', [RoomController::class, 'doUpdate'])->name('events.admin.rooms.update');
     Route::get('/events/{eventId}/admin/rooms/{roomId}/delete', [RoomController::class, 'doDelete'])->name('events.admin.rooms.delete');
     Route::get('/events/{eventId}/admin/rooms/{roomId}', [RoomController::class, 'showDetail'])->name('events.admin.rooms.detail');
+    Route::post('/events/{eventId}/admin/rooms/{roomId}/slots/setup', [RoomController::class, 'doSetupSlots'])->name('events.admin.rooms.slots.setup');
+    Route::get('/events/{eventId}/admin/rooms/{roomId}/slots/{slotId}/delete', [RoomController::class, 'doDeleteSlot'])->name('events.admin.rooms.slots.delete');
+    Route::get('/events/{eventId}/admin/rooms/{roomId}/slots/{slotId}/changeState/{state}', [RoomController::class, 'doChangeStateSlot'])->name('events.admin.rooms.slots.changeState');
+    Route::post('/events/{eventId}/admin/rooms/{roomId}/slots/create', [RoomController::class, 'doCreateSlot'])->name('events.admin.rooms.slots.create');
 });
