@@ -75,7 +75,6 @@
                     </CardContent>
                     <CardFooter class="flex gap-2">
 
-                        <!-- TODO Tara: The submit needs useForm to send to route('events.chats.sendMessage') and onFinish clear the text -->
                         <MeetDialog
                             :event="event"
                             :selectedConnection="selectedConnection"
@@ -170,8 +169,6 @@ async function sendChat() {
         },
     });
 }
-/* TODO Tara: Form to Send to 'events.chats.sendMessage' */
-/* TODO Tara: Function to send the form and clear the input */
 
 async function updateChat() {
     const url = route('events.chats.receive', {
