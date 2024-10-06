@@ -27,7 +27,7 @@
                     <span>Notes</span>
                 </Button>
                 <Button
-                    :variant="$page.url.endsWith('/eventSettings') ? 'secondary' : 'ghost'"
+                    :variant="$page.url.includes('eventSettings') ? 'secondary' : 'ghost'"
                     class="justify-start"
                     as-child
                 >
@@ -37,11 +37,14 @@
                     </Link>
                 </Button>
                 <Button
-                    variant="ghost"
+                    :variant="$page.url.includes('rooms') ? 'secondary' : 'ghost'"
                     class="justify-start"
+                    as-child
                 >
-                    <i class="ri-group-2-line mr-2 text-lg"></i>
-                    <span>Rooms</span>
+                    <Link :href="route('events.admin.rooms', {eventId: event.id })">
+                        <i class="ri-group-2-line mr-2 text-lg"></i>
+                        <span>Rooms</span>
+                    </Link>
                 </Button>
                 <Button
                     :variant="$page.url.includes('attendees') ? 'secondary' : 'ghost'"
