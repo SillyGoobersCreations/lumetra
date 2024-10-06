@@ -144,4 +144,45 @@ defineProps({
         }
     }
 }
+
+@media screen and (max-width: 1000px) {
+    .layout-admin {
+        @apply grid grid-cols-[300px_1fr] min-h-[100dvh];
+
+        & aside {
+            @apply border-r flex flex-col;
+
+            & .logo {
+                @apply p-4 h-[60px] flex items-center;
+
+                & img {
+                    @apply h-5;
+                }
+            }
+
+            & nav {
+                @apply border-b p-2 flex flex-col gap-1;
+            }
+        }
+        & main {
+            @apply flex flex-col;
+
+            & header {
+                @apply p-4 h-[60px] flex items-center w-full gap-2;
+
+                & h4 {
+                    @apply text-xl font-semibold tracking-tight block grow;
+                }
+            }
+
+            & .content {
+                @apply flex flex-col;
+            }
+        }
+
+        @media screen and (max-width: 1000px) {
+            @apply grid-cols-[200px_1fr];
+        }
+    }
+}
 </style>

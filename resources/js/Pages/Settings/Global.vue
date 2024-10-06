@@ -84,13 +84,9 @@ const form = useForm({
 function submit () {
     form.post(route('settings.global'), {
         onSuccess: () => {
-            let snackbarItem: SnackbarItem = {
-                type: TYPE_SUCCESSFUL,
-                message: "Successfully saved.",
-                autohide: true,
-            };
-
-            emitter.emit('snackbar:addItem', snackbarItem);
+            toast({
+                title: "Successfully saved."
+            });
         },
         onError: () => {
             toast({

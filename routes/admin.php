@@ -19,4 +19,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/events/{eventId}/admin/eventSettings/clearLogo', [EventSettingsController::class, 'doClearLogo'])->name('events.admin.eventSettings.doClearLogo');
 
     Route::get('/events/{eventId}/admin/rooms', [RoomController::class, 'showIndex'])->name('events.admin.rooms');
+    Route::post('/events/{eventId}/admin/rooms/create', [RoomController::class, 'doCreate'])->name('events.admin.rooms.create');
 });

@@ -1,18 +1,52 @@
 <template>
     <AdminLayout title="Rooms" :event="event">
+        <template #header>
+            <AddDialog :event="event" />
+        </template>
+
         <section class="page-rooms">
             <Card
                 class="room-card"
                 v-for="room in event.rooms"
             >
                 <CardContent class="content">
-                    <h1>{{ room.name }}</h1>
-                    <p>{{ room.location }}</p>
-                    <div class="meta">
-                        <Badge v-if="room.available">Available</Badge>
-                        <Badge v-else variant="destructive">Not Available</Badge>
+                    <div class="flex gap-2 items-start">
+                        <div class="grow flex flex-col gap-1">
+                            <h1>{{ room.name }}</h1>
+                            <p class="text-muted-foreground">{{ room.location }}</p>
+                            <div class="meta">
+                                <Badge v-if="room.available">Available</Badge>
+                                <Badge v-else variant="destructive">Not Available</Badge>
 
-                        <Badge variant="outline">0 Slots</Badge>
+                                <Badge variant="outline">0 Slots</Badge>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 items-center">
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger as-child>
+                                        <Button variant="secondary" size="icon">
+                                            <i class="ri-calendar-view text-lg"></i>
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>View slots</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger as-child>
+                                        <Button variant="secondary" size="icon">
+                                            <i class="ri-pencil-line text-lg"></i>
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Edit / Delete</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </div>
                     </div>
                 </CardContent>
             </Card>
@@ -22,10 +56,13 @@
 
 <script setup lang="ts">
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {Badge} from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
+import AddDialog from "@/components/Admin/Rooms/AddDialog.vue";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 
 defineProps({
     event: {
@@ -50,6 +87,17 @@ defineProps({
                 @apply mt-2 flex gap-1 flex-wrap;
             }
         }
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    .page-rooms {
+        @apply grid-cols-2;
+    }
+}
+@media screen and (max-width: 1000px) {
+    .page-rooms {
+        @apply grid-cols-1;
     }
 }
 </style>
