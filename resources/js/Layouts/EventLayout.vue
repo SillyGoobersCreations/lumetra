@@ -1,4 +1,21 @@
 <template>
+    <template
+        v-for="stickyNote in event.notes"
+        :key="stickyNote.id"
+    >
+        <div
+            v-if="stickyNote.sticky"
+            class="bg-red-800 py-1 border-red-950 border-b-[1px]"
+        >
+            <Wrapper>
+                <div class="flex gap-4 flex-wrap items-center">
+                    <div class="font-bold text-white">{{ stickyNote.title }}</div>
+                    <div class="text-white text-xs">{{ stickyNote.text }}</div>
+                </div>
+            </Wrapper>
+        </div>
+    </template>
+
     <EventNavigationBar :event="event" />
 
     <Wrapper>

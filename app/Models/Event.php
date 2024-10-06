@@ -84,6 +84,10 @@ class Event extends Model
         'swatch',
     ];
 
+    protected $with = [
+        'notes',
+    ];
+
     public function attendees(): HasMany
     {
         return $this->hasMany(Attendee::class, 'event_id', 'id');
