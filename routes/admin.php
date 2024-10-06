@@ -4,9 +4,10 @@ use App\Http\Controllers\Admin\AttendeeController;
 use App\Http\Controllers\Admin\EventSettingsController;
 use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Admin\RoomController;
+use App\Http\Middleware\AdminAccess;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', AdminAccess::class])->group(function () {
     // TODO: Permission Check
     Route::get('/events/{eventId}/admin', [IndexController::class, 'showIndex'])->name('events.admin');
     Route::get('/events/{eventId}/admin/attendees', [AttendeeController::class, 'showOverview'])->name('events.admin.attendees');
