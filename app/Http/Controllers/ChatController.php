@@ -63,12 +63,25 @@ class ChatController extends Controller
         );
     }
 
-    public function doSendMessage(string $eventId, string $attendeeId): Response {
+    public function doSendMessage(string $eventId, string $attendeeId, Request $request): RedirectResponse {
         $user = Auth::user();
         $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->first();
 
-        // TODO Tara: Create a new ChatMessage with the values provided, message needs to be get through a Request (example for requests: AttendeeDoConnectRequest)
-        // TODO Tara: Then redirect to the route('events.chats.detail')
+        $data = $request->validate([
+            'message' => ['required']
+        ]);
+
+        $newMessage = ChatMessage::create([
+            'message' => $data['message'],
+            'sender_attendee_id' => $userAttendee->id,
+            'receiver_attendee_id' => $attendeeId,
+        ]);
+
+
+        return redirect(route('events.chats.detail', [
+            'eventId' => $eventId,
+            'attendeeId' => $attendeeId,
+        ]));
         // TODO: Ignore Room Invites for now
     }
 
