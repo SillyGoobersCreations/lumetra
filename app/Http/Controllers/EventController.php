@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendee;
+use App\Models\ChatMessage;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,7 @@ class EventController extends Controller
 
         if(Auth::user()) {
             $userAttendee = Attendee::where(['event_id' => $eventId, 'user_id' => Auth::user()->id, 'active' => true])->first();
+            $lastThreeChats = ChatMessage::where(['sender_attendee_id' => $userAttendee->id])->orWhere(['receiver_attendee_id' => $userAttendee->id])->with(['sender_attendee', 'receiver_attendee'])->orderBy('created_at', 'desc')->take(3)->get();
         }
 
         $confirmedAttendeesCount = Attendee::where(['event_id' => $eventId, 'confirmed' => true])->count();
@@ -33,6 +35,7 @@ class EventController extends Controller
         return Inertia::render('Event/Detail', [
             'event' => $event,
             'canJoin' => $canJoin,
+            'lastThreeChats' => $lastThreeChats ?? [],
             'userAttendee' => $userAttendee ?? false,
         ]);
     }

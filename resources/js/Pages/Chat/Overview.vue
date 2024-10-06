@@ -47,7 +47,7 @@
                         <CardTitle>Chat</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        Select an attendee to start chatting. Find other attendees in the attendee list and send them a connect request to be able to chat and schedule meetups.
+                        <span class="text-muted-foreground">Select an attendee to start chatting. Find other attendees in the attendee list and send them a connect request to be able to chat and schedule meetups.</span>
                     </CardContent>
                 </Card>
             </main>
