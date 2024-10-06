@@ -1,8 +1,8 @@
 <template>
     <Button
         :variant="`${active ? 'default' : 'ghost'}`"
-        :size="label != false ? 'default' : 'icon'"
-        class="justify-start"
+        :size="label !== false ? 'default' : 'icon'"
+        :class="`${label === false ? 'justify-center' : 'justify-start'}`"
         as-child
     >
         <Link :href="href">

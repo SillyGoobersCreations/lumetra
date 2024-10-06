@@ -26,6 +26,9 @@ class DatabaseSeeder extends Seeder
             $this->call(DevSeeder::class);
         }
 
+        Artisan::call('scout:sync-index-settings', [
+            'model' => Attendee::class,
+        ]);
         Artisan::call('scout:import', [
             'model' => Attendee::class,
         ]);

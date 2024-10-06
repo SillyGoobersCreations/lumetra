@@ -36,25 +36,39 @@
                     </CardHeader>
                     <CardContent class="flex flex-col gap-2">
                         <Card
-                            v-for="n in 2"
-                            :key="n"
+                            v-for="chat in lastThreeChats"
+                            :key="chat.id"
                         >
                             <CardContent
-                                class="p-4 px-4 gap-2 grid grid-cols-[1fr_auto] items-center"
+                                class="p-4 px-4 gap-2 grid grid-cols-[auto_1fr_auto] items-center"
                             >
+                                <Avatar class="h-8 w-8 mr-2">
+                                    <AvatarImage :src="`/storage/avatars/${getOtherAttendee(chat).avatar_url}`" alt="@shadcn" />
+                                    <AvatarFallback>{{ getOtherAttendee(chat).name_initials }}</AvatarFallback>
+                                </Avatar>
                                 <div class="flex flex-col gap-1">
-                                    <CardTitle>Username here</CardTitle>
-                                    <CardDescription class="line-clamp-2">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam</CardDescription>
+                                    <CardTitle>{{ getOtherAttendee(chat).name_full }}</CardTitle>
+                                    <CardDescription class="line-clamp-2">{{ chat.message }}</CardDescription>
                                 </div>
-                                <Button>
-                                    Open
+                                <Button
+                                    variant="secondary"
+                                    as-child
+                                >
+                                    <Link :href="route('events.chats.detail', { eventId: event.id, attendeeId: getOtherAttendee(chat).id })">
+                                        Open
+                                    </Link>
                                 </Button>
                             </CardContent>
                         </Card>
                     </CardContent>
                     <CardFooter class="justify-end">
-                        <Button variant="secondary">
-                            Show all chats
+                        <Button
+                            variant="secondary"
+                            as-child
+                        >
+                            <Link :href="route('events.chats.index', { eventId: event.id })">
+                                <span>Show all chats</span>
+                            </Link>
                         </Button>
                     </CardFooter>
                 </Card>
@@ -111,14 +125,14 @@
                         <p class="text-muted-foreground mt-2" v-else>This event does not require a confirmation key.</p>
                     </CardContent>
                     <CardFooter>
-                        <Button class="w-full" as-child>
+                        <Button class="w-full" disabled v-if="!canJoin">
+                            This event is full
+                        </Button>
+                        <Button class="w-full" as-child v-else>
                             <Link :href="route('events.detail.enroll', { eventId: event.id })">
                                 Join Event
                             </Link>
                         </Button>
-                        <!-- <Button class="w-full" disabled>
-                            This event is full
-                        </Button> -->
                     </CardFooter>
                 </Card>
             </div>
@@ -127,7 +141,7 @@
 </template>
 
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import {Link, usePage} from '@inertiajs/vue3';
 import EventLayout from "@/Layouts/EventLayout.vue";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import EventOverviewGeneral from "@/components/Event/EventOverview/EventOverviewGeneral.vue";
@@ -135,18 +149,54 @@ import EventOverviewProperties from "@/components/Event/EventOverview/EventOverv
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
-import NavigationBarItem from "@/components/Common/NavigationBarItem.vue";
+import {PropType} from "@vue/runtime-dom";
+import {ChatMessage} from "@/types/models/ChatMessage";
+import {Event} from "@/types/models/Event";
+import {Attendee} from "@/types/models/Attendee";
+import {computed} from "vue";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 
-defineProps({
+const props = defineProps({
     event: {
-        type: Object,
+        type: Object as PropType<Event>,
         required: true,
     },
+    canJoin: {
+        type: Boolean,
+        default: true,
+    },
+    lastThreeChats: {
+        type: Object as PropType<ChatMessage>,
+        default: () => [],
+    },
     userAttendee: {
-        type: [Object, Boolean],
+        type: [Object as PropType<Attendee>, Boolean],
         default: false,
     }
 });
+
+
+/* Get Current Users Attendee */
+const page = usePage();
+const attendees = computed(() => page.props.auth.attendees);
+const currentAttendee = computed(() => {
+    let foundAttendee = null;
+
+    attendees.value.forEach((attendee) => {
+        if(attendee.event_id === props.event.id) {
+            foundAttendee = attendee;
+        }
+    })
+
+    return foundAttendee;
+});
+function getOtherAttendee(chatMessage) {
+    if(chatMessage.sender_attendee_id === currentAttendee.value.id) {
+        return chatMessage.receiver_attendee;
+    } else {
+        return chatMessage.sender_attendee;
+    }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -22,23 +22,32 @@
                 <Button
                     variant="ghost"
                     class="justify-start"
+                    as-child
                 >
-                    <i class="ri-sticky-note-line mr-2 text-lg"></i>
-                    <span>Notes</span>
+                    <Link :href="route('events.admin.notes', {eventId: event.id })">
+                        <i class="ri-sticky-note-line mr-2 text-lg"></i>
+                        <span>Notes</span>
+                    </Link>
                 </Button>
                 <Button
-                    variant="ghost"
+                    :variant="$page.url.includes('eventSettings') ? 'secondary' : 'ghost'"
                     class="justify-start"
+                    as-child
                 >
-                    <i class="ri-calendar-event-line mr-2 text-lg"></i>
-                    <span>Event</span>
+                    <Link :href="route('events.admin.eventSettings', {eventId: event.id })">
+                        <i class="ri-calendar-event-line mr-2 text-lg"></i>
+                        <span>Event Settings</span>
+                    </Link>
                 </Button>
                 <Button
-                    variant="ghost"
+                    :variant="$page.url.includes('rooms') ? 'secondary' : 'ghost'"
                     class="justify-start"
+                    as-child
                 >
-                    <i class="ri-group-2-line mr-2 text-lg"></i>
-                    <span>Rooms</span>
+                    <Link :href="route('events.admin.rooms', {eventId: event.id })">
+                        <i class="ri-group-2-line mr-2 text-lg"></i>
+                        <span>Rooms</span>
+                    </Link>
                 </Button>
                 <Button
                     :variant="$page.url.includes('attendees') ? 'secondary' : 'ghost'"
@@ -55,6 +64,8 @@
         <main>
             <header>
                 <h4>{{ title }}</h4>
+
+                <slot name="header" />
 
                 <Button
                     variant="secondary"
@@ -74,6 +85,8 @@
             </section>
         </main>
     </section>
+
+    <Toaster />
 </template>
 
 <script setup lang="ts">
@@ -85,6 +98,7 @@ import {Link} from "@inertiajs/vue3";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import ThemeSwitcher from "@/components/Common/ThemeSwitcher.vue";
+import Toaster from "../components/ui/toast/Toaster.vue";
 
 defineProps({
     title: {
@@ -130,6 +144,47 @@ defineProps({
 
         & .content {
             @apply flex flex-col;
+        }
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .layout-admin {
+        @apply grid grid-cols-[300px_1fr] min-h-[100dvh];
+
+        & aside {
+            @apply border-r flex flex-col;
+
+            & .logo {
+                @apply p-4 h-[60px] flex items-center;
+
+                & img {
+                    @apply h-5;
+                }
+            }
+
+            & nav {
+                @apply border-b p-2 flex flex-col gap-1;
+            }
+        }
+        & main {
+            @apply flex flex-col;
+
+            & header {
+                @apply p-4 h-[60px] flex items-center w-full gap-2;
+
+                & h4 {
+                    @apply text-xl font-semibold tracking-tight block grow;
+                }
+            }
+
+            & .content {
+                @apply flex flex-col;
+            }
+        }
+
+        @media screen and (max-width: 1000px) {
+            @apply grid-cols-[200px_1fr];
         }
     }
 }

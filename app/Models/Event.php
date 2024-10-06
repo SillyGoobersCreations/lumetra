@@ -84,6 +84,10 @@ class Event extends Model
         'swatch',
     ];
 
+    protected $with = [
+        'notes',
+    ];
+
     public function attendees(): HasMany
     {
         return $this->hasMany(Attendee::class, 'event_id', 'id');
@@ -115,7 +119,7 @@ class Event extends Model
             $endDate = Carbon::parse($this->end_date);
             $remainingDays = $currentDate->diffInDays($endDate->addDay(), false);
 
-            return max($remainingDays, 0);
+            return max(ceil($remainingDays), 0);
         }
         return null;
     }
