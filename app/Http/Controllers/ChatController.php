@@ -6,8 +6,11 @@ use App\Models\Attendee;
 use App\Models\AttendeeConnection;
 use App\Models\ChatMessage;
 use App\Models\Event;
+use App\Models\EventRoomSlot;
+use App\Models\EventRoomSlotClaim;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -55,7 +58,6 @@ class ChatController extends Controller
     public function getChat(string $eventId, string $attendeeId): JsonResponse {
         $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->first();
 
-
         $chatMessages = ChatMessage::checkConnection($userAttendee->id, $attendeeId)->orderBy("updated_at", "asc")->get();
 
         return response()->json(
@@ -67,6 +69,13 @@ class ChatController extends Controller
         $user = Auth::user();
         $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->first();
 
+        if(AttendeeConnection::checkConnection($userAttendee->id, $attendeeId)->count() == 0) {
+            return redirect(route('events.chats.detail', [
+                'eventId' => $eventId,
+                'attendeeId' => $attendeeId,
+            ]));
+        }
+
         $data = $request->validate([
             'message' => ['required']
         ]);
@@ -77,18 +86,59 @@ class ChatController extends Controller
             'receiver_attendee_id' => $attendeeId,
         ]);
 
-
         return redirect(route('events.chats.detail', [
             'eventId' => $eventId,
             'attendeeId' => $attendeeId,
         ]));
     }
 
-    public function doRoomSlotInviteSend(string $eventId, string $attendeeId, string $slotId): Response {
-        // TODO: Create a room slot invite and send it to the other chat participant
+    public function doRoomSlotInviteSend(string $eventId, string $attendeeId, string $slotId): JsonResponse {
+        $user = Auth::user();
+        $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->first();
+        $eventRoomSlot = EventRoomSlot::findOrFail($slotId);
+
+        if($eventRoomSlot->state != 'open') {
+            return response()->json(['error' => 'Slot cannot be claimed.', 'status' => 403], 403);
+        }
+
+        if(AttendeeConnection::checkConnection($userAttendee->id, $attendeeId)->count() == 0) {
+            return response()->json(['error' => 'The two attendees do not have a connection. Please connect them first.', 'status' => 403], 403);
+        }
+
+        $newSlotClaim = EventRoomSlotClaim::create([
+            'state' => 'pending',
+            'event_room_slot_id' => $eventRoomSlot->id,
+            'inviter_attendee_id' => $userAttendee->id,
+            'invitee_attendee_id' => $attendeeId,
+        ]);
+        $eventRoomSlot->update(['state' => 'claim_open']);
+
+        $newMessage = ChatMessage::create([
+            'message' => $newSlotClaim->load(['slot', 'slot.room'])->toJson(),
+            'sender_attendee_id' => $userAttendee->id,
+            'receiver_attendee_id' => $attendeeId,
+            'is_room_slot_invite' => true,
+        ]);
+
+        return response()->json([], 200);
     }
 
     public function doRoomSlotInviteAnswer(string $eventId, string $attendeeId, string $inviteId): Response {
         // TODO: Accept/Decline the invite and send the response to the other chat participant
+    }
+
+    public function getRooms(string $eventId, string $date): JsonResponse {
+        $dateToCompare = Carbon::parse($date);
+        $startOfDay = $dateToCompare->copy()->startOfDay();
+        $endOfDay = $dateToCompare->copy()->endOfDay();
+
+        // Filter slots to include only those that are on the same day as the given date
+        $event = Event::with(['rooms', 'rooms.slots' => function ($query) use ($startOfDay, $endOfDay) {
+            $query->whereBetween('start_date', [$startOfDay, $endOfDay]);
+        }])->findOrFail($eventId);
+
+        $rooms = $event->rooms;
+
+        return response()->json($rooms);
     }
 }

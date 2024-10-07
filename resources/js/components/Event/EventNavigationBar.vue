@@ -75,7 +75,10 @@
                                 <span>Settings</span>
                             </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem as-child>
+                        <DropdownMenuItem
+                            v-if="user.is_admin || currentAttendee.role === 'organizer'"
+                            as-child
+                        >
                             <Link
                                 :href="route('events.admin', { eventId: currentAttendee.event.id })"
                             >
