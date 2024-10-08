@@ -160,6 +160,6 @@ class Attendee extends Model
 
     public function shouldBeSearchable(): bool
     {
-        return $this['active'] ?? false;
+        return ($this['active'] ?? false) && ($this['confirmed'] ?? false);
     }
 }
