@@ -22,9 +22,9 @@ class SaveDescriptionSettingsEventRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => ['nullable','string'],
-            'job_company' => ['nullable','string'],
-            'job_position' => ['nullable','string'],
+            'description' => ['nullable','string', 'max:2056'],
+            'job_company' => ['nullable','string', 'max:255'],
+            'job_position' => ['nullable','string', 'max:255'],
         ];
     }
 }

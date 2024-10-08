@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveAvatarSettingsEventRequest;
-use App\Http\Requests\SaveConfirmationSettingsEventRequest;
 use App\Http\Requests\SaveDescriptionSettingsEventRequest;
 use App\Http\Requests\SaveNameSettingsEventRequest;
 use App\Http\Requests\SaveSettingsGlobalRequest;
@@ -121,15 +120,6 @@ class IndexController extends Controller
         $userAttendee->job_position = $request->validated('job_position');
 
         $userAttendee->save();
-        return redirect(route('settings.event', ['eventId' => $eventId]));
-    }
-
-    public function doSaveEventConfirmationSettings(SaveConfirmationSettingsEventRequest $request, string $eventId): RedirectResponse {
-        $user = Auth::user();
-        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
-
-        // TODO: Check and Save Confirmation
-
         return redirect(route('settings.event', ['eventId' => $eventId]));
     }
 }

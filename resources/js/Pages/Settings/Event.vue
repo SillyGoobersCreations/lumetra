@@ -111,30 +111,9 @@
                         <CardTitle>Confirmation</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div class="text-green-400">Great news, your attendance was confirmed.</div>
+                        <div class="text-green-400">Great news, your profile was confirmed.</div>
                     </CardContent>
                 </Card>
-
-                <form v-if="!attendee.confirmed" @submit.prevent="submitConfirmation">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Confirmation</CardTitle>
-                        </CardHeader>
-                        <CardContent class="flex flex-col gap-3">
-                            <div class="item">
-                                <label for="confirmation_key">Confirmation Key</label>
-                                <input type="text" id="confirmation_key" v-model="confirmationForm.confirmation_key" />
-                                <div class="error" v-if="confirmationForm.errors.confirmation_key">{{ confirmationForm.errors.confirmation_key }}</div>
-                            </div>
-                        </CardContent>
-                        <CardFooter class="justify-end flex gap-2">
-                            <Button>
-                                <span class="ri-save-2-line mr-2 text-lg"></span>
-                                <span>Save</span>
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                </form>
             </main>
         </section>
     </EventLayout>
@@ -228,22 +207,6 @@ function submitAvatar() {
 
 function submitDescription() {
     descriptionForm.post(route('settings.event.description', {eventId: props.event.id}), {
-        onSuccess: () => {
-            toast({
-                description: "Successfully saved."
-            });
-        },
-        onError: () => {
-            toast({
-                description: "Could not save. Please try again later.",
-                variant: "destructive"
-            });
-        },
-    });
-}
-
-function submitConfirmation() {
-    confirmationForm.post(route('settings.event.confirmation', {eventId: props.event.id}), {
         onSuccess: () => {
             toast({
                 description: "Successfully saved."

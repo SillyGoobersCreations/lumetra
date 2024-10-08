@@ -25,7 +25,7 @@ class AttendeeDoConnectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'intro_text' => ['required', 'string'],
+            'intro_text' => ['required', 'string', 'max:2056'],
         ];
     }
 }
