@@ -29,7 +29,7 @@ class EventController extends Controller
 
             $lastThreeChats = [];
             if ($userAttendee) {
-                $lastThreeChats = ChatMessage::where(['sender_attendee_id' => $userAttendee->id])->orWhere(['receiver_attendee_id' => $userAttendee->id])->with(['sender_attendee', 'receiver_attendee'])->orderBy('created_at', 'desc')->take(3)->get();
+                $lastThreeChats = ChatMessage::where(['sender_attendee_id' => $userAttendee->id])->orWhere(['receiver_attendee_id' => $userAttendee->id])->where('is_room_slot_invite', false)->with(['sender_attendee', 'receiver_attendee'])->orderBy('created_at', 'desc')->take(3)->get();
             }
         }
 
