@@ -71,6 +71,8 @@
                                 v-if="message.is_room_slot_invite"
                                 :is-remote="message.sender_attendee_id !== currentAttendee.id"
                                 :claim="parseRoomSlotClaim(message.message)"
+                                :event-id="event.id"
+                                :attendee-id="attendee.id"
                             />
                             <Message
                                 v-else

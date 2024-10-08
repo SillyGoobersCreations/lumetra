@@ -9,33 +9,51 @@
             </div>
         </template>
         <template v-if="isRemote" #actions>
-            <Button
-                as-child
-                variant="secondary"
-                size="xs"
-            >
-                <Link
-                    href=""
+            <template v-if="claim.state === 'pending'">
+                <Button
+                    as-child
+                    variant="secondary"
+                    size="xs"
                 >
-                    <i class="ri-shake-hands-line mr-2 text-lg"></i>
-                    <span>Accept</span>
-                </Link>
-            </Button>
-            <Button
-                as-child
-                size="xs"
-                variant="destructive"
-            >
-                <Link
-                    href=""
+                    <Link
+                        :href="route('events.chats.roomSlotInvite.answer', {
+                            eventId: eventId,
+                            attendeeId: attendeeId,
+                            inviteId: claim.id,
+                            acceptInvite: true
+                        })"
+                    >
+                        <i class="ri-shake-hands-line mr-2 text-lg"></i>
+                        <span>Accept</span>
+                    </Link>
+                </Button>
+                <Button
+                    as-child
+                    size="xs"
+                    variant="destructive"
                 >
-                    <i class="ri-delete-bin-line mr-2 text-lg"></i>
-                    <span>Decline</span>
-                </Link>
-            </Button>
+                    <Link
+                        :href="route('events.chats.roomSlotInvite.answer', {
+                            eventId: eventId,
+                            attendeeId: attendeeId,
+                            inviteId: claim.id,
+                            acceptInvite: false
+                        })"
+                    >
+                        <i class="ri-delete-bin-line mr-2 text-lg"></i>
+                        <span>Decline</span>
+                    </Link>
+                </Button>
+            </template>
+            <template v-if="claim.state === 'attendee_confirmed'">
+                <Badge>Invite confirmed</Badge>
+            </template>
+            <template v-if="claim.state === 'attendee_declined'">
+                <Badge variant="destructive">Invite declined</Badge>
+            </template>
         </template>
         <template v-else #actions>
-            <div class="text-muted-foreground">Awaiting response</div>
+            <div class="text-muted-foreground text-xs">Awaiting response</div>
         </template>
     </Message>
 </template>
@@ -47,11 +65,20 @@ import {Link} from "@inertiajs/vue3";
 import {Button} from "@/components/ui/button";
 import {PropType} from "@vue/runtime-dom";
 import {EventRoomSlotClaim} from "@/types/models/EventRoomSlotClaim";
+import {Badge} from "@/components/ui/badge";
 
 const props = defineProps({
     isRemote: {
         type: Boolean,
         default: false,
+    },
+    eventId: {
+        type: String,
+        required: true,
+    },
+    attendeeId: {
+        type: String,
+        required: true,
     },
     claim: {
         type: Object as PropType<EventRoomSlotClaim>,
