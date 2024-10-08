@@ -146,17 +146,10 @@ class ChatController extends Controller
             ]));
         }
 
-        /*
         $roomSlotClaim->load('slot', 'slot.room', 'slot.room.event');
-        if($roomSlotClaim->slot->room->event->room_slot_team_confirmation_required) {
-            dd("required");
-        } else {
-            dd("not required");
-        } */
 
-        // TODO: Organizer Confirm
         $roomSlotClaim->update([
-            'state' => $acceptInvite ? 'attendee_confirmed' : 'attendee_declined'
+            'state' => $acceptInvite ? $roomSlotClaim->slot->room->event->room_slot_team_confirmation_required ? 'attendee_confirmed' : 'confirmed' : 'attendee_declined'
         ]);
         $roomSlotClaim->slot->update([
             'state' => $acceptInvite ? 'claimed' : 'open'

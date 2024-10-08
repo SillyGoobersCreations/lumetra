@@ -8,8 +8,8 @@
                 <span class="text-muted-foreground">{{ claim.slot.room.location }}</span>
             </div>
         </template>
-        <template v-if="isRemote" #actions>
-            <template v-if="claim.state === 'pending'">
+        <template v-if="claim.state === 'pending'" #actions>
+            <template v-if="isRemote">
                 <Button
                     as-child
                     variant="secondary"
@@ -45,15 +45,18 @@
                     </Link>
                 </Button>
             </template>
-            <template v-if="claim.state === 'attendee_confirmed'">
-                <Badge>Invite confirmed</Badge>
-            </template>
-            <template v-if="claim.state === 'attendee_declined'">
-                <Badge variant="destructive">Invite declined</Badge>
+            <template v-else>
+                <div class="text-muted-foreground text-xs">Awaiting response</div>
             </template>
         </template>
-        <template v-else #actions>
-            <div class="text-muted-foreground text-xs">Awaiting response</div>
+        <template v-if="claim.state === 'attendee_confirmed'" #actions>
+            <div class="text-muted-foreground text-xs">Awaiting organizer approval</div>
+        </template>
+        <template v-if="claim.state === 'confirmed'" #actions>
+            <Badge>Invite confirmed</Badge>
+        </template>
+        <template v-if="claim.state === 'attendee_declined'" #actions>
+            <Badge variant="destructive">Invite declined</Badge>
         </template>
     </Message>
 </template>
