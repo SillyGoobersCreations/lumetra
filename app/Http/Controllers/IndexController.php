@@ -37,7 +37,7 @@ class IndexController extends Controller
     public function showEventSettings(string $eventId): Response {
         $user = Auth::user();
         $user->load(["attendees", "attendees.event"]);
-        $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->with(['contact_infos'])->firstOrFail();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->with(['contact_infos'])->firstOrFail();
         $event = Event::findOrFail($eventId);
 
         return Inertia::render('Settings/Event', [

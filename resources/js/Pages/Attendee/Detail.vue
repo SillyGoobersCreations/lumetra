@@ -244,7 +244,6 @@
 import moment from "moment";
 import EventLayout from "@/Layouts/EventLayout.vue";
 import {Link, useForm, usePage} from "@inertiajs/vue3";
-import Modal from "@/components/Common/Modal.vue";
 import {computed, ref} from "vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
@@ -256,8 +255,6 @@ import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components
 import {Label} from "@/components/ui/label";
 import {Button} from "@/components/ui/button";
 import ConnectionRequestDialog from "@/components/Attendee/ConnectionRequestDialog.vue";
-
-const connectModal = ref<InstanceType<typeof Modal> | null>(null);
 
 const props = defineProps({
     event: {

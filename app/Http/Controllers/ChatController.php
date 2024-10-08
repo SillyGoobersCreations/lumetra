@@ -20,7 +20,7 @@ class ChatController extends Controller
 {
     public function showOverview(string $eventId): Response {
         $user = Auth::user();
-        $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->first();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->first();
         $event = Event::findOrFail($eventId);
         $attendeeConnections = AttendeeConnection
             ::where(['inviter_attendee_id' => $userAttendee->id])
@@ -36,7 +36,7 @@ class ChatController extends Controller
 
     public function showDetail(string $eventId, string $attendeeId): Response {
         $user = Auth::user();
-        $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->first();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->first();
         $event = Event::findOrFail($eventId);
         $attendeeConnections = AttendeeConnection
             ::where(['inviter_attendee_id' => $userAttendee->id])
@@ -56,7 +56,8 @@ class ChatController extends Controller
     }
 
     public function getChat(string $eventId, string $attendeeId): JsonResponse {
-        $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->first();
+        $user = Auth::user();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->first();
 
         $chatMessages = ChatMessage::
             checkConnection($userAttendee->id, $attendeeId)
@@ -77,7 +78,7 @@ class ChatController extends Controller
 
     public function doSendMessage(string $eventId, string $attendeeId, Request $request): RedirectResponse {
         $user = Auth::user();
-        $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->first();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->first();
 
         if(AttendeeConnection::checkConnection($userAttendee->id, $attendeeId)->count() == 0) {
             return redirect(route('events.chats.detail', [
