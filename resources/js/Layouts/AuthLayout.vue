@@ -54,7 +54,7 @@ function updateTheme() {
         @apply lg:p-8;
 
         & .content {
-            @apply mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px];
+            @apply mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] py-6 lg:py-0;
         }
     }
     & .top-left {
