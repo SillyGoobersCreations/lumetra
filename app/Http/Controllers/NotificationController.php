@@ -9,11 +9,11 @@ use Illuminate\Http\RedirectResponse;
 class NotificationController extends Controller
 {
 
-    public function doClearNotification(string $eventId, string $notificationid): RedirectResponse
+    public function doClearNotification(string $eventId, string $notificationId): RedirectResponse
     {
         $user = Auth::user();
         $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
-        $notification = $userAttendee->notifications()->findOrFail($notificationid);
+        $notification = $userAttendee->notifications()->findOrFail($notificationId);
 
         $notification->delete();
 
