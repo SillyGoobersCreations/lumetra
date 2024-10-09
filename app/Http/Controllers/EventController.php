@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attendee;
 use App\Models\ChatMessage;
 use App\Models\Event;
+use App\Models\EventRoomSlotClaim;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -29,7 +30,34 @@ class EventController extends Controller
 
             $lastThreeChats = [];
             if ($userAttendee) {
-                $lastThreeChats = ChatMessage::where(['sender_attendee_id' => $userAttendee->id])->orWhere(['receiver_attendee_id' => $userAttendee->id])->where('is_room_slot_invite', false)->with(['sender_attendee', 'receiver_attendee'])->orderBy('created_at', 'desc')->take(3)->get();
+                $lastThreeChats = ChatMessage::query()
+                    ->where(function ($query) use ($userAttendee) {
+                        $query->where('sender_attendee_id', $userAttendee->id)
+                            ->orWhere('receiver_attendee_id', $userAttendee->id);
+                    })
+                    ->where('is_room_slot_invite', false)
+                    ->with(['sender_attendee', 'receiver_attendee'])
+                    ->orderBy('created_at', 'desc')
+                    ->take(3)->get();
+            }
+
+            $nextThreeMeets = [];
+            if ($userAttendee) {
+                $now = now();
+                $nextThreeMeets = EventRoomSlotClaim::query()
+                    ->where(function ($query) use ($userAttendee) {
+                        $query->where('inviter_attendee_id', $userAttendee->id)
+                            ->orWhere('invitee_attendee_id', $userAttendee->id);
+                    })
+                    ->whereIn('event_room_slot_claims.state', [EventRoomSlotClaim::STATE_CONFIRMED, EventRoomSlotClaim::STATE_ATTENDEE_CONFIRMED])
+                    ->whereHas('slot', function ($query) use ($now) {
+                        $query->where('end_date', '>=', $now);
+                    })
+                    ->join('event_room_slots', 'event_room_slots.id', '=', 'event_room_slot_claims.event_room_slot_id')
+                    ->with(['inviter_attendee', 'invitee_attendee', 'slot', 'slot.room'])
+                    ->orderBy('event_room_slots.start_date', 'asc')
+                    ->take(3)
+                    ->get();
             }
         }
 
@@ -40,6 +68,7 @@ class EventController extends Controller
             'event' => $event,
             'canJoin' => $canJoin,
             'lastThreeChats' => $lastThreeChats ?? [],
+            'nextThreeMeets' => $nextThreeMeets ?? [],
             'userAttendee' => $userAttendee ?? false,
         ]);
     }

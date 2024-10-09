@@ -47,18 +47,18 @@
                                 class="p-4 px-4 gap-2 grid grid-cols-[auto_1fr_auto] items-center"
                             >
                                 <Avatar class="h-8 w-8 mr-2">
-                                    <AvatarImage :src="`/storage/avatars/${getOtherAttendee(chat).avatar_url}`" alt="@shadcn" />
-                                    <AvatarFallback>{{ getOtherAttendee(chat).name_initials }}</AvatarFallback>
+                                    <AvatarImage :src="`/storage/avatars/${getOtherAttendeeChat(chat).avatar_url}`" alt="@shadcn" />
+                                    <AvatarFallback>{{ getOtherAttendeeChat(chat).name_initials }}</AvatarFallback>
                                 </Avatar>
                                 <div class="flex flex-col gap-1">
-                                    <CardTitle>{{ getOtherAttendee(chat).name_full }}</CardTitle>
+                                    <CardTitle>{{ getOtherAttendeeChat(chat).name_full }}</CardTitle>
                                     <CardDescription class="line-clamp-2">{{ chat.message }}</CardDescription>
                                 </div>
                                 <Button
                                     variant="secondary"
                                     as-child
                                 >
-                                    <Link :href="route('events.chats.detail', { eventId: event.id, attendeeId: getOtherAttendee(chat).id })">
+                                    <Link :href="route('events.chats.detail', { eventId: event.id, attendeeId: getOtherAttendeeChat(chat).id })">
                                         Open
                                     </Link>
                                 </Button>
@@ -82,18 +82,29 @@
                         <CardDescription>Events and meetups</CardDescription>
                     </CardHeader>
                     <CardContent class="flex flex-col gap-2">
+                        <div class="p-3 flex flex-col gap-1 items-center" v-if="nextThreeMeets.length === 0">
+                            <i class="ri-chat-1-line text-4xl mb-2"></i>
+                            <h1>No meetups yet</h1>
+                            <p class="text-muted-foreground">Invite another attendee to begin.</p>
+                        </div>
                         <Card
-                            v-for="n in 3"
-                            :key="n"
+                            v-for="meet in nextThreeMeets"
+                            :key="meet.id"
                         >
-                            <CardContent class="p-4 px-4 gap-2 grid grid-cols-[1fr_auto] items-center">
-                                <div class="flex flex-col gap-0">
-                                    <CardTitle>Lorem</CardTitle>
-                                    <CardDescription>Lorem Ipsum</CardDescription>
+                            <CardContent
+                                class="p-4 px-4 gap-2 grid grid-cols-[auto_1fr_auto] items-center"
+                            >
+                                <Avatar class="h-8 w-8 mr-2">
+                                    <AvatarImage :src="`/storage/avatars/${getOtherAttendeeRoomClaim(meet).avatar_url}`" alt="@shadcn" />
+                                    <AvatarFallback>{{ getOtherAttendeeRoomClaim(meet).name_initials }}</AvatarFallback>
+                                </Avatar>
+                                <div class="flex flex-col gap-1">
+                                    <CardTitle>{{ getOtherAttendeeRoomClaim(meet).name_full }}</CardTitle>
+                                    <CardDescription class="flex flex-col items-start gap-2">
+                                        <span class="text-foreground">{{ moment(meet.slot.start_date).format("DD.MM.YY") }} @ {{ moment(meet.slot.start_date).format("HH:mm") }} <span class="text-muted-foreground">- {{ moment(meet.slot.end_date).format("HH:mm") }}</span></span>
+                                    </CardDescription>
                                 </div>
-                                <Button>
-                                    More
-                                </Button>
+                                <Badge variant="secondary">{{ moment(meet.slot.start_date).fromNow() }}</Badge>
                             </CardContent>
                         </Card>
                     </CardContent>
@@ -151,13 +162,15 @@ import EventOverviewGeneral from "@/components/Event/EventOverview/EventOverview
 import EventOverviewProperties from "@/components/Event/EventOverview/EventOverviewProperties.vue";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
-import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {Alert, AlertTitle} from "@/components/ui/alert";
 import {PropType} from "@vue/runtime-dom";
 import {ChatMessage} from "@/types/models/ChatMessage";
 import {Event} from "@/types/models/Event";
 import {Attendee} from "@/types/models/Attendee";
 import {computed} from "vue";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import moment from "moment/moment";
+import {Badge} from "@/components/ui/badge";
 
 const props = defineProps({
     event: {
@@ -169,6 +182,10 @@ const props = defineProps({
         default: true,
     },
     lastThreeChats: {
+        type: Array as PropType<ChatMessage[]>,
+        default: () => [],
+    },
+    nextThreeMeets: {
         type: Array as PropType<ChatMessage[]>,
         default: () => [],
     },
@@ -193,11 +210,18 @@ const currentAttendee = computed(() => {
 
     return foundAttendee;
 });
-function getOtherAttendee(chatMessage) {
+function getOtherAttendeeChat(chatMessage) {
     if(chatMessage.sender_attendee_id === currentAttendee.value.id) {
         return chatMessage.receiver_attendee;
     } else {
         return chatMessage.sender_attendee;
+    }
+}
+function getOtherAttendeeRoomClaim(eventRoomSlotClaim) {
+    if(eventRoomSlotClaim.inviter_attendee_id === currentAttendee.value.id) {
+        return eventRoomSlotClaim.invitee_attendee;
+    } else {
+        return eventRoomSlotClaim.inviter_attendee;
     }
 }
 </script>

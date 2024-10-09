@@ -3,7 +3,7 @@
         <template #default>
             <div class="flex flex-col gap-0">
                 <span class="text-xs font-bold">Meet invite</span>
-                <span class="mb-2">{{ moment(claim.slot.start_date).format("D.M.Y") }} @ {{ moment(claim.slot.start_date).format("HH:mm") }} <span class="text-muted-foreground">- {{ moment(claim.slot.end_date).format("HH:mm") }}</span></span>
+                <span class="mb-2">{{ moment(claim.slot.start_date).format("DD.MM.YYYY") }} @ {{ moment(claim.slot.start_date).format("HH:mm") }} <span class="text-muted-foreground">- {{ moment(claim.slot.end_date).format("HH:mm") }}</span></span>
                 <span class="font-bold">{{ claim.slot.room.name }}</span>
                 <span class="text-muted-foreground">{{ claim.slot.room.location }}</span>
             </div>

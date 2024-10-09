@@ -34,6 +34,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class EventRoomSlotClaim extends Model
 {
+    const STATE_PENDING = 'pending';
+    const STATE_CONFIRMED = 'confirmed';
+    const STATE_ATTENDEE_CONFIRMED = 'attendee_confirmed';
+    const STATE_ATTENDEE_DECLINED = 'attendee_declined';
+
     use HasFactory, HasUuids;
 
     protected $fillable = [
