@@ -18,10 +18,10 @@
                             <div class="text-muted-foreground">{{ attendee.id }}</div>
                         </FormRow>
                         <FormRow label="User ID" variant="wide">
-                            <div class="text-muted-foreground">{{ attendee.user.id }}</div>
+                            <div class="text-muted-foreground">{{ attendee.user?.id }}</div>
                         </FormRow>
                         <FormRow label="User Email" variant="wide">
-                            <div class="text-muted-foreground">{{ attendee.user.email }}</div>
+                            <div class="text-muted-foreground">{{ attendee.user?.email }}</div>
                         </FormRow>
                         <FormRow label="Handle" variant="wide">
                             <div class="text-muted-foreground">{{ attendee.handle }}</div>
@@ -42,8 +42,8 @@
                             <div class="flex gap-2">
                                 <Badge>Attendee</Badge>
                                 <Badge v-if="attendee.role === 'organizer'">Event organizer</Badge>
-                                <Badge v-if="attendee.user.is_admin" variant="secondary">Admin</Badge>
-                                <Badge v-if="attendee.user.is_event_creator" variant="secondary">Can create events</Badge>
+                                <Badge v-if="attendee.user?.is_admin" variant="secondary">Admin</Badge>
+                                <Badge v-if="attendee.user?.is_event_creator" variant="secondary">Can create events</Badge>
                             </div>
                         </FormRow>
                     </CardContent>

@@ -26,7 +26,11 @@ class EventController extends Controller
 
         if(Auth::user()) {
             $userAttendee = Attendee::where(['event_id' => $eventId, 'user_id' => Auth::user()->id, 'active' => true])->first();
-            $lastThreeChats = ChatMessage::where(['sender_attendee_id' => $userAttendee->id])->orWhere(['receiver_attendee_id' => $userAttendee->id])->with(['sender_attendee', 'receiver_attendee'])->orderBy('created_at', 'desc')->take(3)->get();
+
+            $lastThreeChats = [];
+            if ($userAttendee) {
+                $lastThreeChats = ChatMessage::where(['sender_attendee_id' => $userAttendee->id])->orWhere(['receiver_attendee_id' => $userAttendee->id])->where('is_room_slot_invite', false)->with(['sender_attendee', 'receiver_attendee'])->orderBy('created_at', 'desc')->take(3)->get();
+            }
         }
 
         $confirmedAttendeesCount = Attendee::where(['event_id' => $eventId, 'confirmed' => true])->count();
@@ -57,6 +61,7 @@ class EventController extends Controller
     public function doEnroll(string $eventId): RedirectResponse {
         $user = Auth::user();
         $existingEnrollment = Attendee::where(['event_id' => $eventId, 'user_id' => $user->id])->first();
+        $event = Event::findOrFail($eventId);
 
         if($existingEnrollment != null) {
             // Reactivate
@@ -76,6 +81,8 @@ class EventController extends Controller
                 'user_id' => $user->id,
                 'event_id' => $eventId,
                 'active' => true,
+                'confirmed' => $event->confirmation_required ? false : true,
+                'confirmation_key' => $this->generateConfirmationKey(3, 3),
             ]);
 
             return redirect(route('events.attendees.detail', [
@@ -95,5 +102,20 @@ class EventController extends Controller
         return redirect(route('events.detail', [
             'eventId' => $eventId,
         ]));
+    }
+
+    function generateConfirmationKey($segments = 3, $segmentLength = 3) {
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $key = [];
+
+        for ($i = 0; $i < $segments; $i++) {
+            $segment = '';
+            for ($j = 0; $j < $segmentLength; $j++) {
+                $segment .= $characters[rand(0, strlen($characters) - 1)];
+            }
+            $key[] = $segment;
+        }
+
+        return implode('-', $key);
     }
 }

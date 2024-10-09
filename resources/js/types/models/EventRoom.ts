@@ -6,7 +6,7 @@ export interface EventRoom {
     name: string;
     location: string | null;
     notes: string | null;
-    available: number;
+    available: boolean;
     created_at: Date | null;
     updated_at: Date | null;
     event_id: string;

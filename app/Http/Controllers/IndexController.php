@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveAvatarSettingsEventRequest;
-use App\Http\Requests\SaveConfirmationSettingsEventRequest;
 use App\Http\Requests\SaveDescriptionSettingsEventRequest;
 use App\Http\Requests\SaveNameSettingsEventRequest;
 use App\Http\Requests\SaveSettingsGlobalRequest;
@@ -37,7 +36,7 @@ class IndexController extends Controller
     public function showEventSettings(string $eventId): Response {
         $user = Auth::user();
         $user->load(["attendees", "attendees.event"]);
-        $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->with(['contact_infos'])->firstOrFail();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->with(['contact_infos'])->firstOrFail();
         $event = Event::findOrFail($eventId);
 
         return Inertia::render('Settings/Event', [
@@ -121,15 +120,6 @@ class IndexController extends Controller
         $userAttendee->job_position = $request->validated('job_position');
 
         $userAttendee->save();
-        return redirect(route('settings.event', ['eventId' => $eventId]));
-    }
-
-    public function doSaveEventConfirmationSettings(SaveConfirmationSettingsEventRequest $request, string $eventId): RedirectResponse {
-        $user = Auth::user();
-        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
-
-        // TODO: Check and Save Confirmation
-
         return redirect(route('settings.event', ['eventId' => $eventId]));
     }
 }

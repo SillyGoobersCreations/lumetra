@@ -74,10 +74,12 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Label} from "@/components/ui/label";
+import {PropType} from "@vue/runtime-dom";
+import {Event} from "@/types/models/Event";
 
 const props = defineProps({
     event: {
-        type: Object,
+        type: Object as PropType<Event>,
         required: true,
     },
 });

@@ -104,6 +104,20 @@
                         </FormRow>
                     </CardContent>
                 </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Emails</CardTitle>
+                    </CardHeader>
+                    <CardContent class="flex flex-col gap-4">
+                        <FormRow label="Name" variant="wide" :error="form.errors.email_name">
+                            <Input v-model="form.email_name" />
+                        </FormRow>
+                        <FormRow label="From" variant="wide" :error="form.errors.email_from">
+                            <Input v-model="form.email_from" placeholder="noreply@example.org" />
+                        </FormRow>
+                    </CardContent>
+                </Card>
             </div>
 
             <div>
@@ -149,24 +163,28 @@
                         <FormRow label="Confirmation required" variant="wide">
                             <Switch :checked="form.confirmation_required" @update:checked="(val) => { form.confirmation_required = val; }" />
                         </FormRow>
-                        <FormRow label="Personalize confirmation codes" variant="wide">
+                        <FormRow label="Generate confirmation key per user" variant="wide" v-if="form.confirmation_required">
                             <Switch :checked="form.confirmation_personalized" @update:checked="(val) => { form.confirmation_personalized = val; }" />
+                        </FormRow>
+                        <FormRow label="Global confirmation key" variant="wide" v-if="form.confirmation_required && !form.confirmation_personalized">
+                            <Input v-model="form.confirmation_key" />
                         </FormRow>
                     </CardContent>
                 </Card>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>RoomSlots</CardTitle>
+                        <CardTitle>Room slots</CardTitle>
                     </CardHeader>
                     <CardContent class="flex flex-col gap-4">
-                        <FormRow label="Max slots an attendee can hold in pending" variant="wide">
+                        <!-- TODO -->
+                        <!-- <FormRow label="Max slots an attendee can hold in pending" variant="wide">
                             <Input type="number" v-model="form.room_slot_max_pending" />
                         </FormRow>
                         <FormRow label="Max slots an attendee can claim" variant="wide">
                             <Input type="number" v-model="form.room_slot_max_claimed" />
-                        </FormRow>
-                        <FormRow label="Team confirmation required" variant="wide">
+                        </FormRow> -->
+                        <FormRow label="Organizers must approve claims" variant="wide">
                             <Switch :checked="form.room_slot_team_confirmation_required" @update:checked="(val) => { form.room_slot_team_confirmation_required = val; }" />
                         </FormRow>
                     </CardContent>
@@ -209,11 +227,14 @@ const form = useForm({
     'description': props.event.description,
     'start_date': props.event.start_date,
     'end_date': props.event.end_date,
-    'confirmation_required': props.event.confirmation_required !== 0,
-    'confirmation_personalized': props.event.confirmation_personalized !== 0,
+    'email_name': props.event.email_name,
+    'email_from': props.event.email_from,
+    'confirmation_required': props.event.confirmation_required,
+    'confirmation_personalized': props.event.confirmation_personalized,
+    'confirmation_key': props.event.confirmation_key,
     'room_slot_max_pending': props.event.room_slot_max_pending,
     'room_slot_max_claimed': props.event.room_slot_max_claimed,
-    'room_slot_team_confirmation_required': props.event.room_slot_team_confirmation_required !== 0,
+    'room_slot_team_confirmation_required': props.event.room_slot_team_confirmation_required,
     'attendees_max': props.event.attendees_max,
 });
 

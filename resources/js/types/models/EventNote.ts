@@ -4,7 +4,7 @@ export interface EventNote {
     id: string;
     title: string;
     text: string;
-    sticky: number;
+    sticky: boolean;
     created_at: Date | null;
     updated_at: Date | null;
     event_id: string;

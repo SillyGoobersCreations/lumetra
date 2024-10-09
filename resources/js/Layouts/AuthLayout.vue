@@ -23,6 +23,24 @@
 import LumetraLightLogo from "@/../img/lumetra-logo-onlight.svg";
 import LumetraDarkLogo from "@/../img/lumetra-logo-ondark.svg";
 import Toaster from '@/components/ui/toast/Toaster.vue';
+import {onMounted, ref} from "vue";
+
+const isDark = ref<boolean>(false);
+
+onMounted(() => {
+    isDark.value = localStorage.getItem("theme") === "dark";
+    updateTheme();
+});
+
+function updateTheme() {
+    let body = document.querySelector("body");
+
+    if(isDark.value) {
+        body?.classList.add("dark");
+    } else {
+        body?.classList.remove("dark");
+    }
+}
 </script>
 
 <style lang="scss" scoped>

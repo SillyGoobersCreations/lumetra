@@ -2,7 +2,7 @@
     <DefaultLayout>
         <Card>
             <CardContent class="pt-6">
-                Index
+                Welcome to Lumetra!
             </CardContent>
         </Card>
     </DefaultLayout>
@@ -14,8 +14,4 @@ import {Card, CardContent} from "@/components/ui/card";
 </script>
 
 <style lang="scss" scoped>
-h2 {
-    margin: 100px 0;
-    text-align: center;
-}
 </style>

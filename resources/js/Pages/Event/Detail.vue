@@ -35,6 +35,11 @@
                         <CardTitle>Recent Chats</CardTitle>
                     </CardHeader>
                     <CardContent class="flex flex-col gap-2">
+                        <div class="p-3 flex flex-col gap-1 items-center" v-if="lastThreeChats.length === 0">
+                            <i class="ri-chat-1-line text-4xl mb-2"></i>
+                            <h1>No chats yet</h1>
+                            <p class="text-muted-foreground">Connect to other attendees to begin.</p>
+                        </div>
                         <Card
                             v-for="chat in lastThreeChats"
                             :key="chat.id"
@@ -166,11 +171,11 @@ const props = defineProps({
         default: true,
     },
     lastThreeChats: {
-        type: Object as PropType<ChatMessage>,
+        type: Array as PropType<ChatMessage[]>,
         default: () => [],
     },
     userAttendee: {
-        type: [Object as PropType<Attendee>, Boolean],
+        type: [Object as PropType<Attendee>, Boolean] as PropType<Attendee | boolean>,
         default: false,
     }
 });

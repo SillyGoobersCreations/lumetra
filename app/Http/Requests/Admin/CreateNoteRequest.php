@@ -23,7 +23,7 @@ class CreateNoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string'],
+            'title' => ['required', 'string', 'max:255'],
             'text' => ['required', 'string'],
             'sticky' => ['required', 'boolean'],
         ];

@@ -63,18 +63,28 @@
                             :connection="selectedConnection"
                             :current-attendee-id="currentAttendee.id"
                         />
-                        <Message
+                        <template
                             v-for="message in messages"
                             :key="message.id"
-                            :is-remote="message.sender_attendee_id !== currentAttendee.id"
                         >
-                            <template #default>
-                                {{ message.message }}
-                            </template>
-                        </Message>
+                            <MessageRoomSlotClaim
+                                v-if="message.is_room_slot_invite"
+                                :is-remote="message.sender_attendee_id !== currentAttendee.id"
+                                :claim="parseRoomSlotClaim(message.message)"
+                                :event-id="event.id"
+                                :attendee-id="attendee.id"
+                            />
+                            <Message
+                                v-else
+                                :is-remote="message.sender_attendee_id !== currentAttendee.id"
+                            >
+                                <template #default>
+                                    {{ message.message }}
+                                </template>
+                            </Message>
+                        </template>
                     </CardContent>
-                    <CardFooter class="flex gap-2">
-
+                    <CardFooter class="flex gap-2" v-if="selectedConnection.state === 'confirmed'">
                         <MeetDialog
                             :event="event"
                             :selectedConnection="selectedConnection"
@@ -107,6 +117,8 @@ import {Button} from "@/components/ui/button";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Input} from "@/components/ui/input";
 import MeetDialog from "@/components/Chat/MeetDialog.vue";
+import MessageRoomSlotClaim from "@/components/Chat/MessageRoomSlotClaim.vue";
+import {EventRoomSlotClaim} from "@/types/models/EventRoomSlotClaim";
 
 const messages = ref([]);
 let messageTimer : number|undefined;
@@ -179,6 +191,11 @@ async function updateChat() {
     messages.value = await response.json();
 }
 
+function parseRoomSlotClaim(message: string): EventRoomSlotClaim {
+    const parsed = JSON.parse(message);
+    return parsed as EventRoomSlotClaim;
+}
+
 onMounted(() => {
     messageTimer = setInterval(updateChat, 2000);
     updateChat();
@@ -195,84 +212,5 @@ onUnmounted(() => {
     & aside {
         @apply flex flex-col gap-5;
     }
-
-    /*
-    & > aside {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-
-        & .connection-list {
-            padding: 5px;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        & .more-button {
-            justify-content: center;
-        }
-    }
-    & > main {
-        display: flex;
-        flex-direction: column;
-
-        & .box {
-            flex-grow: 1;
-            overflow: hidden;
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-
-            & header {
-                padding: 10px 20px;
-                border-bottom: 1px solid rgb(var(--color-base-200));
-
-                & .attendee {
-                    background: rgb(var(--color-base-50));
-                    border-radius: 5px;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    overflow: hidden;
-                    text-decoration: none;
-                    color: inherit;
-                    transition: var(--transition-default);
-
-                    &.active {
-                        background: rgb(var(--color-base-200));
-                    }
-
-                    & .meta {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 5px;
-                        flex-grow: 1;
-
-                        & .name {
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                            flex-grow: 1;
-                        }
-                        & .connected {
-                            font-size: 0.75rem;
-                            color: rgb(var(--color-base-400));
-                        }
-                    }
-                }
-            }
-            & main {
-                min-height: 250px;
-                padding: 20px;
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            }
-            & footer {
-                border-top: 1px solid rgb(var(--color-base-200));
-                padding: 10px 20px;
-            }
-        }
-    } */
 }
 </style>

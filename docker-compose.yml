@@ -1,5 +1,6 @@
 services:
     laravel.test:
+        restart: unless-stopped
         build:
             context: ./docker/8.3
             dockerfile: Dockerfile
@@ -30,6 +31,7 @@ services:
             - mailpit
             - selenium
     mysql:
+        restart: unless-stopped
         image: 'mysql/mysql-server:8.0'
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
@@ -54,6 +56,7 @@ services:
             retries: 3
             timeout: 5s
     redis:
+        restart: unless-stopped
         image: 'redis:alpine'
         ports:
             - '${FORWARD_REDIS_PORT:-6379}:6379'
@@ -69,6 +72,7 @@ services:
             retries: 3
             timeout: 5s
     meilisearch:
+        restart: unless-stopped
         image: 'getmeili/meilisearch:latest'
         ports:
             - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
@@ -104,7 +108,7 @@ services:
             - sail
     phpmyadmin:
         image: phpmyadmin
-        restart: always
+        restart: unless-stopped
         ports:
             - "8080:80"
         environment:

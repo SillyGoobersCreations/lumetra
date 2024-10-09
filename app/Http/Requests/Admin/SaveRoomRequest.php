@@ -24,7 +24,7 @@ class SaveRoomRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'location' => ['nullable', 'string'],
+            'location' => ['nullable', 'string', 'max:255'],
             'notes' => ['nullable', 'string'],
             'available' => ['required', 'boolean'],
         ];

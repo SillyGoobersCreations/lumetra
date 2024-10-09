@@ -26,7 +26,7 @@ class AttendeeController extends Controller
 
     public function showDetail(string $eventId, string $attendeeId): Response {
         $user = Auth::user();
-        $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->first();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->first();
         $event = Event::findOrFail($eventId);
         $attendee = Attendee::where(['id' => $attendeeId])->with(['event', 'contact_infos'])->firstOrFail();
         $attendeeConnection = AttendeeConnection::checkConnection($userAttendee->id, $attendee->id)->first();
@@ -82,7 +82,7 @@ class AttendeeController extends Controller
 
     public function doAcceptRequest(string $eventId, string $attendeeId, string $requestId): RedirectResponse {
         $user = Auth::user();
-        $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->firstOrFail();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
         $request = AttendeeConnection::findOrFail($requestId);
 
         if($request->invitee_attendee_id != $userAttendee->id) {
@@ -99,7 +99,7 @@ class AttendeeController extends Controller
 
     public function doDeclineRequest(string $eventId, string $attendeeId, string $requestId): RedirectResponse {
         $user = Auth::user();
-        $userAttendee = Attendee::where(['user_id' => Auth::user()->id, 'event_id' => $eventId])->firstOrFail();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
         $request = AttendeeConnection::findOrFail($requestId);
 
         if($request->invitee_attendee_id != $userAttendee->id) {

@@ -31,7 +31,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/settings/{eventId}/avatar', [IndexController::class, 'doSaveEventAvatarSettings'])->name('settings.event.avatar');
     Route::get('/settings/{eventId}/clearAvatar', [IndexController::class, 'doClearEventAvatarSettings'])->name('settings.event.avatar.clear');
     Route::post('/settings/{eventId}/description', [IndexController::class, 'doSaveEventDescriptionSettings'])->name('settings.event.description');
-    Route::post('/settings/{eventId}/confirmation', [IndexController::class, 'doSaveEventConfirmationSettings'])->name('settings.event.confirmation');
 
     Route::get('/events/{eventId}/attendees', [AttendeeController::class, 'showOverview'])->name('events.attendees.index');
     Route::get('/events/{eventId}/attendees/search', [AttendeeController::class, 'search'])->name('events.attendees.search');
@@ -50,8 +49,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/events/{eventId}/chats/{attendeeId}', [ChatController::class, 'showDetail'])->name('events.chats.detail');
     Route::get('/events/{eventId}/chats/{attendeeId}/receive', [ChatController::class, 'getChat'])->name('events.chats.receive');
     Route::post('/events/{eventId}/chats/{attendeeId}/sendMessage', [ChatController::class, 'doSendMessage'])->name('events.chats.sendMessage');
-    Route::post('/events/{eventId}/chats/{attendeeId}/roomSlotInvite/{slotId}/send', [ChatController::class, 'doRoomSlotInviteSend'])->name('events.chats.roomSlotInvite.send');
-    Route::post('/events/{eventId}/chats/{attendeeId}/roomSlotInvite/{inviteId}/answer', [ChatController::class, 'doRoomSlotInviteAnswer'])->name('events.chats.roomSlotInvite.answer');
+    Route::get('/events/{eventId}/chats/{attendeeId}/roomSlotInvite/{slotId}/send', [ChatController::class, 'doRoomSlotInviteSend'])->name('events.chats.roomSlotInvite.send');
+    Route::get('/events/{eventId}/chats/{attendeeId}/roomSlotInvite/{inviteId}/{acceptInvite}', [ChatController::class, 'doRoomSlotInviteAnswer'])->name('events.chats.roomSlotInvite.answer');
+});
+
+// ROOMS
+Route::middleware('auth')->group(function () {
+    Route::get('/events/{eventId}/rooms/{date}', [ChatController::class, 'getRooms'])->name('events.rooms.index');
 });
 
 // AUTH
