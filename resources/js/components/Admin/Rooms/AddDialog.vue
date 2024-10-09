@@ -4,8 +4,8 @@
     >
         <DialogTrigger as-child>
             <Button>
-                <i class="ri-add-line text-lg mr-2"></i>
-                <span>Create new</span>
+                <i class="ri-add-line text-lg md:mr-2"></i>
+                <span class="hidden md:block">Create new</span>
             </Button>
         </DialogTrigger>
         <DialogContent>

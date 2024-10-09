@@ -1,4 +1,6 @@
 <template>
+    <Head title="Dashboard" />
+
     <AdminLayout title="Dashboard" :event="event">
         <section class="page-dashboard">
             <Card>
@@ -57,6 +59,7 @@ import AdminLayout from "@/Layouts/AdminLayout.vue";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
+import {Head} from "@inertiajs/vue3";
 
 defineProps({
     event: {

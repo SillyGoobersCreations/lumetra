@@ -1,4 +1,6 @@
 <template>
+    <Head title="Attendees" />
+
     <AdminLayout title="Attendees" :event="event">
         <section class="page-attendee">
             <Table>
@@ -70,7 +72,7 @@ import {
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import FormRow from "@/components/Common/FormRow.vue";
 import moment from "moment/moment";
-import {Link} from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 import DetailDialog from "@/components/Admin/Attendee/DetailDialog.vue";
 
 defineProps({

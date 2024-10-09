@@ -1,4 +1,6 @@
 <template>
+    <Head title="Rooms" />
+
     <AdminLayout title="Rooms" :event="event">
         <template #header>
             <AddDialog :event="event" />
@@ -18,7 +20,7 @@
                                 <Badge v-if="room.available">Available</Badge>
                                 <Badge v-else variant="destructive">Not Available</Badge>
 
-                                <Badge variant="outline">0 Slots</Badge>
+                                <Badge variant="outline">{{ room.slots.length }} Slots</Badge>
                             </div>
                         </div>
                         <div class="flex gap-2 items-center">
@@ -63,7 +65,7 @@ import {Button} from "@/components/ui/button";
 import AddDialog from "@/components/Admin/Rooms/AddDialog.vue";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import EditDialog from "@/components/Admin/Rooms/EditDialog.vue";
-import {Link} from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 import {DialogTrigger} from "@/components/ui/dialog";
 
 defineProps({

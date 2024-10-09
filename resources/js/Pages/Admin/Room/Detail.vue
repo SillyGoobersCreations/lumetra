@@ -1,4 +1,6 @@
 <template>
+    <Head :title="room.name" />
+
     <AdminLayout :title="`Room: ${room.name}`" :event="event">
         <template #header>
             <Button
@@ -6,15 +8,15 @@
                 variant="secondary"
             >
                 <Link :href="route('events.admin.rooms', {eventId: event.id })">
-                    <i class="ri-arrow-left-line text-lg mr-2"></i>
-                    <span>Back to overview</span>
+                    <i class="ri-arrow-left-line text-lg md:mr-2"></i>
+                    <span class="hidden md:block">Back to overview</span>
                 </Link>
             </Button>
 
             <EditDialog :room="room" :event="event">
                 <Button variant="secondary">
-                    <i class="ri-pencil-line text-lg"></i>
-                    <span>Edit Room</span>
+                    <i class="ri-pencil-line text-lg md:mr-2"></i>
+                    <span class="hidden md:block">Edit Room</span>
                 </Button>
             </EditDialog>
         </template>
@@ -25,12 +27,10 @@
                 :key="date"
             >
                 <CardHeader>
-                    <CardTitle>{{ date }}</CardTitle>
-                    <CardDescription class="flex gap-1">
+                    <CardTitle class="flex flex-wrap gap-2 items-center">
+                        <span>{{ date }}</span>
                         <Badge variant="secondary">{{ slots.length }} Slots</Badge>
-                        <Badge variant="secondary">{{ slots.length }} Claims</Badge>
-                        <Badge variant="default">{{ slots.length }} Pending</Badge>
-                    </CardDescription>
+                    </CardTitle>
                 </CardHeader>
                 <CardContent>
                     <template v-if="slots.length === 0">
@@ -76,7 +76,7 @@ import {Event} from "@/types/models/Event";
 import {EventRoom} from "@/types/models/EventRoom";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import {Button} from "@/components/ui/button";
-import {Link} from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 import EditDialog from "@/components/Admin/Rooms/EditDialog.vue";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";

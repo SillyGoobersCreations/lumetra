@@ -1,4 +1,6 @@
 <template>
+    <Head title="Find, chat, meet!" />
+
     <DefaultLayout>
         <section class="page-frontpage">
             <div class="welcome">
@@ -61,6 +63,7 @@
 </template>
 
 <script setup lang="ts">
+import { Head } from '@inertiajs/vue3';
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import {Card, CardContent, CardFooter} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";

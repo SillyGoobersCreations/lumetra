@@ -1,4 +1,6 @@
 <template>
+    <Head title="Settings" />
+
     <AdminLayout title="Event Settings" :event="event">
         <template #header>
             <Button
@@ -15,7 +17,7 @@
                     <CardHeader>
                         <CardTitle>Visibility</CardTitle>
                     </CardHeader>
-                    <CardContent class="flex gap-4">
+                    <CardContent class="flex gap-2 md:gap-4 flex-col md:flex-row">
                         <Button
                             class="state-button"
                             :variant="form.state === 'draft' ? 'default' : 'secondary'"
@@ -201,7 +203,7 @@ import {Event} from "@/types/models/Event";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import FormRow from "@/components/Common/FormRow.vue";
 import {Button} from "@/components/ui/button";
-import {Link, useForm} from "@inertiajs/vue3";
+import {Head, Link, useForm} from "@inertiajs/vue3";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
 import {DateFormatter, type DateValue, getLocalTimeZone, parseDate} from "@internationalized/date";
@@ -303,17 +305,17 @@ function submitLogo() {
 
 <style lang="scss" scoped>
 .page-eventSettings {
-    @apply p-4 grid grid-cols-2 gap-4 items-start;
+    @apply p-4 flex flex-col md:grid md:grid-cols-2 gap-4 items-start;
 
     & > div {
         @apply flex flex-col gap-4;
     }
 
     & .state-button {
-        @apply py-4 flex flex-col grow h-auto;
+        @apply md:py-4 flex md:flex-col grow h-auto gap-2 md:gap-0;
 
         & i {
-            @apply text-3xl mb-1;
+            @apply text-lg md:text-3xl mb-1;
         }
         & h1 {
             @apply font-bold;

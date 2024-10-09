@@ -21,7 +21,6 @@ use Nette\Utils\Image;
 class IndexController extends Controller
 {
     public function showIndex(): Response {
-        // TODO: Show a simple landing page advertising Lumetra as a project
         return Inertia::render('Index');
     }
 

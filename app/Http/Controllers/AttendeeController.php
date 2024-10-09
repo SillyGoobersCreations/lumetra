@@ -137,8 +137,6 @@ class AttendeeController extends Controller
         $request->state = AttendeeConnection::STATE_DECLINED;
         $request->save();
 
-        // TODO: Notification to inviter_attendee_id
-
         return Redirect::route('events.attendees.detail', ['eventId' => $eventId, 'attendeeId' => $request->inviter_attendee_id]);
     }
 }

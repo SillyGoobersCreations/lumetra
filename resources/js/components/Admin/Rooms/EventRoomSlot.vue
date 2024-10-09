@@ -8,11 +8,38 @@
                 <span>-</span>
                 <span class="text-muted-foreground">{{ moment(slot.end_date).format("HH:mm") }}</span>
             </div>
+            <div v-if="['claimed', 'claim_open'].includes(slot.state)" class="flex flex-col gap-2 mt-2">
+                <div class="flex gap-2 items-center">
+                    <Avatar class="h-8 w-8 mr-2">
+                        <AvatarImage :src="`/storage/avatars/${slot.claims.invitee_attendee.avatar_url}`" alt="@shadcn" />
+                        <AvatarFallback>{{ slot.claims.invitee_attendee.name_initials }}</AvatarFallback>
+                    </Avatar>
+                    <p class="text-sm font-medium leading-none">
+                        {{ slot.claims.invitee_attendee.name_full }}
+                    </p>
+                </div>
+                <div class="flex gap-2 items-center">
+                    <Avatar class="h-8 w-8 mr-2">
+                        <AvatarImage :src="`/storage/avatars/${slot.claims.inviter_attendee.avatar_url}`" alt="@shadcn" />
+                        <AvatarFallback>{{ slot.claims.inviter_attendee.name_initials }}</AvatarFallback>
+                    </Avatar>
+                    <p class="text-sm font-medium leading-none">
+                        {{ slot.claims.inviter_attendee.name_full }}
+                    </p>
+                </div>
+            </div>
         </div>
         <div class="flex gap-2 items-center">
+            <!-- TODO
+            <Button variant="secondary" size="icon" v-if="event.room_slot_team_confirmation_required">
+                <i class="ri-check-line text-lg"></i>
+            </Button>
+            <Button variant="secondary" size="icon" v-if="event.room_slot_team_confirmation_required">
+                <i class="ri-close-line text-lg"></i>
+            </Button> -->
             <DropdownMenu>
                 <DropdownMenuTrigger as-child>
-                    <Button variant="secondary">
+                    <Button variant="secondary" :disabled="slot.state === 'claimed'">
                         <span>{{ stateToText(slot.state) }}</span>
                     </Button>
                 </DropdownMenuTrigger>
@@ -80,6 +107,8 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {Link} from "@inertiajs/vue3";
+import {Card, CardContent, CardHeader} from "@/components/ui/card";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 
 const props = defineProps({
     event: {

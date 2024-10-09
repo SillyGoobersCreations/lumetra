@@ -1,4 +1,6 @@
 <template>
+    <Head :title="attendee.name_full" />
+
     <EventLayout :event="event">
         <section class="attendee-deactivated" v-if="!attendee.active">
             <Alert variant="destructive">
@@ -182,22 +184,8 @@
                         </template>
                     </template>
                 </div>
-
-                <!-- OLD -->
-                <!--
-                <div class="actions" v-if="attendee.id !== currentAttendee.id">
-                    <button
-                        @click="connectModal?.open()"
-                        class="primary"
-                        v-if="connection === null"
-                    >
-                    </button>
-                    <template v-if="connection !== null">
-                    </template>
-                </div> -->
             </div>
             <div>
-                <!-- TODO: Visibility -->
                 <Card>
                     <CardHeader>
                         <CardTitle>Contact information</CardTitle>
@@ -243,7 +231,7 @@
 <script setup lang="ts">
 import moment from "moment";
 import EventLayout from "@/Layouts/EventLayout.vue";
-import {Link, useForm, usePage} from "@inertiajs/vue3";
+import {Head, Link, useForm, usePage} from "@inertiajs/vue3";
 import {computed, ref} from "vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";

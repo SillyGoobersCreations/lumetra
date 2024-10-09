@@ -1,4 +1,6 @@
 <template>
+    <Head title="Create an account" />
+
     <AuthLayout>
         <AuthHeader
             title="Create an account"
@@ -43,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import {Head, Link} from '@inertiajs/vue3';
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 import {useForm} from "@inertiajs/vue3";
 import AuthHeader from "@/components/Auth/AuthHeader.vue";

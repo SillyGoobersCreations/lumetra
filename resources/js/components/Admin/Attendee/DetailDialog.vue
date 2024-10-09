@@ -80,16 +80,20 @@
                     </CardFooter>
                 </Card>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="flex flex-col md:grid md:grid-cols-2 gap-4">
                     <Card>
                         <CardHeader>
                             <CardTitle>Confirmation Status</CardTitle>
                         </CardHeader>
-                        <CardContent v-if="attendee.confirmed" class="grow">
-                            <div class="text-green-400">This attendee is confirmed.</div>
-                        </CardContent>
-                        <CardContent v-else class="grow">
-                            <div class="text-red-400">This attendee is not confirmed.</div>
+                        <CardContent class="grow">
+                            <div class="text-green-400" v-if="attendee.confirmed">This attendee is confirmed.</div>
+                            <div class="text-red-400" v-else>This attendee is not confirmed.</div>
+
+                            <div class="mt-2 flex flex-wrap gap-2 items-center">
+                                <span class="text-muted-foreground">Confirmation Key:</span>
+                                <Badge variant="secondary" v-if="event.confirmation_personalized">{{ attendee.confirmation_key }}</Badge>
+                                <Badge variant="secondary" v-else>{{ event.confirmation_key || 'n/a' }}</Badge>
+                            </div>
                         </CardContent>
                         <CardFooter class="justify-end">
                             <Button
@@ -145,6 +149,7 @@
                                     method="post"
                                     as="button"
                                     type="button"
+                                    disabled
                                 >
                                     <span class="ri-delete-bin-line mr-2 text-lg"></span>
                                     <span>Remove</span>

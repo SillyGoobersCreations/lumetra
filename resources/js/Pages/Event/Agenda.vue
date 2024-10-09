@@ -1,4 +1,6 @@
 ﻿<template>
+    <Head title="Agenda" />
+
     <EventLayout :event="event">
         <section class="page-event-agenda">
             <div>
@@ -90,7 +92,7 @@ import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {EventRoomSlotClaim} from "@/types/models/EventRoomSlotClaim";
 import {computed} from "vue";
-import {Link, usePage} from "@inertiajs/vue3";
+import {Head, Link, usePage} from "@inertiajs/vue3";
 import {Avatar} from "@/components/ui/avatar";
 import {Button} from "@/components/ui/button";
 

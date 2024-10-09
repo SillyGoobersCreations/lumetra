@@ -1,4 +1,5 @@
 <template>
+    <Head title="Global Settings" />
     <DefaultLayout>
         <section class="attendee-settings">
             <Sidebar :attendees="user.attendees" />
@@ -52,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import {useForm} from "@inertiajs/vue3";
+import {Head, useForm} from "@inertiajs/vue3";
 import {PropType} from "@vue/runtime-dom";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import {User} from "@/types/models/User";

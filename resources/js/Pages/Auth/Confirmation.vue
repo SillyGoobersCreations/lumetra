@@ -1,4 +1,6 @@
 <template>
+    <Head title="Confirm Profile" />
+
     <AuthLayout>
         <AuthHeader
             title="Confirm your profile"
@@ -39,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import {Link, useForm, usePage} from '@inertiajs/vue3';
+import {Head, Link, useForm, usePage} from '@inertiajs/vue3';
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 import {computed} from "vue";
 import AuthHeader from "@/components/Auth/AuthHeader.vue";

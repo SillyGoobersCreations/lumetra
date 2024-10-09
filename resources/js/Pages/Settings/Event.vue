@@ -1,4 +1,5 @@
 <template>
+    <Head :title="event.title" />
     <EventLayout :event="event">
         <section class="attendee-settings">
             <Sidebar :attendees="user.attendees" />
@@ -186,6 +187,7 @@
 </template>
 
 <script setup lang="ts">
+import { Head } from '@inertiajs/vue3';
 import {Link, useForm} from "@inertiajs/vue3";
 import EventLayout from "@/Layouts/EventLayout.vue";
 import {PropType} from "@vue/runtime-dom";
