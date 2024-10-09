@@ -34,7 +34,7 @@ class HandleInertiaRequests extends Middleware
     {
         $userAttendees = [];
         if($request->user() != null) {
-            $userAttendees = Attendee::where(['user_id' => Auth::user()->id])->with(['event'])->get();
+            $userAttendees = Attendee::where(['user_id' => Auth::user()->id])->with(['event', 'notifications'])->get();
         }
 
         return [

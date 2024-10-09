@@ -1,6 +1,7 @@
 import {User} from "@/types/models/User";
 import {AttendeeContactInfo} from "@/types/models/AttendeeContactInfo";
 import {Event} from "@/types/models/Event";
+import {AttendeeNotification} from "@/types/models/AttendeeNotification";
 
 export interface Attendee {
     id: string;
@@ -19,6 +20,7 @@ export interface Attendee {
     event_id: string;
     user_id: string;
     contact_infos: AttendeeContactInfo[];
+    notifications: AttendeeNotification[];
     contact_infos_count: number | null;
     event: Event | null;
     user: User | null;

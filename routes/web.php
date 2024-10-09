@@ -4,6 +4,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\AttendeeController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 
@@ -58,6 +59,11 @@ Route::middleware('auth')->group(function () {
 // ROOMS
 Route::middleware('auth')->group(function () {
     Route::get('/events/{eventId}/rooms/{date}', [ChatController::class, 'getRooms'])->name('events.rooms.index');
+});
+
+// NOTIFICATIONS
+Route::middleware('auth')->group(function () {
+    Route::get('/events/{eventId}/notifications/{notificationId}/clear', [NotificationController::class, 'doClearNotification'])->name('events.notifications.clear');
 });
 
 // AUTH

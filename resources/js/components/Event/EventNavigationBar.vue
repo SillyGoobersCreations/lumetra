@@ -131,6 +131,57 @@
                     </DropdownMenuGroup>
                 </DropdownMenuContent>
             </DropdownMenu>
+            <DropdownMenu>
+                <DropdownMenuTrigger as-child>
+                    <Button variant="ghost" size="icon" class="relative">
+                        <i class="ri-notification-2-line text-lg"></i>
+                        <span class="w-2 h-2 bg-red-600 rounded-full absolute bottom-2 right-2" v-if="currentAttendee.notifications.length > 0"></span>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent class="w-[350px]" align="end">
+                    <DropdownMenuLabel class="font-normal flex">
+                        <div class="flex flex-col space-y-1">
+                            <p class="text-sm font-medium leading-none">
+                                Notifications
+                            </p>
+                        </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                        <template
+                            v-for="(notification, n) in currentAttendee.notifications"
+                            :key="notification.id"
+                        >
+                            <DropdownMenuItem
+                                as-child
+                                class="grid grid-cols-[auto_1fr] gap-2 items-start p-2"
+                            >
+                                <Link
+                                    :href="route('events.notifications.clear', {
+                                        eventId: currentAttendee.event.id,
+                                        notificationId: notification.id,
+                                    })"
+                                >
+                                    <i :class="`ri-${getIconByType(notification.type)}-line text-lg`"></i>
+
+                                    <div class="flex flex-col gap-1">
+                                        <span class="font-bold">{{ getLabelByType(notification.type) }}</span>
+                                        <span class="text-muted-foreground">{{ notification.text }}</span>
+                                    </div>
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator v-if="n < currentAttendee.notifications.length - 1" />
+                        </template>
+                        <template v-if="currentAttendee.notifications.length === 0">
+                            <div class="p-3 py-6 flex flex-col items-center">
+                                <i class="ri-notification-off-line text-3xl mb-2"></i>
+                                <h1>All caught up!</h1>
+                                <p class="text-muted-foreground">You have no unread notifications.</p>
+                            </div>
+                        </template>
+                    </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
         </template>
         <template #user v-else>
             <NavigationBarItem
@@ -158,6 +209,58 @@
                         </p>
                     </div>
                 </div>
+                <DropdownMenu>
+                    <DropdownMenuTrigger as-child>
+                        <Button variant="ghost" class="flex gap-2 w-full justify-start">
+                            <i class="ri-notification-2-line text-lg mr-2"></i>
+                            <span class="grow text-start">Notifications</span>
+                            <Badge>{{ currentAttendee.notifications.length }}</Badge>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent class="w-[350px]" align="end">
+                        <DropdownMenuLabel class="font-normal flex">
+                            <div class="flex flex-col space-y-1">
+                                <p class="text-sm font-medium leading-none">
+                                    Notifications
+                                </p>
+                            </div>
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuGroup>
+                            <template
+                                v-for="(notification, n) in currentAttendee.notifications"
+                                :key="notification.id"
+                            >
+                                <DropdownMenuItem
+                                    as-child
+                                    class="grid grid-cols-[auto_1fr] gap-2 items-start p-2"
+                                >
+                                    <Link
+                                        :href="route('events.notifications.clear', {
+                                        eventId: currentAttendee.event.id,
+                                        notificationId: notification.id,
+                                    })"
+                                    >
+                                        <i :class="`ri-${getIconByType(notification.type)}-line text-lg`"></i>
+
+                                        <div class="flex flex-col gap-1">
+                                            <span class="font-bold">{{ getLabelByType(notification.type) }}</span>
+                                            <span class="text-muted-foreground">{{ notification.text }}</span>
+                                        </div>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator v-if="n < currentAttendee.notifications.length - 1" />
+                            </template>
+                            <template v-if="currentAttendee.notifications.length === 0">
+                                <div class="p-3 py-6 flex flex-col items-center">
+                                    <i class="ri-notification-off-line text-3xl mb-2"></i>
+                                    <h1>All caught up!</h1>
+                                    <p class="text-muted-foreground">You have no unread notifications.</p>
+                                </div>
+                            </template>
+                        </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                </DropdownMenu>
                 <NavigationBarItem
                     :href="route('events.attendees.detail', { eventId: currentAttendee.event.id, attendeeId: currentAttendee.id })"
                     icon="user"
@@ -243,6 +346,9 @@ import {
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Separator} from "@/components/ui/separator";
 import {Label} from "@/components/ui/label";
+import {getLabel} from "radix-vue/dist/Slider/utils";
+import {CardContent} from "@/components/ui/card";
+import {Badge} from "@/components/ui/badge";
 
 const props = defineProps({
     event: {
@@ -265,6 +371,46 @@ const currentAttendee = computed(() => {
 
     return foundAttendee;
 });
+
+function getIconByType(type) {
+    switch(type) {
+        default:
+        case 'system':
+            return "settings-3";
+        case 'note_new':
+            return "sticky-note";
+        case 'connection_new':
+            return "shake-hands";
+        case 'connection_answer':
+            return "shake-hands";
+        case 'claim_new':
+            return "calendar-2";
+        case 'claim_answer':
+            return "calendar-2";
+        case 'chat_new':
+            return "chat-1";
+    }
+}
+
+function getLabelByType(type) {
+    switch(type) {
+        default:
+        case 'system':
+            return "System";
+        case 'note_new':
+            return "New Note";
+        case 'connection_new':
+            return "New Connection Request";
+        case 'connection_answer':
+            return "Connection Request";
+        case 'claim_new':
+            return "New Meet Invite";
+        case 'claim_answer':
+            return "Meet Invite Response";
+        case 'chat_new':
+            return "Chat Message";
+    }
+}
 </script>
 
 <style lang="scss" scoped>
