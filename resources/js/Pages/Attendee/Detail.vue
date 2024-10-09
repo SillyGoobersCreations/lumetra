@@ -345,7 +345,7 @@ function getContactInfoLink(type: string, value: string) {
     @apply my-10 md:my-20 max-w-xl mx-auto;
 }
 .attendee-detail {
-    @apply grid grid-cols-[2fr_3fr] gap-4 my-8;
+    @apply flex flex-col md:grid md:grid-cols-[2fr_3fr] gap-4 my-8;
 
     & > div {
         @apply flex flex-col gap-4;
