@@ -97,17 +97,14 @@ import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {EventRoom} from "@/types/models/EventRoom";
 import {EventRoomSlot} from "@/types/models/EventRoomSlot";
-import {computed} from "vue";
 import {Button} from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {Link} from "@inertiajs/vue3";
-import {Card, CardContent, CardHeader} from "@/components/ui/card";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 
 const props = defineProps({

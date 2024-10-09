@@ -58,21 +58,9 @@ import AdminLayout from "@/Layouts/AdminLayout.vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {Attendee} from "@/types/models/Attendee";
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription, DialogFooter,
-    DialogHeader, DialogScrollContent,
-    DialogTitle,
-    DialogTrigger
-} from "@/components/ui/dialog";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import FormRow from "@/components/Common/FormRow.vue";
-import moment from "moment/moment";
-import {Head, Link} from "@inertiajs/vue3";
+import {Head} from "@inertiajs/vue3";
 import DetailDialog from "@/components/Admin/Attendee/DetailDialog.vue";
 
 defineProps({

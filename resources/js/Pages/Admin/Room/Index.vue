@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Card, CardContent} from "@/components/ui/card";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {Badge} from "@/components/ui/badge";
@@ -66,7 +66,6 @@ import AddDialog from "@/components/Admin/Rooms/AddDialog.vue";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import EditDialog from "@/components/Admin/Rooms/EditDialog.vue";
 import {Head, Link} from "@inertiajs/vue3";
-import {DialogTrigger} from "@/components/ui/dialog";
 
 defineProps({
     event: {

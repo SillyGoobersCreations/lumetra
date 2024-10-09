@@ -78,7 +78,7 @@ import AdminLayout from "@/Layouts/AdminLayout.vue";
 import {Button} from "@/components/ui/button";
 import {Head, Link} from "@inertiajs/vue3";
 import EditDialog from "@/components/Admin/Rooms/EditDialog.vue";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import SetupSlotsDialog from "@/components/Admin/Rooms/SetupSlotsDialog.vue";
 import EventRoomSlot from "@/components/Admin/Rooms/EventRoomSlot.vue";

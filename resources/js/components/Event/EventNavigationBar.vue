@@ -346,8 +346,6 @@ import {
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Separator} from "@/components/ui/separator";
 import {Label} from "@/components/ui/label";
-import {getLabel} from "radix-vue/dist/Slider/utils";
-import {CardContent} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 
 const props = defineProps({

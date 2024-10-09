@@ -195,14 +195,14 @@ import {Event} from "@/types/models/Event";
 import {Attendee} from "@/types/models/Attendee";
 import {User} from "@/types/models/User";
 import Sidebar from "@/components/Settings/Sidebar.vue";
-import {computed, inject, ref} from "vue";
+import {inject} from "vue";
 import { useToast } from '@/components/ui/toast/use-toast';
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import FormRow from "@/components/Common/FormRow.vue";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
-import {Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Badge} from "@/components/ui/badge";
 
 const { toast } = useToast();

@@ -71,10 +71,10 @@
 <script setup lang="ts">
 import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
-import {onMounted, ref, watch} from "vue";
+import {onMounted, ref} from "vue";
 import FormRow from "@/components/Common/FormRow.vue";
 import {Input} from "@/components/ui/input";
-import {Link, useForm} from "@inertiajs/vue3";
+import {useForm} from "@inertiajs/vue3";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {toast} from "@/components/ui/toast";

@@ -231,8 +231,8 @@
 <script setup lang="ts">
 import moment from "moment";
 import EventLayout from "@/Layouts/EventLayout.vue";
-import {Head, Link, useForm, usePage} from "@inertiajs/vue3";
-import {computed, ref} from "vue";
+import {Head, Link, usePage} from "@inertiajs/vue3";
+import {computed} from "vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {Attendee} from "@/types/models/Attendee";

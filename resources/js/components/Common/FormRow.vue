@@ -12,7 +12,6 @@
 import {Label} from "@/components/ui/label";
 import {cva} from "class-variance-authority";
 import { cn } from '@/lib/utils';
-import {Primitive} from "radix-vue";
 import {PropType} from "@vue/runtime-dom";
 
 defineProps({

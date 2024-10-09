@@ -50,7 +50,6 @@ import AuthHeader from "@/components/Auth/AuthHeader.vue";
 import AuthFormItem from "@/components/Common/FormRow.vue";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
-import {CheckboxIndicator, CheckboxRoot} from "radix-vue";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Label} from "@/components/ui/label";
 

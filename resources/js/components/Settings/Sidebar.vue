@@ -33,9 +33,7 @@
 <script lang="ts" setup>
 import {Link, usePage} from "@inertiajs/vue3";
 import {PropType} from "@vue/runtime-dom";
-import {User} from "@/types/models/User";
 import {Attendee} from "@/types/models/Attendee";
-import NavigationBarItem from "@/components/Common/NavigationBarItem.vue";
 import {Button} from "@/components/ui/button";
 
 defineProps({

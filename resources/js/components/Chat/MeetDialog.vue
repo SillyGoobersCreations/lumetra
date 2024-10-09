@@ -111,7 +111,7 @@ import {computed, ref, watch} from "vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {AttendeeConnection} from "@/types/models/AttendeeConnection";
-import {useForm, usePage} from "@inertiajs/vue3";
+import {usePage} from "@inertiajs/vue3";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {EventRoom} from "@/types/models/EventRoom";
 
