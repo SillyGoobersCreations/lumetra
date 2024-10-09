@@ -1,4 +1,7 @@
 # Lumetra
+Lumetra is an open-source conference meetup platform.
+
+**Created for GodotCon 2024**
 
 ## Development Setup
 **You might need to run ``chmod 777 -R .`` after cloning this repo to run the system properly.**
@@ -32,3 +35,6 @@ Gives an existing attendee organizer permissions
 
 ### lumetra:organizer:remove
 Takes an existing attendees organizer permissions
+
+## License
+This project is licensed under the GPLv3 license. To learn more, visit [LICENSE](LICENSE)
