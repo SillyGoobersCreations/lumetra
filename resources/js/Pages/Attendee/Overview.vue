@@ -1,4 +1,6 @@
 <template>
+    <Head title="Attendees" />
+
     <EventLayout :event="event">
         <section class="attendee-directory">
             <Card>
@@ -76,6 +78,7 @@ import {Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectVal
 import {Label} from "@/components/ui/label";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
+import {Head} from "@inertiajs/vue3";
 
 const props = defineProps({
     event: {

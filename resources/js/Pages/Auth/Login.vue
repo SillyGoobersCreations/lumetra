@@ -1,4 +1,6 @@
 <template>
+    <Head title="Login" />
+
     <AuthLayout>
         <AuthHeader
             title="Log into an existing account"
@@ -41,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import {Head, Link} from '@inertiajs/vue3';
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 import {useForm} from "@inertiajs/vue3";
 import AuthHeader from "@/components/Auth/AuthHeader.vue";

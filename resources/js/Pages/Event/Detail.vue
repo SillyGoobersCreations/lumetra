@@ -1,4 +1,6 @@
 <template>
+    <Head :title="event.title" />
+
     <EventLayout :event="event" v-if="userAttendee">
         <Alert v-if="event.state !== 'public'" variant="destructive" class="mb-5">
             <AlertTitle>This event is not public.</AlertTitle>
@@ -155,7 +157,7 @@
 </template>
 
 <script setup lang="ts">
-import {Link, usePage} from '@inertiajs/vue3';
+import {Head, Link, usePage} from '@inertiajs/vue3';
 import EventLayout from "@/Layouts/EventLayout.vue";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import EventOverviewGeneral from "@/components/Event/EventOverview/EventOverviewGeneral.vue";

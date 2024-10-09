@@ -1,6 +1,6 @@
 <template>
     <Button
-        variant="secondary"
+        variant="ghost"
         size="icon"
         @click="toggleTheme"
     >

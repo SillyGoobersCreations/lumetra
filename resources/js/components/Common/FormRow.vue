@@ -36,7 +36,7 @@ const buttonVariants = cva(
         variants: {
             variant: {
                 default: 'flex flex-col',
-                wide: 'grid grid-cols-[1fr_2fr] items-center',
+                wide: 'flex flex-col md:grid md:grid-cols-[1fr_2fr] md:items-center',
             },
         },
         defaultVariants: {

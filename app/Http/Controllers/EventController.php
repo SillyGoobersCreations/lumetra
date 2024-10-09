@@ -99,10 +99,6 @@ class EventController extends Controller
         ]);
     }
 
-    public function showNotifications(string $eventId): Response {
-        // TODO: Show all notifications from system events for the authenticated user
-    }
-
     public function doEnroll(string $eventId): RedirectResponse {
         $user = Auth::user();
         $existingEnrollment = Attendee::where(['event_id' => $eventId, 'user_id' => $user->id])->first();

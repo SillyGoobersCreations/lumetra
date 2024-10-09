@@ -4,6 +4,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\AttendeeController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +17,6 @@ Route::get('/events/{eventId}', [EventController::class, 'showDetail'])->name('e
 
 Route::middleware('auth')->group(function () {
     Route::get('/events/{eventId}/agenda', [EventController::class, 'showAgenda'])->name('events.detail.agenda');
-    Route::get('/events/{eventId}/notifications', [EventController::class, 'showNotifications'])->name('events.detail.notifications');
     Route::get('/events/{eventId}/enroll', [EventController::class, 'doEnroll'])->name('events.detail.enroll');
     Route::get('/events/{eventId}/leave', [EventController::class, 'doLeave'])->name('events.detail.leave');
 });
@@ -58,6 +58,11 @@ Route::middleware('auth')->group(function () {
 // ROOMS
 Route::middleware('auth')->group(function () {
     Route::get('/events/{eventId}/rooms/{date}', [ChatController::class, 'getRooms'])->name('events.rooms.index');
+});
+
+// NOTIFICATIONS
+Route::middleware('auth')->group(function () {
+    Route::get('/events/{eventId}/notifications/{notificationId}/clear', [NotificationController::class, 'doClearNotification'])->name('events.notifications.clear');
 });
 
 // AUTH

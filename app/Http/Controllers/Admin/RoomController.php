@@ -17,7 +17,7 @@ class RoomController extends Controller
 {
     public function showIndex(string $eventId): Response {
         $event = Event::findOrFail($eventId);
-        $event->load(['rooms']);
+        $event->load(['rooms', 'rooms.slots']);
 
         return Inertia::render('Admin/Room/Index', [
             'event' => $event,
@@ -26,7 +26,7 @@ class RoomController extends Controller
 
     public function showDetail(string $eventId, string $roomId): Response {
         $event = Event::findOrFail($eventId);
-        $room = $event->rooms()->with('slots')->findOrFail($roomId);
+        $room = $event->rooms()->with('slots', 'slots.claims', 'slots.claims.inviter_attendee', 'slots.claims.invitee_attendee')->findOrFail($roomId);
 
         $startDate = Carbon::parse($event->start_date);
         $endDate = Carbon::parse($event->end_date);

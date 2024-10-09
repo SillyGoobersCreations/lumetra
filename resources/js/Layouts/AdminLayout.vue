@@ -2,8 +2,9 @@
     <section class="layout-admin">
         <aside>
             <div class="logo">
-                <img :src="LumetraLightLogo" alt="Lumetra Logo" class="dark:hidden block" />
-                <img :src="LumetraDarkLogo" alt="Lumetra Logo" class="dark:block hidden" />
+                <img :src="LumetraLightLogo" alt="Lumetra Logo" class="dark:hidden hidden md:block" />
+                <img :src="LumetraDarkLogo" alt="Lumetra Logo" class="dark:md:block hidden" />
+                <img :src="LumetraIcon" alt="Lumetra Logo" class="block md:hidden" />
             </div>
 
             <Separator />
@@ -20,7 +21,7 @@
                     </Link>
                 </Button>
                 <Button
-                    variant="ghost"
+                    :variant="$page.url.includes('notes') ? 'secondary' : 'ghost'"
                     class="justify-start"
                     as-child
                 >
@@ -72,8 +73,8 @@
                     as-child
                 >
                     <Link :href="route('events.detail', { eventId: event.id })">
-                        <i class="ri-arrow-right-up-line mr-2 text-lg"></i>
-                        <span>Go to event</span>
+                        <i class="ri-arrow-right-up-line md:mr-2 text-lg"></i>
+                        <span class="hidden md:block">Go to event</span>
                     </Link>
                 </Button>
 
@@ -92,6 +93,7 @@
 <script setup lang="ts">
 import LumetraLightLogo from "../../img/lumetra-logo-onlight.svg";
 import LumetraDarkLogo from "../../img/lumetra-logo-ondark.svg";
+import LumetraIcon from "../../img/lumetra-icon.svg";
 import {Separator} from "@/components/ui/separator";
 import {Button} from "@/components/ui/button";
 import {Link} from "@inertiajs/vue3";
@@ -148,43 +150,32 @@ defineProps({
     }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
     .layout-admin {
-        @apply grid grid-cols-[300px_1fr] min-h-[100dvh];
+        @apply grid-cols-[300px_1fr];
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .layout-admin {
+        @apply grid-cols-[60px_1fr];
 
         & aside {
-            @apply border-r flex flex-col;
-
             & .logo {
-                @apply p-4 h-[60px] flex items-center;
-
-                & img {
-                    @apply h-5;
-                }
+                @apply flex items-center justify-center;
             }
-
             & nav {
-                @apply border-b p-2 flex flex-col gap-1;
-            }
-        }
-        & main {
-            @apply flex flex-col;
+                & a {
+                    @apply p-0 h-10 w-10 flex items-center justify-center;
 
-            & header {
-                @apply p-4 h-[60px] flex items-center w-full gap-2;
-
-                & h4 {
-                    @apply text-xl font-semibold tracking-tight block grow;
+                    & i {
+                        @apply m-0;
+                    }
+                    & span {
+                        @apply hidden;
+                    }
                 }
             }
-
-            & .content {
-                @apply flex flex-col;
-            }
-        }
-
-        @media screen and (max-width: 1000px) {
-            @apply grid-cols-[200px_1fr];
         }
     }
 }

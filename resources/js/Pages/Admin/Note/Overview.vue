@@ -1,4 +1,6 @@
 <template>
+    <Head title="Notes" />
+
     <AdminLayout title="Notes" :event="event">
         <template #header>
             <AddDialog :event="event" />
@@ -53,7 +55,7 @@ import {Event} from "@/types/models/Event";
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
 import AddDialog from "@/components/Admin/Note/AddDialog.vue";
-import {Link} from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 
 defineProps({
     event: {

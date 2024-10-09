@@ -1,4 +1,6 @@
 <template>
+    <Head title="Events" />
+
     <DefaultLayout>
         <div class="events-grid">
             <EventButton
@@ -11,6 +13,7 @@
 </template>
 
 <script setup lang="ts">
+import {Head} from "@inertiajs/vue3";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import EventButton from "@/components/Event/EventButton.vue";
 import {PropType} from "@vue/runtime-dom";

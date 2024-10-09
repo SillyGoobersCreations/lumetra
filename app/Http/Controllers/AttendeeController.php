@@ -76,7 +76,15 @@ class AttendeeController extends Controller
             'state' => AttendeeConnection::STATE_PENDING,
             'intro_text' => $request->validated('intro_text'),
         ]);
-        $newRequest->save();
+
+        $inviteeAttendee->notifications()->create([
+            'type' => 'connection_new',
+            'text' => 'You received a new connection request from ' . $inviterAttendee->name_full,
+            'link' => route('events.chats.detail', [
+                'eventId' => $eventId,
+                'attendeeId' => $inviterAttendee->id,
+            ]),
+        ]);
 
         return Redirect::route('events.attendees.detail', ['eventId' => $eventId, 'attendeeId' => $attendeeId]);
     }
@@ -96,6 +104,7 @@ class AttendeeController extends Controller
         $user = Auth::user();
         $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
         $request = AttendeeConnection::findOrFail($requestId);
+        $inviterAttendee = Attendee::where(['id' => $attendeeId, 'event_id' => $eventId])->firstOrFail();
 
         if($request->invitee_attendee_id != $userAttendee->id) {
             abort(403, "Only the invitee can accept the request.");
@@ -104,7 +113,14 @@ class AttendeeController extends Controller
         $request->state = AttendeeConnection::STATE_CONFIRMED;
         $request->save();
 
-        // TODO: Notification to inviter_attendee_id
+        $inviterAttendee->notifications()->create([
+            'type' => 'connection_answer',
+            'text' => $userAttendee->name_full . ' accepted your connection request',
+            'link' => route('events.chats.detail', [
+                'eventId' => $eventId,
+                'attendeeId' => $userAttendee->id,
+            ]),
+        ]);
 
         return Redirect::route('events.attendees.detail', ['eventId' => $eventId, 'attendeeId' => $request->inviter_attendee_id]);
     }
@@ -120,8 +136,6 @@ class AttendeeController extends Controller
 
         $request->state = AttendeeConnection::STATE_DECLINED;
         $request->save();
-
-        // TODO: Notification to inviter_attendee_id
 
         return Redirect::route('events.attendees.detail', ['eventId' => $eventId, 'attendeeId' => $request->inviter_attendee_id]);
     }

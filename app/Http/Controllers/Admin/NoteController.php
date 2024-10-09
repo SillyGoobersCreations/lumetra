@@ -52,6 +52,17 @@ class NoteController extends Controller
             'sticky' => $data['sticky'],
         ]);
 
+        $attendees = $event->attendees()->get();
+        foreach ($attendees as $attendee) {
+            $attendee->notifications()->create([
+                'type' => 'note_new',
+                'text' => 'A new note has been released by the organizer.',
+                'link' => route('events.detail.agenda', [
+                    'eventId' => $eventId,
+                ]),
+            ]);
+        }
+
         return redirect()->route('events.admin.notes', ['eventId' => $event->id]);
     }
 }

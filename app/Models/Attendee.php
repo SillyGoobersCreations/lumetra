@@ -97,6 +97,11 @@ class Attendee extends Model
         return $this->hasMany(AttendeeContactInfo::class, 'attendee_id', 'id');
     }
 
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(AttendeeNotification::class, 'attendee_id', 'id');
+    }
+
     public function connections()
     {
         return AttendeeConnection::where('invitee_attendee_id', $this->id)

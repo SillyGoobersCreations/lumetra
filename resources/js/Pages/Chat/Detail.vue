@@ -1,4 +1,6 @@
 <template>
+    <Head title="Chat" />
+
     <EventLayout :event="event">
         <section
             class="chat-overview"
@@ -101,7 +103,7 @@
 </template>
 
 <script setup lang="ts">
-import {Link, useForm, usePage} from '@inertiajs/vue3';
+import {Head, Link, useForm, usePage} from '@inertiajs/vue3';
 import EventLayout from "@/Layouts/EventLayout.vue";
 import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";

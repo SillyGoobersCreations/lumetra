@@ -1,4 +1,6 @@
 <template>
+    <Head title="Events" />
+
     <AuthLayout>
         <AuthHeader
             title="Select an event"
@@ -38,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import {Link, usePage} from '@inertiajs/vue3';
+import {Head, Link, usePage} from '@inertiajs/vue3';
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 import {computed} from "vue";
 import Avatar from "@/components/Common/Avatar.vue";
