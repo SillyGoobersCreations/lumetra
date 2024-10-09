@@ -67,6 +67,7 @@ class Event extends Model
         'title',
         'state',
         'logo',
+        'organizer',
         'description',
         'start_date',
         'end_date',

@@ -2,7 +2,6 @@
     <EventLayout :event="event" v-if="userAttendee">
         <Alert v-if="event.state !== 'public'" variant="destructive" class="mb-5">
             <AlertTitle>This event is not public.</AlertTitle>
-            <AlertDescription>You can see this event, because you are an event organizer.</AlertDescription>
         </Alert>
         <section class="event-detail-enrolled">
             <div>
@@ -112,7 +111,6 @@
     <DefaultLayout v-else>
         <Alert v-if="event.state !== 'public'" variant="destructive" class="mb-5">
             <AlertTitle>This event is not public.</AlertTitle>
-            <AlertDescription>You can see this event, because you are an event organizer.</AlertDescription>
         </Alert>
         <section class="event-detail">
             <div>
