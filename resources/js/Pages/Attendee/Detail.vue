@@ -204,12 +204,12 @@
                     </CardHeader>
                     <CardContent>
                         <div
-                            v-if="attendee.contact_infos.length > 0"
+                            v-if="contactInfos.length > 0"
                             class="flex flex-col gap-4"
                         >
                             <div
                                 class="flex gap-2 items-center"
-                                v-for="contact_info in attendee.contact_infos"
+                                v-for="contact_info in contactInfos"
                                 :key="contact_info.id"
                             >
                                 <i :class="`${getContactInfoIcon(contact_info.type)} text-lg`"></i>
@@ -255,6 +255,7 @@ import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components
 import {Label} from "@/components/ui/label";
 import {Button} from "@/components/ui/button";
 import ConnectionRequestDialog from "@/components/Attendee/ConnectionRequestDialog.vue";
+import {AttendeeContactInfo} from "@/types/models/AttendeeContactInfo";
 
 const props = defineProps({
     event: {
@@ -264,6 +265,10 @@ const props = defineProps({
     attendee: {
         type: Object as PropType<Attendee>,
         default: false,
+    },
+    contactInfos: {
+        type: Array as PropType<AttendeeContactInfo[]>,
+        default: [],
     },
     connection: {
         type: Object as PropType<AttendeeConnection>,
@@ -374,120 +379,4 @@ function getContactInfoLink(type: string, value: string) {
         @apply mt-2 text-sm text-red-400;
     }
 }
-/*
-.avatar-and-name {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-
-    & .avatar {
-        margin: 0 auto;
-    }
-    & .name {
-        text-align: center;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-
-        & span {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-
-            &:nth-child(1) {
-                font-size: 1.15rem;
-            }
-            &:nth-child(2) {
-                color: rgb(var(--color-base-400));
-            }
-        }
-    }
-}
-.details {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    overflow: hidden;
-
-    & .info-item {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-
-        & span {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        & span:nth-child(2) {
-            color: rgb(var(--color-base-400));
-        }
-    }
-}
-.description {
-    line-height: 1.5rem;
-}
-.actions {
-    display: flex;
-    gap: 5px;
-
-    & button, & .button {
-        flex-grow: 1;
-    }
-}
-.contact-infos {
-    display: flex;
-    flex-direction: column;
-
-    & .item {
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        gap: 10px;
-        align-items: center;
-        padding: 10px;
-
-        &:not(:last-of-type) {
-            border-bottom: 1px solid rgb(var(--color-base-200));
-        }
-
-        & > *[class^="ri-"] {
-            font-size: 22px;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 100px;
-            background: rgb(var(--color-primary-500));
-            color: rgb(var(--color-primary-50));
-        }
-        & > span:nth-child(2) {
-        }
-    }
-}
-.modal-connect {
-    & form {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-
-        & textarea {
-            flex-grow: 1;
-        }
-        & .error {
-            color: rgb(var(--color-danger-500));
-            font-size: 0.85rem;
-        }
-    }
-
-    & .loading {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 50px 0;
-        height: 100%;
-    }
-} */
 </style>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateSocialLinkEventRequest;
 use App\Http\Requests\SaveAvatarSettingsEventRequest;
 use App\Http\Requests\SaveDescriptionSettingsEventRequest;
 use App\Http\Requests\SaveNameSettingsEventRequest;
@@ -103,7 +104,11 @@ class IndexController extends Controller
         $user = Auth::user();
         $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
 
-        Storage::disk('avatars')->delete($userAttendee->avatar_url);
+        try {
+            Storage::disk('avatars')->delete($userAttendee->avatar_url);
+        } catch (\Exception $e) {
+            logger()->error($e);
+        }
 
         $userAttendee->avatar_url = null;
         $userAttendee->save();
@@ -115,11 +120,37 @@ class IndexController extends Controller
         $user = Auth::user();
         $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
 
-        $userAttendee->description = $request->validated('description');
-        $userAttendee->job_company = $request->validated('job_company');
-        $userAttendee->job_position = $request->validated('job_position');
+        $userAttendee->update([
+            'description' => $request->validated('description'),
+            'job_company' => $request->validated('job_company'),
+            'job_position' => $request->validated('job_position'),
+        ]);
 
-        $userAttendee->save();
+        return redirect(route('settings.event', ['eventId' => $eventId]));
+    }
+
+    public function doCreateEventSocialLink(CreateSocialLinkEventRequest $request, string $eventId): RedirectResponse
+    {
+        $user = Auth::user();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
+
+        $userAttendee->contact_infos()->create([
+            'type' => $request->validated('type'),
+            'value' => $request->validated('value'),
+            'visibility' => $request->validated('visibility'),
+        ]);
+
+        return redirect(route('settings.event', ['eventId' => $eventId]));
+    }
+
+    public function doRemoveEventSocialLink(string $eventId, string $contactInfoId): RedirectResponse
+    {
+        $user = Auth::user();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
+
+        $contactInfo = $userAttendee->contact_infos()->findOrFail($contactInfoId);
+        $contactInfo->delete();
+
         return redirect(route('settings.event', ['eventId' => $eventId]));
     }
 }

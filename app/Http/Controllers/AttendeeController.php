@@ -31,9 +31,21 @@ class AttendeeController extends Controller
         $attendee = Attendee::where(['id' => $attendeeId])->with(['event', 'contact_infos'])->firstOrFail();
         $attendeeConnection = AttendeeConnection::checkConnection($userAttendee->id, $attendee->id)->first();
 
+        $filteredContactInfos = $attendee->contact_infos->filter(function($contactInfo) use ($userAttendee, $attendee, $attendeeConnection) {
+            if ($contactInfo->visibility == 'public') {
+                return true;
+            } elseif ($contactInfo->visibility == 'hidden') {
+                return $userAttendee->id === $attendee->id;
+            } elseif ($contactInfo->visibility == 'connections_only') {
+                return $attendeeConnection !== null || $userAttendee->id === $attendee->id;
+            }
+            return false;
+        })->values();
+
         return Inertia::render('Attendee/Detail', [
             'event' => $event,
             'attendee' => $attendee,
+            'contactInfos' => $filteredContactInfos,
             'connection' => $attendeeConnection,
         ]);
     }

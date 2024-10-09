@@ -106,6 +106,72 @@
                     </Card>
                 </form>
 
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Social links</CardTitle>
+                    </CardHeader>
+                    <CardContent class="flex flex-col gap-2" v-if="attendee.contact_infos.length > 0">
+                        <div
+                            class="grid gap-2 grid-cols-[auto_1fr_auto_auto] items-center"
+                            v-for="attendeeContactInfo in attendee.contact_infos"
+                            :key="attendeeContactInfo.id"
+                        >
+                            <i :class="`${getContactInfoIcon(attendeeContactInfo.type)} text-lg`"></i>
+                            <div class="line-clamp-1 text-xs text-muted-foreground">{{ getContactInfoLink(attendeeContactInfo.type, attendeeContactInfo.value) }}</div>
+                            <Badge variant="secondary" v-if="attendeeContactInfo.visibility === 'public'">Public</Badge>
+                            <Badge variant="secondary" v-if="attendeeContactInfo.visibility === 'connections_only'">Connections</Badge>
+                            <Badge variant="secondary" v-if="attendeeContactInfo.visibility === 'hidden'">Hidden</Badge>
+                            <Button variant="destructive" size="sm" as-child>
+                                <Link :href="route('settings.event.socialLink.remove', {eventId: event.id, socialLinkId: attendeeContactInfo.id})">
+                                    <i class="ri-delete-bin-5-line"></i>
+                                </Link>
+                            </Button>
+                        </div>
+                    </CardContent>
+                    <form @submit.prevent="submitSocialLink">
+                        <CardFooter class="justify-start border-t p-6 gap-2 flex flex-col md:grid md:grid-cols-[auto_1fr_auto_auto]">
+                            <Select v-model="socialLinkForm.type">
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select a service" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="web">Website</SelectItem>
+                                    <SelectItem value="twitter">Twitter / X</SelectItem>
+                                    <SelectItem value="bluesky">BlueSky</SelectItem>
+                                    <SelectItem value="linkedin">LinkedIn</SelectItem>
+                                    <SelectItem value="mastodon">Mastodon</SelectItem>
+                                    <SelectItem value="github">GitHub</SelectItem>
+                                    <SelectItem value="youtube">YouTube</SelectItem>
+                                    <SelectItem value="reddit">Reddit</SelectItem>
+                                    <SelectItem value="discord">Discord</SelectItem>
+                                    <SelectItem value="facebook">Facebook</SelectItem>
+                                </SelectContent>
+                            </Select>
+
+                            <div class="grow">
+                                <Input type="text" v-model="socialLinkForm.value" :disabled="!socialLinkForm.type" />
+                                <div class="text-xs text-muted-foreground" v-if="socialLinkForm.value">
+                                    Preview: {{ getContactInfoLink(socialLinkForm.type, socialLinkForm.value) }}
+                                </div>
+                            </div>
+
+                            <Select v-model="socialLinkForm.visibility">
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Visibiliaty..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="hidden">Hidden</SelectItem>
+                                    <SelectItem value="connections_only">Connections</SelectItem>
+                                    <SelectItem value="public">Public</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Button>
+                                <span class="ri-save-2-line text-lg"></span>
+                            </Button>
+                        </CardFooter>
+                    </form>
+                </Card>
+
                 <Card v-if="attendee.confirmed">
                     <CardHeader>
                         <CardTitle>Confirmation</CardTitle>
@@ -127,13 +193,15 @@ import {Event} from "@/types/models/Event";
 import {Attendee} from "@/types/models/Attendee";
 import {User} from "@/types/models/User";
 import Sidebar from "@/components/Settings/Sidebar.vue";
-import {inject} from "vue";
+import {computed, inject, ref} from "vue";
 import { useToast } from '@/components/ui/toast/use-toast';
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import FormRow from "@/components/Common/FormRow.vue";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
+import {Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Badge} from "@/components/ui/badge";
 
 const { toast } = useToast();
 const emitter = inject('emitter');
@@ -173,6 +241,58 @@ const confirmationForm = useForm({
     confirmation_key: "",
 });
 
+const socialLinkForm = useForm({
+    type: null,
+    value: '',
+    visibility: 'hidden'
+})
+function getContactInfoIcon(type: string) {
+    switch(type) {
+        case "web":
+            return "ri-earth-fill";
+        case "twitter":
+            return "ri-twitter-fill";
+        case "bluesky":
+            return "ri-bluesky-fill";
+        case "facebook":
+            return "ri-facebook-fill";
+        case "linkedin":
+            return "ri-linkedin-fill";
+        case "discord":
+            return "ri-discord-fill";
+        case "mastodon":
+            return "ri-mastodon-fill";
+        case "github":
+            return "ri-github-fill";
+        case "youtube":
+            return "ri-youtube-fill";
+        case "reddit":
+            return "ri-reddit-fill";
+    }
+}
+function getContactInfoLink(type: string, value: string) {
+    switch(type) {
+        case "web":
+        case "mastodon":
+        case "discord":
+            return value;
+        case "twitter":
+            return `https://x.com/${value}`;
+        case "bluesky":
+            return `https://bsky.app/profile/${value}`;
+        case "facebook":
+            return `https://www.facebook.com/${value}`;
+        case "linkedin":
+            return `https://www.linkedin.com/in/${value}`;
+        case "github":
+            return `https://github.com/${value}`;
+        case "youtube":
+            return `https://www.youtube.com/@${value}`;
+        case "reddit":
+            return `https://reddit.com/u/${value}`;
+    }
+}
+
 function submitName() {
     nameForm.post(route('settings.event.name', {eventId: props.event.id}), {
         onSuccess: () => {
@@ -207,6 +327,22 @@ function submitAvatar() {
 
 function submitDescription() {
     descriptionForm.post(route('settings.event.description', {eventId: props.event.id}), {
+        onSuccess: () => {
+            toast({
+                description: "Successfully saved."
+            });
+        },
+        onError: () => {
+            toast({
+                description: "Could not save. Please try again later.",
+                variant: "destructive"
+            });
+        },
+    });
+}
+
+function submitSocialLink() {
+    socialLinkForm.post(route('settings.event.socialLink.create', {eventId: props.event.id}), {
         onSuccess: () => {
             toast({
                 description: "Successfully saved."
