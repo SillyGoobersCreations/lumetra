@@ -20,3 +20,15 @@
 - Run Migrations: ``./vendor/bin/sail artisan migrate``
 - Run Database seeders: ``./vendor/bin/sail artisan db:seed``
 - Build UI: ``./vendor/bin/sail npm run build``
+
+## CLI Commands
+**All commands are run with ``artisan``**
+
+### lumetra:event:create
+Creates a new event
+
+### lumetra:organizer:make
+Gives an existing attendee organizer permissions
+
+### lumetra:organizer:remove
+Takes an existing attendees organizer permissions
