@@ -26,8 +26,6 @@ defineProps({
 
 <style lang="scss" scoped>
 .events-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    @apply flex flex-col md:grid md:grid-cols-2 gap-4;
 }
 </style>
