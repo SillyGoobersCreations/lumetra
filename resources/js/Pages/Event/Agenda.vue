@@ -37,10 +37,12 @@ import EventLayout from "@/Layouts/EventLayout.vue";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import moment from "moment";
 import {Badge} from "@/components/ui/badge";
+import {PropType} from "@vue/runtime-dom";
+import {Event} from "@/types/models/Event";
 
 defineProps({
     event: {
-        type: Object,
+        type: Object as PropType<Event>,
         required: true,
     }
 });

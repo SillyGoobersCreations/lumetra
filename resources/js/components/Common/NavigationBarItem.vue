@@ -18,7 +18,7 @@ import {Button} from "@/components/ui/button";
 
 defineProps({
     href: {
-        type: [String, Object],
+        type: String,
         default: "/",
     },
     active: {

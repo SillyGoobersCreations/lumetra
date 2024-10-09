@@ -171,11 +171,11 @@ const props = defineProps({
         default: true,
     },
     lastThreeChats: {
-        type: Object as PropType<ChatMessage>,
+        type: Array as PropType<ChatMessage[]>,
         default: () => [],
     },
     userAttendee: {
-        type: [Object as PropType<Attendee>, Boolean],
+        type: [Object as PropType<Attendee>, Boolean] as PropType<Attendee | boolean>,
         default: false,
     }
 });

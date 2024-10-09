@@ -14,6 +14,7 @@ declare global {
 declare module 'vue' {
     interface ComponentCustomProperties {
         route: typeof ziggyRoute;
+        $page?: any;
     }
 }
 

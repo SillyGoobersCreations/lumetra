@@ -6,10 +6,12 @@
 
 <script setup lang="ts">
 import EventLayout from "@/Layouts/EventLayout.vue";
+import {PropType} from "@vue/runtime-dom";
+import {Event} from "@/types/models/Event";
 
 defineProps({
     event: {
-        type: Object,
+        type: Object as PropType<Event>,
         required: true,
     }
 });

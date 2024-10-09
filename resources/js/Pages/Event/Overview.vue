@@ -13,10 +13,12 @@
 <script setup lang="ts">
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import EventButton from "@/components/Event/EventButton.vue";
+import {PropType} from "@vue/runtime-dom";
+import {Event} from "@/types/models/Event";
 
 defineProps({
     events: {
-        type: Array,
+        type: Array as PropType<Event[]>,
         default: () => [],
     }
 });
