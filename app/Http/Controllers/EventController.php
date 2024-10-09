@@ -74,12 +74,28 @@ class EventController extends Controller
     }
 
     public function showAgenda(string $eventId): Response {
+        $user = Auth::user();
+        $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
         $event = Event::findOrFail($eventId);
 
-        // TODO: Show all confirmed room invites
+        $now = now();
+        $confirmedSlotClaims = EventRoomSlotClaim::query()
+            ->where(function ($query) use ($userAttendee) {
+                $query->where('inviter_attendee_id', $userAttendee->id)
+                    ->orWhere('invitee_attendee_id', $userAttendee->id);
+            })
+            ->whereIn('event_room_slot_claims.state', [EventRoomSlotClaim::STATE_CONFIRMED, EventRoomSlotClaim::STATE_ATTENDEE_CONFIRMED])
+            ->whereHas('slot', function ($query) use ($now) {
+                $query->where('end_date', '>=', $now);
+            })
+            ->join('event_room_slots', 'event_room_slots.id', '=', 'event_room_slot_claims.event_room_slot_id')
+            ->with(['inviter_attendee', 'invitee_attendee', 'slot', 'slot.room'])
+            ->orderBy('event_room_slots.start_date', 'asc')
+            ->get();
 
         return Inertia::render('Event/Agenda', [
             'event' => $event,
+            'slotClaims' => $confirmedSlotClaims,
         ]);
     }
 

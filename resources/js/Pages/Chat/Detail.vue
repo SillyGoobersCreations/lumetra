@@ -58,7 +58,7 @@
                             </p>
                         </div>
                     </CardHeader>
-                    <CardContent class="flex flex-col gap-2">
+                    <CardContent class="chat-messages">
                         <MessageConnection
                             :connection="selectedConnection"
                             :current-attendee-id="currentAttendee.id"
@@ -211,6 +211,9 @@ onUnmounted(() => {
 
     & aside {
         @apply flex flex-col gap-5;
+    }
+    & .chat-messages {
+        @apply p-6 flex flex-col gap-2 max-h-[500px] overflow-y-scroll mb-4 border-b border-t;
     }
 }
 </style>

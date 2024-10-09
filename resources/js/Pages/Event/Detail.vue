@@ -171,6 +171,7 @@ import {computed} from "vue";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import moment from "moment/moment";
 import {Badge} from "@/components/ui/badge";
+import {EventRoomSlotClaim} from "@/types/models/EventRoomSlotClaim";
 
 const props = defineProps({
     event: {
@@ -186,7 +187,7 @@ const props = defineProps({
         default: () => [],
     },
     nextThreeMeets: {
-        type: Array as PropType<ChatMessage[]>,
+        type: Array as PropType<EventRoomSlotClaim[]>,
         default: () => [],
     },
     userAttendee: {
@@ -194,7 +195,6 @@ const props = defineProps({
         default: false,
     }
 });
-
 
 /* Get Current Users Attendee */
 const page = usePage();
