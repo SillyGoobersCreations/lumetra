@@ -93,7 +93,7 @@ import {Event} from "@/types/models/Event";
 import {EventRoomSlotClaim} from "@/types/models/EventRoomSlotClaim";
 import {computed} from "vue";
 import {Head, Link, usePage} from "@inertiajs/vue3";
-import {Avatar, AvatarImage} from "@/components/ui/avatar";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Button} from "@/components/ui/button";
 
 const props = defineProps({

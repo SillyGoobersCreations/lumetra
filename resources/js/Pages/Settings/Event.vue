@@ -81,7 +81,7 @@
                                 :error="descriptionForm.errors.description"
                                 variant="wide"
                             >
-                                <Textarea v-model="descriptionForm.description" />
+                                <Textarea v-model="descriptionForm.description" rows="10" />
                             </FormRow>
                             <FormRow
                                 label="Company"

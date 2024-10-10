@@ -40,7 +40,7 @@
                 <Card>
                     <CardContent
                         v-if="attendee.description"
-                        class="pt-6"
+                        class="pt-6 whitespace-pre-line"
                     >
                         {{ attendee.description }}
                     </CardContent>
