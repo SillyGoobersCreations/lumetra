@@ -126,10 +126,7 @@ class EventController extends Controller
                 'confirmation_key' => $this->generateConfirmationKey(3, 3),
             ]);
 
-            return redirect(route('events.attendees.detail', [
-                'eventId' => $eventId,
-                'attendeeId' => $newEnrollment->id,
-            ]));
+            return redirect(route('settings.event', ['eventId' => $eventId]));
         }
     }
 
