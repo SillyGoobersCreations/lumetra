@@ -75,6 +75,7 @@
                                 :claim="parseRoomSlotClaim(message.message)"
                                 :event-id="event.id"
                                 :attendee-id="attendee.id"
+                                :confirmedUserSlots="confirmedUserSlots"
                             />
                             <Message
                                 v-else
@@ -90,6 +91,8 @@
                         <MeetDialog
                             :event="event"
                             :selectedConnection="selectedConnection"
+                            :confirmedUserSlots="confirmedUserSlots"
+                            :confirmedAttendeeSlots="confirmedAttendeeSlots"
                         />
                         <Input placeholder="Message..." v-model="messageForm.message" @keyup.enter="sendChat"/>
                         <Button @click="sendChat">
@@ -156,7 +159,15 @@ const props = defineProps({
     messages: {
         type: Array as PropType<ChatMessage[]>,
         default: () => []
-    }
+    },
+    confirmedUserSlots: {
+        type: Array,
+        default: () => []
+    },
+    confirmedAttendeeSlots: {
+        type: Array,
+        default: () => []
+    },
 });
 
 /* Get the other Attendee */

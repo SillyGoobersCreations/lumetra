@@ -31,7 +31,7 @@ class ChatController extends Controller
 
         return Inertia::render('Chat/Overview', [
             'event' => $event,
-            'connections' => $attendeeConnections,
+            'connections' => $attendeeConnections
         ]);
     }
 
@@ -39,20 +39,44 @@ class ChatController extends Controller
         $user = Auth::user();
         $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->first();
         $event = Event::findOrFail($eventId);
+
         $attendeeConnections = AttendeeConnection
             ::where(['inviter_attendee_id' => $userAttendee->id])
             ->orWhere(['invitee_attendee_id' => $userAttendee->id])
             ->with(['inviter_attendee', 'invitee_attendee'])
             ->get();
+
         $attendeeConnection = AttendeeConnection
             ::checkConnection($userAttendee->id, $attendeeId)
             ->with(['inviter_attendee', 'invitee_attendee'])
             ->first();
 
+        // TODO: Do proper availability check
+        $confirmedUserSlots = EventRoomSlotClaim::query()
+            ->where(function ($query) use ($userAttendee) {
+                $query->where('inviter_attendee_id', $userAttendee->id)
+                    ->orWhere('invitee_attendee_id', $userAttendee->id);
+            })
+            ->whereIn('state', [EventRoomSlotClaim::STATE_CONFIRMED, EventRoomSlotClaim::STATE_ATTENDEE_CONFIRMED])
+            ->with('slot')
+            ->get();
+
+        // TODO: Do proper availability check
+        $confirmedAttendeeSlots = EventRoomSlotClaim::query()
+            ->where(function ($query) use ($attendeeId) {
+                $query->where('inviter_attendee_id', $attendeeId)
+                    ->orWhere('invitee_attendee_id', $attendeeId);
+            })
+            ->whereIn('state', [EventRoomSlotClaim::STATE_CONFIRMED, EventRoomSlotClaim::STATE_ATTENDEE_CONFIRMED])
+            ->with('slot')
+            ->get();
+
         return Inertia::render('Chat/Detail', [
             'event' => $event,
             'connections' => $attendeeConnections,
             'selectedConnection' => $attendeeConnection,
+            'confirmedUserSlots' => $confirmedUserSlots->pluck('slot')->pluck('start_date'),
+            'confirmedAttendeeSlots' => $confirmedAttendeeSlots->pluck('slot')->pluck('start_date'),
         ]);
     }
 

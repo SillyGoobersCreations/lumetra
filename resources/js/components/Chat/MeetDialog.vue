@@ -72,9 +72,13 @@
                         <FormRow v-if="selectedSlot.notes" label="Slot notes" variant="wide">
                             <span class="text-muted-foreground">{{ selectedSlot.notes }}</span>
                         </FormRow>
+
+                        <div class="text-destructive-foreground p-2 rounded-md bg-destructive text-xs" v-if="isUserUnavailable">You already have a confirmed invite at this time.</div>
+                        <div class="text-destructive-foreground p-2 rounded-md bg-destructive text-xs" v-if="isAttendeeUnavailable">{{ attendee.name_full }} already has a confirmed invite at this time.</div>
                     </template>
                 </template>
 
+                <!-- TODO: Don't hardcode locations -->
                 <div class="text-muted-foreground">Can't find a suitable slot? You'll also be able to meet in common areas such as the Courtyard without booking a slot.</div>
             </div>
             <DialogFooter>
@@ -137,6 +141,14 @@ const props = defineProps({
     selectedConnection: {
         type: Object as PropType<AttendeeConnection>,
         required: true,
+    },
+    confirmedUserSlots: {
+        type: Array,
+        default: () => []
+    },
+    confirmedAttendeeSlots: {
+        type: Array,
+        default: () => []
     },
 });
 
@@ -202,4 +214,11 @@ function stateToText (state) {
             return "Unavailable";
     }
 }
+
+const isUserUnavailable = computed(() => {
+    return props.confirmedUserSlots.includes(selectedSlot.value.start_date);
+});
+const isAttendeeUnavailable = computed(() => {
+    return props.confirmedAttendeeSlots.includes(selectedSlot.value.start_date);
+});
 </script>

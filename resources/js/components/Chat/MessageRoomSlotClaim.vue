@@ -6,6 +6,7 @@
                 <span class="mb-2">{{ moment(claim.slot.start_date).format("DD.MM.YYYY") }} @ {{ moment(claim.slot.start_date).format("HH:mm") }} <span class="text-muted-foreground">- {{ moment(claim.slot.end_date).format("HH:mm") }}</span></span>
                 <span class="font-bold">{{ claim.slot.room.name }}</span>
                 <span class="text-muted-foreground">{{ claim.slot.room.location }}</span>
+                <div class="text-destructive-foreground p-2 rounded-md bg-destructive mt-2 text-xs" v-if="isUserUnavailable">You already have a confirmed invite at this time.</div>
             </div>
         </template>
         <template v-if="claim.state === 'pending'" #actions>
@@ -69,6 +70,7 @@ import {Button} from "@/components/ui/button";
 import {PropType} from "@vue/runtime-dom";
 import {EventRoomSlotClaim} from "@/types/models/EventRoomSlotClaim";
 import {Badge} from "@/components/ui/badge";
+import {computed} from "vue";
 
 const props = defineProps({
     isRemote: {
@@ -87,5 +89,13 @@ const props = defineProps({
         type: Object as PropType<EventRoomSlotClaim>,
         required: true,
     },
+    confirmedUserSlots: {
+        type: Array,
+        default: () => []
+    },
+});
+
+const isUserUnavailable = computed(() => {
+    return props.confirmedUserSlots.includes(props.claim.slot.start_date);
 });
 </script>
