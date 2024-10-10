@@ -272,6 +272,7 @@
                     label="Settings"
                 />
                 <NavigationBarItem
+                    v-if="user.is_admin || currentAttendee.role === 'organizer'"
                     :href="route('events.admin', { eventId: currentAttendee.event.id })"
                     icon="key"
                     label="Admin"
