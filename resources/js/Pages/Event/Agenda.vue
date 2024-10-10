@@ -23,7 +23,7 @@
                                 class="p-4 px-4 gap-2 grid grid-cols-[auto_1fr_auto] items-center"
                             >
                                 <Avatar class="h-8 w-8 mr-2">
-                                    <AvatarImage :src="`/storage/avatars/${getOtherAttendeeRoomClaim(meet).avatar_url}`" alt="@shadcn" />
+                                    <AvatarImage v-if="getOtherAttendeeRoomClaim(meet).avatar_url" :src="`/storage/avatars/${getOtherAttendeeRoomClaim(meet).avatar_url}`" />
                                     <AvatarFallback>{{ getOtherAttendeeRoomClaim(meet).name_initials }}</AvatarFallback>
                                 </Avatar>
                                 <div class="flex flex-col gap-1">
@@ -93,7 +93,7 @@ import {Event} from "@/types/models/Event";
 import {EventRoomSlotClaim} from "@/types/models/EventRoomSlotClaim";
 import {computed} from "vue";
 import {Head, Link, usePage} from "@inertiajs/vue3";
-import {Avatar} from "@/components/ui/avatar";
+import {Avatar, AvatarImage} from "@/components/ui/avatar";
 import {Button} from "@/components/ui/button";
 
 const props = defineProps({

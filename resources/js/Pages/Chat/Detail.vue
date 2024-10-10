@@ -48,7 +48,7 @@
                 <Card>
                     <CardHeader class="flex-row items-center">
                         <Avatar class="h-8 w-8 mr-2">
-                            <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}`" alt="@shadcn" />
+                            <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}`" v-if="attendee.avatar_url" />
                             <AvatarFallback>{{ attendee.name_initials }}</AvatarFallback>
                         </Avatar>
                         <div class="flex flex-col space-y-1">

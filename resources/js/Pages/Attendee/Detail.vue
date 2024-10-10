@@ -15,7 +15,7 @@
                 <div class="avatar-and-name">
                     <div class="flex w-full justify-center">
                         <Avatar class="h-[128px] w-[128px]">
-                            <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}`" alt="@shadcn" />
+                            <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}`" v-if="attendee.avatar_url" />
                             <AvatarFallback class="text-3xl">{{ attendee.name_initials }}</AvatarFallback>
                         </Avatar>
                     </div>

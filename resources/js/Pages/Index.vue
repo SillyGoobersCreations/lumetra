@@ -53,7 +53,7 @@
                        target="_blank"
                     >
                         <Avatar>
-                            <AvatarImage :src="contributor.avatar_url" :alt="contributor.LauraWebdev" />
+                            <AvatarImage :src="contributor.avatar_url" />
                         </Avatar>
                     </a>
                 </div>
