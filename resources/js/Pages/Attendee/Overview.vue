@@ -58,6 +58,7 @@
                     <AttendeeButton
                         v-for="attendee in results"
                         :attendee="attendee"
+                        :eventId="event.id"
                     />
                 </div>
             </template>
@@ -111,11 +112,10 @@ async function search() {
         eventId: props.event.id,
         query: searchQuery.value,
         sortBy: searchSortBy.value,
+        sortType: searchSortType.value,
     })).then(response => response.json());
 
     const [apiResult] = await Promise.all([apiCall, prematureEnd]);
-
-    console.log(props.event.id);
 
     results.value = apiResult;
     loading.value = false;

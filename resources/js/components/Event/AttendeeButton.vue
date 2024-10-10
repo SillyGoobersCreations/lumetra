@@ -19,7 +19,7 @@
                 variant="secondary"
                 as-child
             >
-                <Link :href="route('events.attendees.detail', { eventId: attendee.event.id, attendeeId: attendee.id })">
+                <Link :href="route('events.attendees.detail', { eventId: eventId, attendeeId: attendee.id })">
                     <i class="ri-arrow-right-up-line mr-2 text-lg"></i>
                     <span>Go to profile</span>
                 </Link>
@@ -40,6 +40,10 @@ defineProps({
     attendee: {
         type: Object as PropType<Attendee>,
         default: null,
+    },
+    eventId: {
+        type: String,
+        default: "",
     }
 });
 </script>

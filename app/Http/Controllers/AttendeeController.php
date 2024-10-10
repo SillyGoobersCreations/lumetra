@@ -53,14 +53,15 @@ class AttendeeController extends Controller
     public function search(Request $request, string $eventId): JsonResponse {
         $query = $request->query('query');
         $sortBy = $request->query('sortBy');
-        $sortType = $request->query('sortType');
+        $sortType = $request->query('sortType') ?? "DESC";
+
+        //dd($sortType);
 
         $attendees = Attendee::search(trim($query))
             ->where('event_id', $eventId)
             ->orderBy($sortBy, $sortType)
+            ->take(1000) // TODO: Add proper pagination
             ->get();
-
-        $attendees->load(['event']);
 
         return response()->json($attendees);
     }
