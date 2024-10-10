@@ -226,7 +226,7 @@ onUnmounted(() => {
         @apply flex flex-col gap-5;
     }
     & .chat-messages {
-        @apply p-6 flex flex-col gap-2 max-h-[500px] overflow-y-scroll mb-4 border-b border-t;
+        @apply p-6 flex flex-col gap-2 md:max-h-[500px] md:overflow-y-scroll mb-4 border-b border-t;
     }
 }
 </style>
