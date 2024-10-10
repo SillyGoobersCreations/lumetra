@@ -74,6 +74,8 @@
                         </FormRow>
                     </template>
                 </template>
+
+                <div class="text-muted-foreground">Can't find a suitable slot? You'll also be able to meet in common areas such as the Courtyard without booking a slot.</div>
             </div>
             <DialogFooter>
                 <Button @click="sendInvite" :disabled="!selectedRoomId || !selectedSlotId">
