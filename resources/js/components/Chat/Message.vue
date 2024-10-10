@@ -20,7 +20,7 @@ defineProps({
 
 <style lang="scss" scoped>
 .message {
-    @apply rounded-xl min-w-[60%] max-w-[90%] flex flex-col gap-4 p-4;
+    @apply rounded-xl min-w-[60%] max-w-[90%] flex flex-col gap-4 p-4 break-all;
 
     &.remote {
         @apply border self-start rounded-bl-none;

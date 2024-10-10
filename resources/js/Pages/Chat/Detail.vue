@@ -112,7 +112,7 @@ import {PropType} from "@vue/runtime-dom";
 import {Event} from "@/types/models/Event";
 import {AttendeeConnection} from "@/types/models/AttendeeConnection";
 import ConnectionButton from "@/components/Chat/ConnectionButton.vue";
-import {computed, onMounted, onUnmounted, ref} from "vue";
+import {computed, onMounted, onUnmounted, ref, watch} from "vue";
 import {ChatMessage} from "@/types/models/ChatMessage";
 import moment from "moment";
 import MessageConnection from "@/components/Chat/MessageConnection.vue";
@@ -226,7 +226,7 @@ onUnmounted(() => {
         @apply flex flex-col gap-5;
     }
     & .chat-messages {
-        @apply p-6 flex flex-col gap-2 md:max-h-[500px] md:overflow-y-scroll mb-4 border-b border-t;
+        @apply p-6 flex flex-col gap-2 mb-4 border-b border-t;
     }
 }
 </style>
