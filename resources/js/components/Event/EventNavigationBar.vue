@@ -237,9 +237,9 @@
                                 >
                                     <Link
                                         :href="route('events.notifications.clear', {
-                                        eventId: currentAttendee.event.id,
-                                        notificationId: notification.id,
-                                    })"
+                                            eventId: currentAttendee.event.id,
+                                            notificationId: notification.id,
+                                        })"
                                     >
                                         <i :class="`ri-${getIconByType(notification.type)}-line text-lg`"></i>
 
