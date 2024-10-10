@@ -61,6 +61,16 @@ class AuthController extends Controller
 
         event(new Registered($user));
         Auth::login($user);
-        return redirect(route('index'));
+
+        $publicEventCount = Event::where(['state' => 'public'])->count();
+        if($publicEventCount > 1) {
+            return redirect(route('events.index'));
+        } else {
+            $event = Event::where(['state' => 'public'])->first();
+
+            return redirect(route('events.detail.enroll', [
+                'eventId' => $event->id,
+            ]));
+        }
     }
 }
