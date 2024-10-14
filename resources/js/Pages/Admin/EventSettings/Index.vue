@@ -101,8 +101,8 @@
                                 </PopoverContent>
                             </Popover>
                         </FormRow>
-                        <FormRow label="Maximum amount of attendees" variant="wide" :error="form.errors.attendees_max">
-                            <Input type="number" v-model="form.attendees_max" />
+                        <FormRow label="Privacy policy URL" variant="wide" :error="form.errors.privacy_url">
+                            <Input v-model="form.privacy_url" />
                         </FormRow>
                     </CardContent>
                 </Card>
@@ -158,13 +158,27 @@
 
                 <Card>
                     <CardHeader>
+                        <CardTitle>Enrollment</CardTitle>
+                    </CardHeader>
+                    <CardContent class="flex flex-col gap-4">
+                        <FormRow label="Enabled" variant="wide">
+                            <Switch :checked="form.enrollment_enabled" @update:checked="(val) => { form.enrollment_enabled = val; }" />
+                        </FormRow>
+                        <FormRow label="Limit" variant="wide" :error="form.errors.attendees_max">
+                            <Input type="number" v-model="form.attendees_max" />
+                        </FormRow>
+                        <FormRow label="Confirmation required" variant="wide">
+                            <Switch :checked="form.confirmation_required" @update:checked="(val) => { form.confirmation_required = val; }" />
+                        </FormRow>
+                    </CardContent>
+                </Card>
+
+                <Card v-if="form.confirmation_required">
+                    <CardHeader>
                         <CardTitle>Confirmations</CardTitle>
                         <CardDescription>Attendees will be able to confirm themselves as confirmed. If needed, only confirmed attendees will be able to interact with other attendees.</CardDescription>
                     </CardHeader>
                     <CardContent class="flex flex-col gap-4">
-                        <FormRow label="Confirmation required" variant="wide">
-                            <Switch :checked="form.confirmation_required" @update:checked="(val) => { form.confirmation_required = val; }" />
-                        </FormRow>
                         <FormRow label="Generate confirmation key per user" variant="wide" v-if="form.confirmation_required">
                             <Switch :checked="form.confirmation_personalized" @update:checked="(val) => { form.confirmation_personalized = val; }" />
                         </FormRow>
@@ -237,6 +251,8 @@ const form = useForm({
     'room_slot_max_pending': props.event.room_slot_max_pending,
     'room_slot_max_claimed': props.event.room_slot_max_claimed,
     'room_slot_team_confirmation_required': props.event.room_slot_team_confirmation_required,
+    'enrollment_enabled': props.event.enrollment_enabled,
+    'privacy_url': props.event.privacy_url,
     'attendees_max': props.event.attendees_max,
 });
 

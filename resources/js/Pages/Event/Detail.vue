@@ -142,7 +142,7 @@
                     </CardContent>
                     <CardFooter>
                         <Button class="w-full" disabled v-if="!canJoin">
-                            This event is full
+                            This event is full or closed.
                         </Button>
                         <Button class="w-full" as-child v-else>
                             <Link :href="route('events.detail.enroll', { eventId: event.id })">

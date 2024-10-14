@@ -37,6 +37,8 @@ class SaveSettingsRequest extends FormRequest
             'room_slot_max_pending' => ['nullable', 'integer', 'gte:0'],
             'room_slot_max_claimed' => ['nullable', 'integer', 'gte:0'],
             'room_slot_team_confirmation_required' => ['nullable', 'boolean'],
+            'enrollment_enabled' => ['required', 'boolean'],
+            'privacy_url' => ['required', 'url', 'max:255'],
             'attendees_max' => ['nullable', 'integer', 'gte:0'],
         ];
     }
