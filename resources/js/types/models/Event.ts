@@ -21,6 +21,8 @@ export interface Event {
     room_slot_min_time: number;
     room_slot_max_time: number;
     room_slot_team_confirmation_required: boolean;
+    enrollment_enabled: boolean;
+    privacy_url: string | null;
     attendees_max: number | null;
     created_at: Date | null;
     updated_at: Date | null;
