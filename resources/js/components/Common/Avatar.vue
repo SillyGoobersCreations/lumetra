@@ -1,5 +1,5 @@
 <template>
-    <div :style="`width: ${size}px; height: ${size}px; background-image: url(/storage/avatars/${attendee.avatar_url})`" class="avatar" v-if="attendee.avatar_url"></div>
+    <div :style="`width: ${size}px; height: ${size}px; background-image: url(/storage/avatars/${attendee.avatar_url}?v=${attendee.updated_at})`" class="avatar" v-if="attendee.avatar_url"></div>
     <div :style="`width: ${size}px; height: ${size}px; font-size: ${size * 0.4}px`" class="avatar fallback" v-else>{{ attendee.name_initials }}</div>
 </template>
 

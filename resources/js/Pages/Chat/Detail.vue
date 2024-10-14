@@ -46,18 +46,25 @@
             </aside>
             <main>
                 <Card>
-                    <CardHeader class="flex-row items-center">
+                    <CardHeader class="flex-row items-center py-4">
                         <Avatar class="h-8 w-8 mr-2">
-                            <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}`" v-if="attendee.avatar_url" />
+                            <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}?v=${attendee.updated_at}`" v-if="attendee.avatar_url" />
                             <AvatarFallback>{{ attendee.name_initials }}</AvatarFallback>
                         </Avatar>
-                        <div class="flex flex-col space-y-1">
+                        <div class="flex flex-col space-y-1 grow">
                             <p class="text-sm font-medium leading-none">
                                 {{ attendee.name_full }}
                             </p>
                             <p class="text-xs leading-none text-muted-foreground">
                                 Connected {{ moment(selectedConnection.created_at).fromNow() }}
                             </p>
+                        </div>
+                        <div>
+                            <Button variant="secondary" size="icon" as-child>
+                                <Link :href="route('events.attendees.detail', { eventId: event.id, attendeeId: attendee.id })">
+                                    <i class="ri-arrow-right-up-line text-lg"></i>
+                                </Link>
+                            </Button>
                         </div>
                     </CardHeader>
                     <CardContent class="chat-messages">

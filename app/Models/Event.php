@@ -81,6 +81,8 @@ class Event extends Model
         'room_slot_min_time',
         'room_slot_max_time',
         'room_slot_team_confirmation_required',
+        'enrollment_enabled',
+        'privacy_url',
         'attendees_max'
     ];
 

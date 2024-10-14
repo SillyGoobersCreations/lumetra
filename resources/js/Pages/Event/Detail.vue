@@ -49,7 +49,7 @@
                                 class="p-4 px-4 gap-2 grid grid-cols-[auto_1fr_auto] items-center"
                             >
                                 <Avatar class="h-8 w-8 mr-2">
-                                    <AvatarImage :src="`/storage/avatars/${getOtherAttendeeChat(chat).avatar_url}`" v-if="getOtherAttendeeChat(chat).avatar_url" />
+                                    <AvatarImage :src="`/storage/avatars/${getOtherAttendeeChat(chat).avatar_url}?v=${getOtherAttendeeChat(chat).updated_at}`" v-if="getOtherAttendeeChat(chat).avatar_url" />
                                     <AvatarFallback>{{ getOtherAttendeeChat(chat).name_initials }}</AvatarFallback>
                                 </Avatar>
                                 <div class="flex flex-col gap-1">
@@ -97,7 +97,7 @@
                                 class="p-4 px-4 gap-2 grid grid-cols-[auto_1fr_auto] items-center"
                             >
                                 <Avatar class="h-8 w-8 mr-2">
-                                    <AvatarImage :src="`/storage/avatars/${getOtherAttendeeRoomClaim(meet).avatar_url}`" v-if="getOtherAttendeeRoomClaim(meet).avatar_url" />
+                                    <AvatarImage :src="`/storage/avatars/${getOtherAttendeeRoomClaim(meet).avatar_url}?v=${getOtherAttendeeRoomClaim(meet).updated_at}`" v-if="getOtherAttendeeRoomClaim(meet).avatar_url" />
                                     <AvatarFallback>{{ getOtherAttendeeRoomClaim(meet).name_initials }}</AvatarFallback>
                                 </Avatar>
                                 <div class="flex flex-col gap-1">
@@ -142,7 +142,7 @@
                     </CardContent>
                     <CardFooter>
                         <Button class="w-full" disabled v-if="!canJoin">
-                            This event is full
+                            This event is full or closed.
                         </Button>
                         <Button class="w-full" as-child v-else>
                             <Link :href="route('events.detail.enroll', { eventId: event.id })">

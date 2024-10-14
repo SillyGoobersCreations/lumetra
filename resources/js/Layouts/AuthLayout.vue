@@ -6,7 +6,7 @@
                 <img :src="LumetraDarkLogo" alt="Lumetra Logo" class="logo dark:block hidden" />
             </div>
             <div class="version">
-                Version 1.0.0
+                <span>Version 1.1.0</span>
             </div>
         </aside>
         <main>

@@ -62,7 +62,7 @@ class EventController extends Controller
         }
 
         $confirmedAttendeesCount = Attendee::where(['event_id' => $eventId, 'confirmed' => true])->count();
-        $canJoin = $event->attendees_max == null || $confirmedAttendeesCount < $event->attendees_max;
+        $canJoin = $event->enrollment_enabled && ($event->attendees_max == null || $confirmedAttendeesCount < $event->attendees_max);
 
         return Inertia::render('Event/Detail', [
             'event' => $event,

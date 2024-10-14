@@ -4,7 +4,7 @@ Lumetra is an open-source conference meetup platform.
 **Created for GodotCon 2024**
 
 ## Development Setup
-**You might need to run ``chmod 777 -R .`` after cloning this repo to run the system properly.**
+**You might need to run ``chmod 777 -R .`` after cloning this repo to run the system properly. This is only required if files are created through Laravel Sail and in a development environment, see Issue #18**
 
 - Clone ``.env.example`` to ``.env`` and set your environment variables
 - Install Dependencies: ``docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/html laravelsail/php83-composer:latest composer install --ignore-platform-reqs``
