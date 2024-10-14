@@ -11,7 +11,7 @@
             <div v-if="['claimed', 'claim_open'].includes(slot.state)" class="flex flex-col gap-2 mt-2">
                 <div class="flex gap-2 items-center">
                     <Avatar class="h-8 w-8 mr-2">
-                        <AvatarImage :src="`/storage/avatars/${slot.claims.invitee_attendee.avatar_url}`" v-if="slot.claims.invitee_attendee.avatar_url" />
+                        <AvatarImage :src="`/storage/avatars/${slot.claims.invitee_attendee.avatar_url}?v=${slot.claims.invitee_attendee.updated_at}`" v-if="slot.claims.invitee_attendee.avatar_url" />
                         <AvatarFallback>{{ slot.claims.invitee_attendee.name_initials }}</AvatarFallback>
                     </Avatar>
                     <p class="text-sm font-medium leading-none">
@@ -20,7 +20,7 @@
                 </div>
                 <div class="flex gap-2 items-center">
                     <Avatar class="h-8 w-8 mr-2">
-                        <AvatarImage :src="`/storage/avatars/${slot.claims.inviter_attendee.avatar_url}`" v-if="slot.claims.inviter_attendee.avatar_url" />
+                        <AvatarImage :src="`/storage/avatars/${slot.claims.inviter_attendee.avatar_url}?v=${slot.claims.inviter_attendee.updated_at}`" v-if="slot.claims.inviter_attendee.avatar_url" />
                         <AvatarFallback>{{ slot.claims.inviter_attendee.name_initials }}</AvatarFallback>
                     </Avatar>
                     <p class="text-sm font-medium leading-none">

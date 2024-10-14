@@ -41,7 +41,7 @@
                 <DropdownMenuTrigger as-child>
                     <Button variant="ghost" class="relative h-8 w-8 rounded-full">
                         <Avatar class="h-8 w-8">
-                            <AvatarImage :src="`/storage/avatars/${currentAttendee.avatar_url}`" v-if="currentAttendee.avatar_url" />
+                            <AvatarImage :src="`/storage/avatars/${currentAttendee.avatar_url}?v=${currentAttendee.updated_at}`" v-if="currentAttendee.avatar_url" />
                             <AvatarFallback>{{ currentAttendee.name_initials }}</AvatarFallback>
                         </Avatar>
                     </Button>
@@ -96,7 +96,7 @@
                         >
                             <Link :href="route('events.detail', { eventId: attendee?.event?.id ?? 0 })">
                                 <Avatar class="h-8 w-8 mr-2">
-                                    <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}`" v-if="attendee.avatar_url" />
+                                    <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}?v=${attendee.updated_at}`" v-if="attendee.avatar_url" />
                                     <AvatarFallback>{{ attendee.name_initials }}</AvatarFallback>
                                 </Avatar>
                                 <div class="flex flex-col space-y-1">
@@ -197,7 +197,7 @@
             <div class="flex flex-col gap-2 p-4">
                 <div class="flex gap-2 mb-2">
                     <Avatar class="h-8 w-8">
-                        <AvatarImage :src="`/storage/avatars/${currentAttendee.avatar_url}`" v-if="currentAttendee.avatar_url" />
+                        <AvatarImage :src="`/storage/avatars/${currentAttendee.avatar_url}?v=${currentAttendee.updated_at}`" v-if="currentAttendee.avatar_url" />
                         <AvatarFallback>{{ currentAttendee.name_initials }}</AvatarFallback>
                     </Avatar>
                     <div class="flex flex-col space-y-1">
@@ -295,7 +295,7 @@
                 >
                     <Link :href="route('events.detail', { eventId: attendee?.event?.id ?? 0 })">
                         <Avatar class="h-8 w-8 mr-2">
-                            <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}`" v-if="attendee.avatar_url" />
+                            <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}?v=${attendee.updated_at}`" v-if="attendee.avatar_url" />
                             <AvatarFallback>{{ attendee.name_initials }}</AvatarFallback>
                         </Avatar>
                         <div class="flex flex-col space-y-1">
