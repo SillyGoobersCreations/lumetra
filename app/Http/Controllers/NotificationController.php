@@ -15,7 +15,13 @@ class NotificationController extends Controller
         $userAttendee = Attendee::where(['user_id' => $user->id, 'event_id' => $eventId])->firstOrFail();
         $notification = $userAttendee->notifications()->findOrFail($notificationId);
 
+        // Also clear all notifications with the same type and link
+        $similarNotifications = $userAttendee->notifications()->where(['type' => $notification->type, 'link' => $notification->link])->get();
+
         $notification->delete();
+        foreach($similarNotifications as $similarNotification) {
+            $similarNotification->delete();
+        }
 
         if($notification->link) {
             return redirect($notification->link);
