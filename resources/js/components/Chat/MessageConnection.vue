@@ -3,18 +3,23 @@
         <template #default>
             {{ connection.intro_text }}
         </template>
-        <template v-if="isRemote && connection.state === 'pending'" #actions>
+        <template
+            v-if="isRemote && connection.state === 'pending'"
+            #actions
+        >
             <Button
                 as-child
                 variant="secondary"
                 size="xs"
             >
                 <Link
-                    :href="route('events.attendees.connect.accept', {
-                    eventId: attendee?.event_id,
-                    attendeeId: attendee?.id,
-                    requestId: connection.id,
-                })"
+                    :href="
+                        route('events.attendees.connect.accept', {
+                            eventId: attendee?.event_id,
+                            attendeeId: attendee?.id,
+                            requestId: connection.id,
+                        })
+                    "
                 >
                     <i class="ri-shake-hands-line mr-2 text-lg"></i>
                     <span>Accept</span>
@@ -26,11 +31,13 @@
                 variant="destructive"
             >
                 <Link
-                    :href="route('events.attendees.connect.decline', {
-                    eventId: attendee?.event_id,
-                    attendeeId: attendee?.id,
-                    requestId: connection.id,
-                })"
+                    :href="
+                        route('events.attendees.connect.decline', {
+                            eventId: attendee?.event_id,
+                            attendeeId: attendee?.id,
+                            requestId: connection.id,
+                        })
+                    "
                 >
                     <i class="ri-delete-bin-line mr-2 text-lg"></i>
                     <span>Decline</span>
@@ -44,13 +51,12 @@
 </template>
 
 <script setup lang="ts">
-import {PropType} from "@vue/runtime-dom";
-import {AttendeeConnection} from "@/types/models/AttendeeConnection";
-import {computed} from "vue";
-import Message from "@/components/Chat/Message.vue";
-import MessageSystem from "@/components/Chat/MessageSystem.vue";
-import {Link} from "@inertiajs/vue3";
-import {Button} from "@/components/ui/button";
+import Message from '@/components/Chat/Message.vue';
+import MessageSystem from '@/components/Chat/MessageSystem.vue';
+import { Button } from '@/components/ui/button';
+import { AttendeeConnection } from '@/types/models/AttendeeConnection';
+import { Link } from '@inertiajs/vue3';
+import { PropType, computed } from 'vue';
 
 const props = defineProps({
     currentAttendeeId: {
@@ -60,7 +66,7 @@ const props = defineProps({
     connection: {
         type: Object as PropType<AttendeeConnection>,
         required: true,
-    }
+    },
 });
 
 const isRemote = computed(() => {
@@ -68,7 +74,7 @@ const isRemote = computed(() => {
 });
 
 const attendee = computed(() => {
-    if(props.currentAttendeeId === props.connection?.inviter_attendee_id) {
+    if (props.currentAttendeeId === props.connection?.inviter_attendee_id) {
         return props.connection?.invitee_attendee;
     } else {
         return props.connection?.inviter_attendee;
@@ -76,25 +82,25 @@ const attendee = computed(() => {
 });
 
 const connectionState = computed(() => {
-    if(isRemote.value) {
+    if (isRemote.value) {
         switch (props.connection.state) {
-            case "pending":
+            case 'pending':
             default:
-                return "You have not responded to this connection request yet.";
-            case "declined":
-                return "You have declined this connection request.";
-            case "confirmed":
-                return "You have accepted this connection request.";
+                return 'You have not responded to this connection request yet.';
+            case 'declined':
+                return 'You have declined this connection request.';
+            case 'confirmed':
+                return 'You have accepted this connection request.';
         }
     } else {
         switch (props.connection.state) {
-            case "pending":
+            case 'pending':
             default:
-                return "The other attendee has not responded to your connection request yet.";
-            case "declined":
-                return "The other attendee has declined your connection request.";
-            case "confirmed":
-                return "The other attendee has accepted your connection request.";
+                return 'The other attendee has not responded to your connection request yet.';
+            case 'declined':
+                return 'The other attendee has declined your connection request.';
+            case 'confirmed':
+                return 'The other attendee has accepted your connection request.';
         }
     }
 });

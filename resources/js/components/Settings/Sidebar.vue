@@ -5,9 +5,7 @@
             class="button"
             as-child
         >
-            <Link
-                :href="route('settings.global')"
-            >
+            <Link :href="route('settings.global')">
                 <span class="ri-settings-2-line mr-2 text-lg"></span>
                 <span>General Settings</span>
             </Link>
@@ -20,9 +18,7 @@
             class="button"
             as-child
         >
-            <Link
-                :href="route('settings.event', {eventId: attendee.event?.id})"
-            >
+            <Link :href="route('settings.event', { eventId: attendee.event?.id })">
                 <span class="ri-coupon-3-line mr-2 text-lg"></span>
                 <span>{{ attendee.event?.title }}</span>
             </Link>
@@ -31,16 +27,16 @@
 </template>
 
 <script lang="ts" setup>
-import {Link, usePage} from "@inertiajs/vue3";
-import {PropType} from "@vue/runtime-dom";
-import {Attendee} from "@/types/models/Attendee";
-import {Button} from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
+import { Attendee } from '@/types/models/Attendee';
+import { Link, usePage } from '@inertiajs/vue3';
+import { PropType } from 'vue';
 
 defineProps({
     attendees: {
         type: Object as PropType<Attendee[]>,
         default: () => [],
-    }
+    },
 });
 
 const page = usePage();

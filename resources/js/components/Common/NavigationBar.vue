@@ -4,12 +4,15 @@
             <div class="branding">
                 <Sheet>
                     <SheetTrigger as-child>
-                        <Button variant="ghost" class="flex lg:hidden">
+                        <Button
+                            variant="ghost"
+                            class="flex lg:hidden"
+                        >
                             <i class="ri-menu-line text-lg"></i>
                         </Button>
                     </SheetTrigger>
                     <SheetContent side="left">
-                        <SheetContent class="flex flex-col gap-0 p-0 overflow-y-auto">
+                        <SheetContent class="flex flex-col gap-0 overflow-y-auto p-0">
                             <div class="flex flex-col gap-2 p-4">
                                 <ThemeSwitcher />
                                 <slot name="main" />
@@ -35,12 +38,12 @@
 </template>
 
 <script setup>
-import Wrapper from "@/components/Common/Wrapper.vue";
-import {onMounted, onUnmounted, ref} from "vue";
+import ThemeSwitcher from '@/components/Common/ThemeSwitcher.vue';
+import Wrapper from '@/components/Common/Wrapper.vue';
 import { Button } from '@/components/ui/button';
-import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
-import {Separator} from "@/components/ui/separator";
-import ThemeSwitcher from "@/components/Common/ThemeSwitcher.vue";
+import { Separator } from '@/components/ui/separator';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 const isFloating = ref(false);
 
@@ -50,12 +53,12 @@ function checkIsFloating() {
 
 onMounted(() => {
     checkIsFloating();
-    window.addEventListener("scroll", checkIsFloating);
+    window.addEventListener('scroll', checkIsFloating);
 });
 
 onUnmounted(() => {
-    window.addEventListener("scroll", checkIsFloating);
-})
+    window.addEventListener('scroll', checkIsFloating);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -71,11 +74,12 @@ header {
         grid-template-columns: auto 1fr auto;
 
         & .branding {
-            @apply flex gap-4 items-center;
+            @apply flex items-center gap-4;
         }
 
-        & nav, & aside {
-            @apply hidden lg:flex gap-2 items-center;
+        & nav,
+        & aside {
+            @apply hidden items-center gap-2 lg:flex;
         }
     }
 }

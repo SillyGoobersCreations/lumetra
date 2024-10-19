@@ -1,4 +1,4 @@
-import {Attendee} from "@/types/models/Attendee";
+import { Attendee } from '@/types/models/Attendee';
 
 export interface ChatMessage {
     id: string;

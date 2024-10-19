@@ -20,7 +20,7 @@ defineProps({
 
 <style lang="scss" scoped>
 header {
-    @apply flex flex-col mb-6 space-y-1 text-center;
+    @apply mb-6 flex flex-col space-y-1 text-center;
 
     & h1 {
         @apply text-xl font-semibold tracking-tight;

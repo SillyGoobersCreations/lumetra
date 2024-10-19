@@ -2,9 +2,21 @@
     <section class="layout-admin">
         <aside>
             <div class="logo">
-                <img :src="LumetraLightLogo" alt="Lumetra Logo" class="dark:hidden hidden md:block" />
-                <img :src="LumetraDarkLogo" alt="Lumetra Logo" class="dark:md:block hidden" />
-                <img :src="LumetraIcon" alt="Lumetra Logo" class="block md:hidden" />
+                <img
+                    :src="LumetraLightLogo"
+                    alt="Lumetra Logo"
+                    class="hidden dark:hidden md:block"
+                />
+                <img
+                    :src="LumetraDarkLogo"
+                    alt="Lumetra Logo"
+                    class="hidden dark:md:block"
+                />
+                <img
+                    :src="LumetraIcon"
+                    alt="Lumetra Logo"
+                    class="block md:hidden"
+                />
             </div>
 
             <Separator />
@@ -15,7 +27,7 @@
                     class="justify-start"
                     as-child
                 >
-                    <Link :href="route('events.admin', {eventId: event.id })">
+                    <Link :href="route('events.admin', { eventId: event.id })">
                         <i class="ri-home-3-line mr-2 text-lg"></i>
                         <span>Dashboard</span>
                     </Link>
@@ -25,7 +37,7 @@
                     class="justify-start"
                     as-child
                 >
-                    <Link :href="route('events.admin.notes', {eventId: event.id })">
+                    <Link :href="route('events.admin.notes', { eventId: event.id })">
                         <i class="ri-sticky-note-line mr-2 text-lg"></i>
                         <span>Notes</span>
                     </Link>
@@ -35,7 +47,7 @@
                     class="justify-start"
                     as-child
                 >
-                    <Link :href="route('events.admin.eventSettings', {eventId: event.id })">
+                    <Link :href="route('events.admin.eventSettings', { eventId: event.id })">
                         <i class="ri-calendar-event-line mr-2 text-lg"></i>
                         <span>Event Settings</span>
                     </Link>
@@ -45,7 +57,7 @@
                     class="justify-start"
                     as-child
                 >
-                    <Link :href="route('events.admin.rooms', {eventId: event.id })">
+                    <Link :href="route('events.admin.rooms', { eventId: event.id })">
                         <i class="ri-group-2-line mr-2 text-lg"></i>
                         <span>Rooms</span>
                     </Link>
@@ -55,7 +67,7 @@
                     class="justify-start"
                     as-child
                 >
-                    <Link :href="route('events.admin.attendees', {eventId: event.id })">
+                    <Link :href="route('events.admin.attendees', { eventId: event.id })">
                         <i class="ri-user-line mr-2 text-lg"></i>
                         <span>Attendees</span>
                     </Link>
@@ -73,7 +85,7 @@
                     as-child
                 >
                     <Link :href="route('events.detail', { eventId: event.id })">
-                        <i class="ri-arrow-right-up-line md:mr-2 text-lg"></i>
+                        <i class="ri-arrow-right-up-line text-lg md:mr-2"></i>
                         <span class="hidden md:block">Go to event</span>
                     </Link>
                 </Button>
@@ -91,16 +103,16 @@
 </template>
 
 <script setup lang="ts">
-import LumetraLightLogo from "../../img/lumetra-logo-onlight.svg";
-import LumetraDarkLogo from "../../img/lumetra-logo-ondark.svg";
-import LumetraIcon from "../../img/lumetra-icon.svg";
-import {Separator} from "@/components/ui/separator";
-import {Button} from "@/components/ui/button";
-import {Link} from "@inertiajs/vue3";
-import {PropType} from "@vue/runtime-dom";
-import {Event} from "@/types/models/Event";
-import ThemeSwitcher from "@/components/Common/ThemeSwitcher.vue";
-import Toaster from "../components/ui/toast/Toaster.vue";
+import ThemeSwitcher from '@/components/Common/ThemeSwitcher.vue';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { Event } from '@/types/models/Event';
+import { Link } from '@inertiajs/vue3';
+import { PropType } from 'vue';
+import LumetraIcon from '../../img/lumetra-icon.svg';
+import LumetraDarkLogo from '../../img/lumetra-logo-ondark.svg';
+import LumetraLightLogo from '../../img/lumetra-logo-onlight.svg';
+import Toaster from '../components/ui/toast/Toaster.vue';
 
 defineProps({
     title: {
@@ -116,13 +128,13 @@ defineProps({
 
 <style lang="scss" scoped>
 .layout-admin {
-    @apply grid grid-cols-[350px_1fr] min-h-[100dvh];
+    @apply grid min-h-[100dvh] grid-cols-[350px_1fr];
 
     & aside {
-        @apply border-r flex flex-col;
+        @apply flex flex-col border-r;
 
         & .logo {
-            @apply p-4 h-[60px] flex items-center;
+            @apply flex h-[60px] items-center p-4;
 
             & img {
                 @apply h-5;
@@ -130,17 +142,17 @@ defineProps({
         }
 
         & nav {
-            @apply border-b p-2 flex flex-col gap-1;
+            @apply flex flex-col gap-1 border-b p-2;
         }
     }
     & main {
         @apply flex flex-col;
 
         & header {
-            @apply p-4 h-[60px] flex items-center w-full gap-2;
+            @apply flex h-[60px] w-full items-center gap-2 p-4;
 
             & h4 {
-                @apply text-xl font-semibold tracking-tight block grow;
+                @apply block grow text-xl font-semibold tracking-tight;
             }
         }
 
@@ -166,7 +178,7 @@ defineProps({
             }
             & nav {
                 & a {
-                    @apply p-0 h-10 w-10 flex items-center justify-center;
+                    @apply flex h-10 w-10 items-center justify-center p-0;
 
                     & i {
                         @apply m-0;

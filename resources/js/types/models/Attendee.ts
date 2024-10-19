@@ -1,7 +1,7 @@
-import {User} from "@/types/models/User";
-import {AttendeeContactInfo} from "@/types/models/AttendeeContactInfo";
-import {Event} from "@/types/models/Event";
-import {AttendeeNotification} from "@/types/models/AttendeeNotification";
+import { AttendeeContactInfo } from '@/types/models/AttendeeContactInfo';
+import { AttendeeNotification } from '@/types/models/AttendeeNotification';
+import { Event } from '@/types/models/Event';
+import { User } from '@/types/models/User';
 
 export interface Attendee {
     id: string;

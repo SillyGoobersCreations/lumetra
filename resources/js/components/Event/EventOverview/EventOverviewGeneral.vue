@@ -6,9 +6,15 @@
         </CardHeader>
         <CardContent class="flex flex-col gap-2">
             <div>{{ event.description }}</div>
-            <div class="flex gap-2 flex-wrap">
-                <Button variant="secondary" as-child>
-                    <a :href="event.privacy_url" target="_blank">
+            <div class="flex flex-wrap gap-2">
+                <Button
+                    variant="secondary"
+                    as-child
+                >
+                    <a
+                        :href="event.privacy_url"
+                        target="_blank"
+                    >
                         <span>Privacy policy</span>
                     </a>
                 </Button>
@@ -18,14 +24,14 @@
 </template>
 
 <script setup lang="ts">
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 defineProps({
     event: {
         type: Object,
         required: true,
-    }
+    },
 });
 </script>
 
@@ -35,7 +41,7 @@ defineProps({
     flex-direction: column;
     gap: 10px;
 
-    & h1{
+    & h1 {
         font-size: 1.5rem;
     }
     & p {

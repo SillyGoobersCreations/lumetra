@@ -1,11 +1,12 @@
 <template>
     <Head title="Settings" />
 
-    <AdminLayout title="Event Settings" :event="event">
+    <AdminLayout
+        title="Event Settings"
+        :event="event"
+    >
         <template #header>
-            <Button
-                @click="submitForm"
-            >
+            <Button @click="submitForm">
                 <span class="ri-save-line mr-2 text-lg"></span>
                 <span>Save</span>
             </Button>
@@ -17,7 +18,7 @@
                     <CardHeader>
                         <CardTitle>Visibility</CardTitle>
                     </CardHeader>
-                    <CardContent class="flex gap-2 md:gap-4 flex-col md:flex-row">
+                    <CardContent class="flex flex-col gap-2 md:flex-row md:gap-4">
                         <Button
                             class="state-button"
                             :variant="form.state === 'draft' ? 'default' : 'secondary'"
@@ -53,55 +54,78 @@
                         <CardTitle>General</CardTitle>
                     </CardHeader>
                     <CardContent class="flex flex-col gap-4">
-                        <FormRow label="ID" variant="wide">
+                        <FormRow
+                            label="ID"
+                            variant="wide"
+                        >
                             <div class="text-muted-foreground">{{ event.id }}</div>
                         </FormRow>
-                        <FormRow label="Title" variant="wide" :error="form.errors.title">
+                        <FormRow
+                            label="Title"
+                            variant="wide"
+                            :error="form.errors.title"
+                        >
                             <Input v-model="form.title" />
                         </FormRow>
-                        <FormRow label="Description" variant="wide" :error="form.errors.description">
+                        <FormRow
+                            label="Description"
+                            variant="wide"
+                            :error="form.errors.description"
+                        >
                             <Textarea v-model="form.description" />
                         </FormRow>
-                        <FormRow label="Organizer" variant="wide" :error="form.errors.organizer">
+                        <FormRow
+                            label="Organizer"
+                            variant="wide"
+                            :error="form.errors.organizer"
+                        >
                             <Input v-model="form.organizer" />
                         </FormRow>
-                        <FormRow label="Start Date" variant="wide" :error="form.errors.start_date">
+                        <FormRow
+                            label="Start Date"
+                            variant="wide"
+                            :error="form.errors.start_date"
+                        >
                             <Popover>
                                 <PopoverTrigger as-child>
                                     <Button
                                         variant="outline"
-                                        :class="`justify-start ${ !startDateValue && 'text-muted-foreground' }`"
+                                        :class="`justify-start ${!startDateValue && 'text-muted-foreground'}`"
                                     >
                                         <i class="ri-calendar-2-line mr-2 text-lg"></i>
-                                        {{ startDateValue ? df.format(startDateValue.toDate(getLocalTimeZone())) : "Pick a date" }}
+                                        {{ startDateValue ? df.format(startDateValue.toDate(getLocalTimeZone())) : 'Pick a date' }}
                                     </Button>
                                 </PopoverTrigger>
                                 <PopoverContent class="w-auto p-0">
-                                    <Calendar
-                                        v-model="startDateValue"
-                                    />
+                                    <Calendar v-model="startDateValue" />
                                 </PopoverContent>
                             </Popover>
                         </FormRow>
-                        <FormRow label="End Date" variant="wide" :error="form.errors.end_date">
+                        <FormRow
+                            label="End Date"
+                            variant="wide"
+                            :error="form.errors.end_date"
+                        >
                             <Popover>
                                 <PopoverTrigger as-child>
                                     <Button
                                         variant="outline"
-                                        :class="`justify-start ${ !endDateValue && 'text-muted-foreground' }`"
+                                        :class="`justify-start ${!endDateValue && 'text-muted-foreground'}`"
                                     >
                                         <i class="ri-calendar-2-line mr-2 text-lg"></i>
-                                        {{ endDateValue ? df.format(endDateValue.toDate(getLocalTimeZone())) : "Pick a date" }}
+                                        {{ endDateValue ? df.format(endDateValue.toDate(getLocalTimeZone())) : 'Pick a date' }}
                                     </Button>
                                 </PopoverTrigger>
                                 <PopoverContent class="w-auto p-0">
-                                    <Calendar
-                                        v-model="endDateValue"
-                                    />
+                                    <Calendar v-model="endDateValue" />
                                 </PopoverContent>
                             </Popover>
                         </FormRow>
-                        <FormRow label="Privacy policy URL" variant="wide" :error="form.errors.privacy_url">
+                        <FormRow
+                            label="Privacy policy URL"
+                            variant="wide"
+                            :error="form.errors.privacy_url"
+                        >
                             <Input v-model="form.privacy_url" />
                         </FormRow>
                     </CardContent>
@@ -112,11 +136,22 @@
                         <CardTitle>Emails</CardTitle>
                     </CardHeader>
                     <CardContent class="flex flex-col gap-4">
-                        <FormRow label="Name" variant="wide" :error="form.errors.email_name">
+                        <FormRow
+                            label="Name"
+                            variant="wide"
+                            :error="form.errors.email_name"
+                        >
                             <Input v-model="form.email_name" />
                         </FormRow>
-                        <FormRow label="From" variant="wide" :error="form.errors.email_from">
-                            <Input v-model="form.email_from" placeholder="noreply@example.org" />
+                        <FormRow
+                            label="From"
+                            variant="wide"
+                            :error="form.errors.email_from"
+                        >
+                            <Input
+                                v-model="form.email_from"
+                                placeholder="noreply@example.org"
+                            />
                         </FormRow>
                     </CardContent>
                 </Card>
@@ -130,21 +165,31 @@
                         </CardHeader>
                         <CardContent class="flex flex-col gap-3">
                             <div class="flex items-center justify-center">
-                                <img :src="`/storage/logos/${event.logo}`" style="height: 60px;" alt="Logo" v-if="event.logo" />
+                                <img
+                                    :src="`/storage/logos/${event.logo}`"
+                                    style="height: 60px"
+                                    alt="Logo"
+                                    v-if="event.logo"
+                                />
                             </div>
                             <FormRow
                                 label="Logo"
                                 :error="logoForm.errors.logo"
                                 variant="wide"
                             >
-                                <Input type="file" id="logo" @input="logoForm.logo = $event.target.files[0]" />
+                                <Input
+                                    type="file"
+                                    id="logo"
+                                    @input="logoForm.logo = $event.target.files[0]"
+                                />
                             </FormRow>
                         </CardContent>
-                        <CardFooter class="justify-end flex gap-2">
-                            <Button variant="destructive" as-child>
-                                <Link
-                                    :href="route('events.admin.eventSettings.doClearLogo', {eventId: event.id})"
-                                >
+                        <CardFooter class="flex justify-end gap-2">
+                            <Button
+                                variant="destructive"
+                                as-child
+                            >
+                                <Link :href="route('events.admin.eventSettings.doClearLogo', { eventId: event.id })">
                                     <span>Clear current</span>
                                 </Link>
                             </Button>
@@ -161,14 +206,41 @@
                         <CardTitle>Enrollment</CardTitle>
                     </CardHeader>
                     <CardContent class="flex flex-col gap-4">
-                        <FormRow label="Enabled" variant="wide">
-                            <Switch :checked="form.enrollment_enabled" @update:checked="(val) => { form.enrollment_enabled = val; }" />
+                        <FormRow
+                            label="Enabled"
+                            variant="wide"
+                        >
+                            <Switch
+                                :checked="form.enrollment_enabled"
+                                @update:checked="
+                                    (val) => {
+                                        form.enrollment_enabled = val;
+                                    }
+                                "
+                            />
                         </FormRow>
-                        <FormRow label="Limit" variant="wide" :error="form.errors.attendees_max">
-                            <Input type="number" v-model="form.attendees_max" />
+                        <FormRow
+                            label="Limit"
+                            variant="wide"
+                            :error="form.errors.attendees_max"
+                        >
+                            <Input
+                                type="number"
+                                v-model="form.attendees_max"
+                            />
                         </FormRow>
-                        <FormRow label="Confirmation required" variant="wide">
-                            <Switch :checked="form.confirmation_required" @update:checked="(val) => { form.confirmation_required = val; }" />
+                        <FormRow
+                            label="Confirmation required"
+                            variant="wide"
+                        >
+                            <Switch
+                                :checked="form.confirmation_required"
+                                @update:checked="
+                                    (val) => {
+                                        form.confirmation_required = val;
+                                    }
+                                "
+                            />
                         </FormRow>
                     </CardContent>
                 </Card>
@@ -179,10 +251,25 @@
                         <CardDescription>Attendees will be able to confirm themselves as confirmed. If needed, only confirmed attendees will be able to interact with other attendees.</CardDescription>
                     </CardHeader>
                     <CardContent class="flex flex-col gap-4">
-                        <FormRow label="Generate confirmation key per user" variant="wide" v-if="form.confirmation_required">
-                            <Switch :checked="form.confirmation_personalized" @update:checked="(val) => { form.confirmation_personalized = val; }" />
+                        <FormRow
+                            label="Generate confirmation key per user"
+                            variant="wide"
+                            v-if="form.confirmation_required"
+                        >
+                            <Switch
+                                :checked="form.confirmation_personalized"
+                                @update:checked="
+                                    (val) => {
+                                        form.confirmation_personalized = val;
+                                    }
+                                "
+                            />
                         </FormRow>
-                        <FormRow label="Global confirmation key" variant="wide" v-if="form.confirmation_required && !form.confirmation_personalized">
+                        <FormRow
+                            label="Global confirmation key"
+                            variant="wide"
+                            v-if="form.confirmation_required && !form.confirmation_personalized"
+                        >
                             <Input v-model="form.confirmation_key" />
                         </FormRow>
                     </CardContent>
@@ -200,8 +287,18 @@
                         <FormRow label="Max slots an attendee can claim" variant="wide">
                             <Input type="number" v-model="form.room_slot_max_claimed" />
                         </FormRow> -->
-                        <FormRow label="Organizers must approve claims" variant="wide">
-                            <Switch :checked="form.room_slot_team_confirmation_required" @update:checked="(val) => { form.room_slot_team_confirmation_required = val; }" />
+                        <FormRow
+                            label="Organizers must approve claims"
+                            variant="wide"
+                        >
+                            <Switch
+                                :checked="form.room_slot_team_confirmation_required"
+                                @update:checked="
+                                    (val) => {
+                                        form.room_slot_team_confirmation_required = val;
+                                    }
+                                "
+                            />
                         </FormRow>
                     </CardContent>
                 </Card>
@@ -211,22 +308,21 @@
 </template>
 
 <script setup lang="ts">
-import AdminLayout from "@/Layouts/AdminLayout.vue";
-import {PropType} from "@vue/runtime-dom";
-import {Event} from "@/types/models/Event";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import FormRow from "@/components/Common/FormRow.vue";
-import {Button} from "@/components/ui/button";
-import {Head, Link, useForm} from "@inertiajs/vue3";
-import {Input} from "@/components/ui/input";
-import {Textarea} from "@/components/ui/textarea";
-import {DateFormatter, type DateValue, getLocalTimeZone, parseDate} from "@internationalized/date";
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
-import {Calendar} from "@/components/ui/calendar";
-import {onMounted, ref, watch} from "vue";
-import moment from "moment";
-import {Switch} from "@/components/ui/switch";
-import {toast} from "@/components/ui/toast";
+import AdminLayout from '@/Layouts/AdminLayout.vue';
+import FormRow from '@/components/Common/FormRow.vue';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from '@/components/ui/toast';
+import { Event } from '@/types/models/Event';
+import { Head, Link, useForm } from '@inertiajs/vue3';
+import { DateFormatter, getLocalTimeZone, parseDate, type DateValue } from '@internationalized/date';
+import moment from 'moment';
+import { PropType, onMounted, ref, watch } from 'vue';
 
 const props = defineProps({
     event: {
@@ -236,24 +332,24 @@ const props = defineProps({
 });
 
 const form = useForm({
-    'state': props.event.state ?? 'draft',
-    'title': props.event.title,
-    'organizer': props.event.organizer,
-    'logo': props.event.logo,
-    'description': props.event.description,
-    'start_date': props.event.start_date,
-    'end_date': props.event.end_date,
-    'email_name': props.event.email_name,
-    'email_from': props.event.email_from,
-    'confirmation_required': props.event.confirmation_required,
-    'confirmation_personalized': props.event.confirmation_personalized,
-    'confirmation_key': props.event.confirmation_key,
-    'room_slot_max_pending': props.event.room_slot_max_pending,
-    'room_slot_max_claimed': props.event.room_slot_max_claimed,
-    'room_slot_team_confirmation_required': props.event.room_slot_team_confirmation_required,
-    'enrollment_enabled': props.event.enrollment_enabled,
-    'privacy_url': props.event.privacy_url,
-    'attendees_max': props.event.attendees_max,
+    state: props.event.state ?? 'draft',
+    title: props.event.title,
+    organizer: props.event.organizer,
+    logo: props.event.logo,
+    description: props.event.description,
+    start_date: props.event.start_date,
+    end_date: props.event.end_date,
+    email_name: props.event.email_name,
+    email_from: props.event.email_from,
+    confirmation_required: props.event.confirmation_required,
+    confirmation_personalized: props.event.confirmation_personalized,
+    confirmation_key: props.event.confirmation_key,
+    room_slot_max_pending: props.event.room_slot_max_pending,
+    room_slot_max_claimed: props.event.room_slot_max_claimed,
+    room_slot_team_confirmation_required: props.event.room_slot_team_confirmation_required,
+    enrollment_enabled: props.event.enrollment_enabled,
+    privacy_url: props.event.privacy_url,
+    attendees_max: props.event.attendees_max,
 });
 
 const logoForm = useForm({
@@ -287,32 +383,32 @@ watch(endDateValue, (newVal) => {
 });
 
 function submitForm() {
-    form.post(route('events.admin.eventSettings.doSave', {eventId: props.event.id}), {
+    form.post(route('events.admin.eventSettings.doSave', { eventId: props.event.id }), {
         onSuccess: () => {
             toast({
-                description: "Successfully saved."
+                description: 'Successfully saved.',
             });
         },
         onError: () => {
             toast({
-                description: "Could not save. Please try again later.",
-                variant: "destructive"
+                description: 'Could not save. Please try again later.',
+                variant: 'destructive',
             });
         },
     });
 }
 
 function submitLogo() {
-    logoForm.post(route('events.admin.eventSettings.doSaveLogo', {eventId: props.event.id}), {
+    logoForm.post(route('events.admin.eventSettings.doSaveLogo', { eventId: props.event.id }), {
         onSuccess: () => {
             toast({
-                description: "Successfully saved."
+                description: 'Successfully saved.',
             });
         },
         onError: () => {
             toast({
-                description: "Could not save. Please try again later.",
-                variant: "destructive"
+                description: 'Could not save. Please try again later.',
+                variant: 'destructive',
             });
         },
     });
@@ -321,17 +417,17 @@ function submitLogo() {
 
 <style lang="scss" scoped>
 .page-eventSettings {
-    @apply p-4 flex flex-col md:grid md:grid-cols-2 gap-4 items-start;
+    @apply flex flex-col items-start gap-4 p-4 md:grid md:grid-cols-2;
 
     & > div {
         @apply flex flex-col gap-4;
     }
 
     & .state-button {
-        @apply md:py-4 flex md:flex-col grow h-auto gap-2 md:gap-0;
+        @apply flex h-auto grow gap-2 md:flex-col md:gap-0 md:py-4;
 
         & i {
-            @apply text-lg md:text-3xl mb-1;
+            @apply mb-1 text-lg md:text-3xl;
         }
         & h1 {
             @apply font-bold;

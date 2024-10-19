@@ -1,7 +1,10 @@
 <template>
     <Head title="Rooms" />
 
-    <AdminLayout title="Rooms" :event="event">
+    <AdminLayout
+        title="Rooms"
+        :event="event"
+    >
         <template #header>
             <AddDialog :event="event" />
         </template>
@@ -12,18 +15,22 @@
                 v-for="room in event.rooms"
             >
                 <CardContent class="content">
-                    <div class="flex gap-2 items-start">
-                        <div class="grow flex flex-col gap-1">
+                    <div class="flex items-start gap-2">
+                        <div class="flex grow flex-col gap-1">
                             <h1>{{ room.name }}</h1>
                             <p class="text-muted-foreground">{{ room.location }}</p>
                             <div class="meta">
                                 <Badge v-if="room.available">Available</Badge>
-                                <Badge v-else variant="destructive">Not Available</Badge>
+                                <Badge
+                                    v-else
+                                    variant="destructive"
+                                    >Not Available</Badge
+                                >
 
                                 <Badge variant="outline">{{ room.slots.length }} Slots</Badge>
                             </div>
                         </div>
-                        <div class="flex gap-2 items-center">
+                        <div class="flex items-center gap-2">
                             <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger as-child>
@@ -32,7 +39,7 @@
                                             variant="secondary"
                                             size="icon"
                                         >
-                                            <Link :href="route('events.admin.rooms.detail', {eventId: event.id, roomId: room.id })">
+                                            <Link :href="route('events.admin.rooms.detail', { eventId: event.id, roomId: room.id })">
                                                 <i class="ri-calendar-view text-lg"></i>
                                             </Link>
                                         </Button>
@@ -42,8 +49,14 @@
                                     </TooltipContent>
                                 </Tooltip>
                             </TooltipProvider>
-                            <EditDialog :room="room" :event="event">
-                                <Button variant="secondary" size="icon">
+                            <EditDialog
+                                :room="room"
+                                :event="event"
+                            >
+                                <Button
+                                    variant="secondary"
+                                    size="icon"
+                                >
                                     <i class="ri-pencil-line text-lg"></i>
                                 </Button>
                             </EditDialog>
@@ -56,16 +69,16 @@
 </template>
 
 <script setup lang="ts">
-import AdminLayout from "@/Layouts/AdminLayout.vue";
-import {Card, CardContent} from "@/components/ui/card";
-import {PropType} from "@vue/runtime-dom";
-import {Event} from "@/types/models/Event";
-import {Badge} from "@/components/ui/badge";
-import {Button} from "@/components/ui/button";
-import AddDialog from "@/components/Admin/Rooms/AddDialog.vue";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
-import EditDialog from "@/components/Admin/Rooms/EditDialog.vue";
-import {Head, Link} from "@inertiajs/vue3";
+import AdminLayout from '@/Layouts/AdminLayout.vue';
+import AddDialog from '@/components/Admin/Rooms/AddDialog.vue';
+import EditDialog from '@/components/Admin/Rooms/EditDialog.vue';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Event } from '@/types/models/Event';
+import { Head, Link } from '@inertiajs/vue3';
+import { PropType } from 'vue';
 
 defineProps({
     event: {
@@ -81,13 +94,13 @@ defineProps({
 
     & .room-card {
         & .content {
-            @apply p-6 flex flex-col justify-end;
+            @apply flex flex-col justify-end p-6;
 
             & h1 {
                 @apply text-xl font-bold;
             }
             & .meta {
-                @apply mt-2 flex gap-1 flex-wrap;
+                @apply mt-2 flex flex-wrap gap-1;
             }
         }
     }

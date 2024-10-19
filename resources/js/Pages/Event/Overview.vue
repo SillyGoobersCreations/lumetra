@@ -13,22 +13,22 @@
 </template>
 
 <script setup lang="ts">
-import {Head} from "@inertiajs/vue3";
-import DefaultLayout from "@/Layouts/DefaultLayout.vue";
-import EventButton from "@/components/Event/EventButton.vue";
-import {PropType} from "@vue/runtime-dom";
-import {Event} from "@/types/models/Event";
+import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import EventButton from '@/components/Event/EventButton.vue';
+import { Event } from '@/types/models/Event';
+import { Head } from '@inertiajs/vue3';
+import { PropType } from 'vue';
 
 defineProps({
     events: {
         type: Array as PropType<Event[]>,
         default: () => [],
-    }
+    },
 });
 </script>
 
 <style lang="scss" scoped>
 .events-grid {
-    @apply flex flex-col md:grid md:grid-cols-2 gap-4;
+    @apply flex flex-col gap-4 md:grid md:grid-cols-2;
 }
 </style>

@@ -3,7 +3,10 @@
         <div class="text">
             <slot />
         </div>
-        <div class="actions" v-if="$slots.actions">
+        <div
+            class="actions"
+            v-if="$slots.actions"
+        >
             <slot name="actions" />
         </div>
     </div>
@@ -20,13 +23,13 @@ defineProps({
 
 <style lang="scss" scoped>
 .message {
-    @apply rounded-xl min-w-[60%] max-w-[90%] flex flex-col gap-4 p-4 break-all;
+    @apply flex min-w-[60%] max-w-[90%] flex-col gap-4 break-all rounded-xl p-4;
 
     &.remote {
-        @apply border self-start rounded-bl-none;
+        @apply self-start rounded-bl-none border;
     }
     &.local {
-        @apply bg-muted self-end rounded-br-none;
+        @apply self-end rounded-br-none bg-muted;
     }
     & .actions {
         @apply flex gap-2;

@@ -1,5 +1,5 @@
-import {EventRoomSlot} from "@/types/models/EventRoomSlot";
-import {Event} from "@/types/models/Event";
+import { Event } from '@/types/models/Event';
+import { EventRoomSlot } from '@/types/models/EventRoomSlot';
 
 export interface EventRoom {
     id: string;

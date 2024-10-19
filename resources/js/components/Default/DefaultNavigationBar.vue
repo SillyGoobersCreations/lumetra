@@ -1,8 +1,16 @@
 <template>
     <NavigationBar>
         <template #branding>
-            <img :src="LumetraLightLogo" alt="Lumetra Logo" class="logo dark:hidden block" />
-            <img :src="LumetraDarkLogo" alt="Lumetra Logo" class="logo dark:block hidden" />
+            <img
+                :src="LumetraLightLogo"
+                alt="Lumetra Logo"
+                class="logo block dark:hidden"
+            />
+            <img
+                :src="LumetraDarkLogo"
+                alt="Lumetra Logo"
+                class="logo hidden dark:block"
+            />
         </template>
         <template #main>
             <NavigationBarItem
@@ -18,7 +26,10 @@
                 :active="$page.url.startsWith('/events')"
             />
         </template>
-        <template #user v-if="user">
+        <template
+            #user
+            v-if="user"
+        >
             <NavigationBarItem
                 :href="route('settings.global')"
                 icon="settings-2"
@@ -31,7 +42,10 @@
                 label="Logout"
             />
         </template>
-        <template #user v-else>
+        <template
+            #user
+            v-else
+        >
             <NavigationBarItem
                 :href="route('login')"
                 label="Login"
@@ -41,7 +55,10 @@
                 label="Register"
             />
         </template>
-        <template #user_sidebar v-if="user">
+        <template
+            #user_sidebar
+            v-if="user"
+        >
             <div class="flex flex-col gap-2 p-4">
                 <NavigationBarItem
                     :href="route('settings.global')"
@@ -57,7 +74,10 @@
                 />
             </div>
         </template>
-        <template #user_sidebar v-else>
+        <template
+            #user_sidebar
+            v-else
+        >
             <div class="flex flex-col gap-2 p-4">
                 <NavigationBarItem
                     :href="route('login')"
@@ -73,12 +93,12 @@
 </template>
 
 <script setup lang="ts">
-import NavigationBar from "@/components/Common/NavigationBar.vue";
-import LumetraLightLogo from "../../../img/lumetra-logo-onlight.svg";
-import LumetraDarkLogo from "../../../img/lumetra-logo-ondark.svg";
-import NavigationBarItem from "@/components/Common/NavigationBarItem.vue";
-import {usePage} from "@inertiajs/vue3";
-import {computed} from "vue";
+import NavigationBar from '@/components/Common/NavigationBar.vue';
+import NavigationBarItem from '@/components/Common/NavigationBarItem.vue';
+import { usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
+import LumetraDarkLogo from '../../../img/lumetra-logo-ondark.svg';
+import LumetraLightLogo from '../../../img/lumetra-logo-onlight.svg';
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);

@@ -1,23 +1,22 @@
 <template>
     <Head title="Dashboard" />
 
-    <AdminLayout title="Dashboard" :event="event">
+    <AdminLayout
+        title="Dashboard"
+        :event="event"
+    >
         <section class="page-dashboard">
             <Card>
                 <CardHeader>
                     <CardTitle>Welcome!</CardTitle>
                 </CardHeader>
-                <CardContent class="text-muted-foreground">
-                    Welcome to the Lumetra dashboard!
-                </CardContent>
+                <CardContent class="text-muted-foreground"> Welcome to the Lumetra dashboard! </CardContent>
             </Card>
 
-            <div class="flex flex-col lg:flex-row gap-4">
+            <div class="flex flex-col gap-4 lg:flex-row">
                 <Card class="grow">
                     <CardHeader class="pb-1">
-                        <CardTitle class="text-sm">
-                            Attendees
-                        </CardTitle>
+                        <CardTitle class="text-sm"> Attendees </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div class="text-2xl font-bold">
@@ -27,9 +26,7 @@
                 </Card>
                 <Card class="grow">
                     <CardHeader class="pb-1">
-                        <CardTitle class="text-sm">
-                            Room Slots
-                        </CardTitle>
+                        <CardTitle class="text-sm"> Room Slots </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div class="text-2xl font-bold">
@@ -39,9 +36,7 @@
                 </Card>
                 <Card class="grow">
                     <CardHeader class="pb-1">
-                        <CardTitle class="text-sm">
-                            Remaining Days
-                        </CardTitle>
+                        <CardTitle class="text-sm"> Remaining Days </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div class="text-2xl font-bold">
@@ -55,11 +50,11 @@
 </template>
 
 <script setup lang="ts">
-import AdminLayout from "@/Layouts/AdminLayout.vue";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {PropType} from "@vue/runtime-dom";
-import {Event} from "@/types/models/Event";
-import {Head} from "@inertiajs/vue3";
+import AdminLayout from '@/Layouts/AdminLayout.vue';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Event } from '@/types/models/Event';
+import { Head } from '@inertiajs/vue3';
+import { PropType } from 'vue';
 
 defineProps({
     event: {

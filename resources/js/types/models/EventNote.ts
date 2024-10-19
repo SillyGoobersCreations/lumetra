@@ -1,4 +1,4 @@
-import {Event} from "@/types/models/Event";
+import { Event } from '@/types/models/Event';
 
 export interface EventNote {
     id: string;

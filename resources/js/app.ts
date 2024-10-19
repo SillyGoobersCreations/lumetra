@@ -1,13 +1,13 @@
-import './bootstrap';
 import '@fontsource-variable/outfit';
 import 'remixicon/fonts/remixicon.css';
 import '../css/app.css';
+import './bootstrap';
 
-import { createApp, h, DefineComponent } from 'vue';
-import {createInertiaApp} from '@inertiajs/vue3';
+import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import mitt from 'mitt';
+import { DefineComponent, createApp, h } from 'vue';
+import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Lumetra';
 
