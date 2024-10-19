@@ -140,7 +140,13 @@ const props = defineProps({
     },
 });
 
-const slotsPreview = ref([]);
+interface SlotPreview {
+    start_hour: Number;
+    start_minute: Number;
+    end_hour: Number;
+    end_minute: Number;
+}
+const slotsPreview = ref<SlotPreview[]>([]);
 
 const form = useForm({
     date: props.date,

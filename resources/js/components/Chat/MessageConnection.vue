@@ -54,6 +54,7 @@
 import Message from '@/components/Chat/Message.vue';
 import MessageSystem from '@/components/Chat/MessageSystem.vue';
 import { Button } from '@/components/ui/button';
+import { Attendee } from '@/types/models/Attendee';
 import { AttendeeConnection } from '@/types/models/AttendeeConnection';
 import { Link } from '@inertiajs/vue3';
 import { PropType, computed } from 'vue';
@@ -69,19 +70,20 @@ const props = defineProps({
     },
 });
 
-const isRemote = computed(() => {
+const isRemote = computed<boolean>(() => {
     return props.currentAttendeeId !== props.connection?.inviter_attendee_id;
 });
 
-const attendee = computed(() => {
+/* Get the other Attendee */
+const attendee = computed<Attendee>(() => {
     if (props.currentAttendeeId === props.connection?.inviter_attendee_id) {
-        return props.connection?.invitee_attendee;
+        return props.connection?.invitee_attendee as Attendee;
     } else {
-        return props.connection?.inviter_attendee;
+        return props.connection?.inviter_attendee as Attendee;
     }
 });
 
-const connectionState = computed(() => {
+const connectionState = computed<string>(() => {
     if (isRemote.value) {
         switch (props.connection.state) {
             case 'pending':

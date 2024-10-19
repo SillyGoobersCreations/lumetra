@@ -29,8 +29,8 @@
                             <Calendar
                                 v-model="value"
                                 initial-focus
-                                :min-value="parseDate(event.start_date?.split(' ')[0])"
-                                :max-value="parseDate(event.end_date?.split(' ')[0])"
+                                :min-value="parseDate(event.start_date?.split(' ')[0] ?? '')"
+                                :max-value="parseDate(event.end_date?.split(' ')[0] ?? '')"
                             />
                         </PopoverContent>
                     </Popover>
@@ -143,9 +143,11 @@ import { DateFormatter, getLocalTimeZone, type DateValue } from '@internationali
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Attendee } from '@/types/models/Attendee';
 import { AttendeeConnection } from '@/types/models/AttendeeConnection';
 import { Event } from '@/types/models/Event';
 import { EventRoom } from '@/types/models/EventRoom';
+import { EventRoomSlot } from '@/types/models/EventRoomSlot';
 import { usePage } from '@inertiajs/vue3';
 import { PropType, computed, ref, watch } from 'vue';
 
@@ -155,11 +157,11 @@ const df = new DateFormatter('en-US', {
 
 const value = ref<DateValue>();
 const rooms = ref<EventRoom[]>([]);
-const selectedRoomId = ref<string>(null);
-const selectedRoom = computed(() => rooms.value.find((room) => room.id === selectedRoomId.value));
-const selectedSlotId = ref<string>(null);
-const selectedSlot = computed(() => selectedRoom.value.slots.find((slot) => slot.id === selectedSlotId.value));
-const dialogOpen = ref(false);
+const selectedRoomId = ref<string | undefined>(undefined);
+const selectedRoom = computed<EventRoom | null>(() => rooms.value?.find((room) => room.id === selectedRoomId.value) || null);
+const selectedSlotId = ref<string | undefined>(undefined);
+const selectedSlot = computed<EventRoomSlot | null>(() => selectedRoom.value?.slots?.find((slot) => slot.id === selectedSlotId.value) || null);
+const dialogOpen = ref<boolean>(false);
 
 const props = defineProps({
     event: {
@@ -182,8 +184,8 @@ const props = defineProps({
 
 const page = usePage();
 const attendees = computed(() => page.props.auth.attendees);
-const currentAttendee = computed(() => {
-    let foundAttendee = null;
+const currentAttendee = computed<Attendee | null>(() => {
+    let foundAttendee: Attendee | null = null;
 
     attendees.value.forEach((attendee) => {
         if (attendee.event_id === props.event.id) {
@@ -194,18 +196,19 @@ const currentAttendee = computed(() => {
     return foundAttendee;
 });
 
-const attendee = computed(() => {
+/* Get the other Attendee */
+const attendee = computed<Attendee>(() => {
     if (currentAttendee.value?.id === props.selectedConnection?.inviter_attendee_id) {
-        return props.selectedConnection.invitee_attendee;
+        return props.selectedConnection.invitee_attendee as Attendee;
     } else {
-        return props.selectedConnection.inviter_attendee;
+        return props.selectedConnection.inviter_attendee as Attendee;
     }
 });
 
 watch(value, async (newValue) => {
     rooms.value = [];
-    selectedSlotId.value = null;
-    selectedRoomId.value = null;
+    selectedSlotId.value = undefined;
+    selectedRoomId.value = undefined;
 
     if (newValue === null) {
         return;
@@ -226,12 +229,12 @@ async function sendInvite() {
     let data = await response.json();
 
     dialogOpen.value = false;
-    selectedSlotId.value = null;
-    selectedRoomId.value = null;
-    value.value = null;
+    selectedSlotId.value = undefined;
+    selectedRoomId.value = undefined;
+    value.value = undefined;
 }
 
-function stateToText(state) {
+function stateToText(state: string): string {
     switch (state) {
         case 'open':
             return 'Available';
@@ -242,13 +245,15 @@ function stateToText(state) {
         case 'claim_open':
         case 'unavailable':
             return 'Unavailable';
+        default:
+            return 'Unknown';
     }
 }
 
-const isUserUnavailable = computed(() => {
-    return props.confirmedUserSlots.includes(selectedSlot.value.start_date);
+const isUserUnavailable = computed<boolean>(() => {
+    return props.confirmedUserSlots.includes(selectedSlot.value?.start_date);
 });
-const isAttendeeUnavailable = computed(() => {
-    return props.confirmedAttendeeSlots.includes(selectedSlot.value.start_date);
+const isAttendeeUnavailable = computed<boolean>(() => {
+    return props.confirmedAttendeeSlots.includes(selectedSlot.value?.start_date);
 });
 </script>

@@ -83,6 +83,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Attendee } from '@/types/models/Attendee';
 import { Event } from '@/types/models/Event';
 import { Head } from '@inertiajs/vue3';
 import { PropType, onMounted, ref, watch } from 'vue';
@@ -94,13 +95,13 @@ const props = defineProps({
     },
 });
 
-const loading = ref(true);
-const results = ref([]);
-const searchQuery = ref('');
-const searchSortBy = ref('updated_at');
-const searchSortType = ref('DESC');
+const loading = ref<boolean>(true);
+const results = ref<Attendee[]>([]);
+const searchQuery = ref<string>('');
+const searchSortBy = ref<'handle' | 'first_name' | 'last_name' | 'updated_at' | 'created_at'>('updated_at');
+const searchSortType = ref<'DESC' | 'ASC'>('DESC');
 
-const searchSortFields = {
+const searchSortFields: Record<typeof searchSortBy.value, string> = {
     handle: 'Handle',
     first_name: 'First name',
     last_name: 'Last name',

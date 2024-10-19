@@ -12,7 +12,7 @@
                         <ConnectionButton
                             v-for="connection in connections"
                             :key="connection.id"
-                            :current-attendee-id="currentAttendee.id"
+                            :current-attendee-id="currentAttendee?.id"
                             :active="connection.id === selectedConnection.id"
                             :connection="connection"
                         />
@@ -49,14 +49,14 @@
                     <CardHeader class="flex-row items-center py-4">
                         <Avatar class="mr-2 h-8 w-8">
                             <AvatarImage
-                                :src="`/storage/avatars/${attendee.avatar_url}?v=${attendee.updated_at}`"
-                                v-if="attendee.avatar_url"
+                                :src="`/storage/avatars/${attendee?.avatar_url}?v=${attendee?.updated_at}`"
+                                v-if="attendee?.avatar_url"
                             />
-                            <AvatarFallback>{{ attendee.name_initials }}</AvatarFallback>
+                            <AvatarFallback>{{ attendee?.name_initials }}</AvatarFallback>
                         </Avatar>
                         <div class="flex grow flex-col space-y-1">
                             <p class="text-sm font-medium leading-none">
-                                {{ attendee.name_full }}
+                                {{ attendee?.name_full }}
                             </p>
                             <p class="text-xs leading-none text-muted-foreground">Connected {{ moment(selectedConnection.created_at).fromNow() }}</p>
                         </div>
@@ -66,7 +66,7 @@
                                 size="icon"
                                 as-child
                             >
-                                <Link :href="route('events.attendees.detail', { eventId: event.id, attendeeId: attendee.id })">
+                                <Link :href="route('events.attendees.detail', { eventId: event.id, attendeeId: attendee?.id })">
                                     <i class="ri-arrow-right-up-line text-lg"></i>
                                 </Link>
                             </Button>
@@ -75,7 +75,7 @@
                     <CardContent class="chat-messages">
                         <MessageConnection
                             :connection="selectedConnection"
-                            :current-attendee-id="currentAttendee.id"
+                            :current-attendee-id="currentAttendee?.id"
                         />
                         <template
                             v-for="message in loadedMessages"
@@ -83,15 +83,15 @@
                         >
                             <MessageRoomSlotClaim
                                 v-if="message.is_room_slot_invite"
-                                :is-remote="message.sender_attendee_id !== currentAttendee.id"
+                                :is-remote="message.sender_attendee_id !== currentAttendee?.id"
                                 :claim="parseRoomSlotClaim(message.message)"
                                 :event-id="event.id"
-                                :attendee-id="attendee.id"
+                                :attendee-id="attendee?.id"
                                 :confirmedUserSlots="confirmedUserSlots"
                             />
                             <Message
                                 v-else
-                                :is-remote="message.sender_attendee_id !== currentAttendee.id"
+                                :is-remote="message.sender_attendee_id !== currentAttendee?.id"
                             >
                                 <template #default>
                                     {{ message.message }}
@@ -135,21 +135,23 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Attendee } from '@/types/models/Attendee';
 import { AttendeeConnection } from '@/types/models/AttendeeConnection';
+import { ChatMessage } from '@/types/models/ChatMessage';
 import { Event } from '@/types/models/Event';
 import { EventRoomSlotClaim } from '@/types/models/EventRoomSlotClaim';
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import moment from 'moment';
 import { PropType, computed, onMounted, onUnmounted, ref } from 'vue';
 
-const loadedMessages = ref([]);
+const loadedMessages = ref<ChatMessage[]>([]);
 let messageTimer: number | undefined;
 
 /* Get Current Users Attendee */
 const page = usePage();
-const attendees = computed(() => page.props.auth.attendees);
-const currentAttendee = computed(() => {
-    let foundAttendee = null;
+const attendees = computed<Attendee[]>(() => page.props.auth.attendees);
+const currentAttendee = computed<Attendee | null>(() => {
+    let foundAttendee: Attendee | null = null;
 
     attendees.value.forEach((attendee) => {
         if (attendee.event_id === props.event.id) {
@@ -184,11 +186,11 @@ const props = defineProps({
 });
 
 /* Get the other Attendee */
-const attendee = computed(() => {
+const attendee = computed<Attendee>(() => {
     if (currentAttendee.value?.id === props.selectedConnection?.inviter_attendee_id) {
-        return props.selectedConnection.invitee_attendee;
+        return props.selectedConnection.invitee_attendee as Attendee;
     } else {
-        return props.selectedConnection.inviter_attendee;
+        return props.selectedConnection.inviter_attendee as Attendee;
     }
 });
 

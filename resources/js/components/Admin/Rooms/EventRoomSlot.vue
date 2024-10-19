@@ -13,25 +13,25 @@
                 <div class="flex items-center gap-2">
                     <Avatar class="mr-2 h-8 w-8">
                         <AvatarImage
-                            :src="`/storage/avatars/${roomSlot.claims.invitee_attendee.avatar_url}?v=${roomSlot.claims.invitee_attendee.updated_at}`"
-                            v-if="roomSlot.claims.invitee_attendee.avatar_url"
+                            :src="`/storage/avatars/${roomSlot.claims?.invitee_attendee?.avatar_url}?v=${roomSlot.claims?.invitee_attendee?.updated_at}`"
+                            v-if="roomSlot.claims?.invitee_attendee?.avatar_url"
                         />
-                        <AvatarFallback>{{ roomSlot.claims.invitee_attendee.name_initials }}</AvatarFallback>
+                        <AvatarFallback>{{ roomSlot.claims?.invitee_attendee?.name_initials }}</AvatarFallback>
                     </Avatar>
                     <p class="text-sm font-medium leading-none">
-                        {{ roomSlot.claims.invitee_attendee.name_full }}
+                        {{ roomSlot.claims?.invitee_attendee?.name_full }}
                     </p>
                 </div>
                 <div class="flex items-center gap-2">
                     <Avatar class="mr-2 h-8 w-8">
                         <AvatarImage
-                            :src="`/storage/avatars/${roomSlot.claims.inviter_attendee.avatar_url}?v=${roomSlot.claims.inviter_attendee.updated_at}`"
-                            v-if="roomSlot.claims.inviter_attendee.avatar_url"
+                            :src="`/storage/avatars/${roomSlot.claims?.inviter_attendee?.avatar_url}?v=${roomSlot.claims?.inviter_attendee?.updated_at}`"
+                            v-if="roomSlot.claims?.inviter_attendee?.avatar_url"
                         />
-                        <AvatarFallback>{{ roomSlot.claims.inviter_attendee.name_initials }}</AvatarFallback>
+                        <AvatarFallback>{{ roomSlot.claims?.inviter_attendee?.name_initials }}</AvatarFallback>
                     </Avatar>
                     <p class="text-sm font-medium leading-none">
-                        {{ roomSlot.claims.inviter_attendee.name_full }}
+                        {{ roomSlot.claims?.inviter_attendee?.name_full }}
                     </p>
                 </div>
             </div>
@@ -145,7 +145,7 @@ const props = defineProps({
     },
 });
 
-function stateToText(state) {
+function stateToText(state: string): string {
     switch (state) {
         case 'open':
             return 'Available';
@@ -157,6 +157,8 @@ function stateToText(state) {
             return 'Claimed';
         case 'unavailable':
             return 'Unavailable';
+        default:
+            return 'Unknown';
     }
 }
 </script>

@@ -117,11 +117,11 @@
                                     <CardTitle>{{ getOtherAttendeeRoomClaim(meet).name_full }}</CardTitle>
                                     <CardDescription class="flex flex-col items-start gap-2">
                                         <span class="text-foreground"
-                                            >{{ moment(meet.slot.start_date).format('DD.MM.YY') }} @ {{ moment(meet.slot.start_date).format('HH:mm') }} <span class="text-muted-foreground">- {{ moment(meet.slot.end_date).format('HH:mm') }}</span></span
+                                            >{{ moment(meet.slot?.start_date).format('DD.MM.YY') }} @ {{ moment(meet.slot?.start_date).format('HH:mm') }} <span class="text-muted-foreground">- {{ moment(meet.slot?.end_date).format('HH:mm') }}</span></span
                                         >
                                     </CardDescription>
                                 </div>
-                                <Badge variant="secondary">{{ moment(meet.slot.start_date).fromNow() }}</Badge>
+                                <Badge variant="secondary">{{ moment(meet.slot?.start_date).fromNow() }}</Badge>
                             </CardContent>
                         </Card>
                     </CardContent>
@@ -230,16 +230,16 @@ const props = defineProps({
         default: () => [],
     },
     userAttendee: {
-        type: [Object as PropType<Attendee>, Boolean] as PropType<Attendee | boolean>,
-        default: false,
+        type: Object as PropType<Attendee>,
+        default: null,
     },
 });
 
 /* Get Current Users Attendee */
 const page = usePage();
 const attendees = computed(() => page.props.auth.attendees);
-const currentAttendee = computed(() => {
-    let foundAttendee = null;
+const currentAttendee = computed<Attendee | null>(() => {
+    let foundAttendee: Attendee | null = null;
 
     attendees.value.forEach((attendee) => {
         if (attendee.event_id === props.event.id) {
@@ -249,18 +249,18 @@ const currentAttendee = computed(() => {
 
     return foundAttendee;
 });
-function getOtherAttendeeChat(chatMessage) {
-    if (chatMessage.sender_attendee_id === currentAttendee.value.id) {
-        return chatMessage.receiver_attendee;
+function getOtherAttendeeChat(chatMessage: ChatMessage): Attendee {
+    if (chatMessage.sender_attendee_id === currentAttendee.value?.id) {
+        return chatMessage.receiver_attendee as Attendee;
     } else {
-        return chatMessage.sender_attendee;
+        return chatMessage.sender_attendee as Attendee;
     }
 }
-function getOtherAttendeeRoomClaim(eventRoomSlotClaim) {
-    if (eventRoomSlotClaim.inviter_attendee_id === currentAttendee.value.id) {
-        return eventRoomSlotClaim.invitee_attendee;
+function getOtherAttendeeRoomClaim(eventRoomSlotClaim: EventRoomSlotClaim): Attendee {
+    if (eventRoomSlotClaim.inviter_attendee_id === currentAttendee.value?.id) {
+        return eventRoomSlotClaim.invitee_attendee as Attendee;
     } else {
-        return eventRoomSlotClaim.inviter_attendee;
+        return eventRoomSlotClaim.inviter_attendee as Attendee;
     }
 }
 </script>

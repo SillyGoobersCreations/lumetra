@@ -96,7 +96,7 @@
                         <Button
                             variant="destructive"
                             as-child
-                            v-if="attendee.role === 'organizer' && currentAttendee.id !== attendee.id"
+                            v-if="attendee.role === 'organizer' && currentAttendee?.id !== attendee.id"
                         >
                             <Link :href="route('events.admin.attendees.organizer.remove', { eventId: event.id, attendeeId: attendee.id })">
                                 <i class="ri-key-line mr-2 text-lg"></i>
@@ -233,8 +233,8 @@ import { PropType, computed } from 'vue';
 
 const page = usePage();
 const attendees = computed(() => page.props.auth.attendees);
-const currentAttendee = computed(() => {
-    let foundAttendee = null;
+const currentAttendee = computed<Attendee | null>(() => {
+    let foundAttendee: Attendee | null = null;
 
     attendees.value.forEach((attendee) => {
         if (attendee.event_id === props.event.id) {

@@ -333,23 +333,23 @@ const props = defineProps({
 
 const form = useForm({
     state: props.event.state ?? 'draft',
-    title: props.event.title,
-    organizer: props.event.organizer,
+    title: props.event.title ?? '',
+    organizer: props.event.organizer ?? '',
     logo: props.event.logo,
-    description: props.event.description,
+    description: props.event.description ?? '',
     start_date: props.event.start_date,
     end_date: props.event.end_date,
-    email_name: props.event.email_name,
-    email_from: props.event.email_from,
+    email_name: props.event.email_name ?? '',
+    email_from: props.event.email_from ?? '',
     confirmation_required: props.event.confirmation_required,
     confirmation_personalized: props.event.confirmation_personalized,
-    confirmation_key: props.event.confirmation_key,
+    confirmation_key: props.event.confirmation_key ?? '',
     room_slot_max_pending: props.event.room_slot_max_pending,
     room_slot_max_claimed: props.event.room_slot_max_claimed,
     room_slot_team_confirmation_required: props.event.room_slot_team_confirmation_required,
     enrollment_enabled: props.event.enrollment_enabled,
-    privacy_url: props.event.privacy_url,
-    attendees_max: props.event.attendees_max,
+    privacy_url: props.event.privacy_url ?? '',
+    attendees_max: props.event.attendees_max ?? undefined,
 });
 
 const logoForm = useForm({

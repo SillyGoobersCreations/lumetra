@@ -54,10 +54,10 @@
                     >
                         <Avatar class="h-8 w-8">
                             <AvatarImage
-                                :src="`/storage/avatars/${currentAttendee.avatar_url}?v=${currentAttendee.updated_at}`"
-                                v-if="currentAttendee.avatar_url"
+                                :src="`/storage/avatars/${currentAttendee?.avatar_url}?v=${currentAttendee?.updated_at}`"
+                                v-if="currentAttendee?.avatar_url"
                             />
-                            <AvatarFallback>{{ currentAttendee.name_initials }}</AvatarFallback>
+                            <AvatarFallback>{{ currentAttendee?.name_initials }}</AvatarFallback>
                         </Avatar>
                     </Button>
                 </DropdownMenuTrigger>
@@ -68,32 +68,32 @@
                     <DropdownMenuLabel class="flex font-normal">
                         <div class="flex flex-col space-y-1">
                             <p class="text-sm font-medium leading-none">
-                                {{ currentAttendee.name_full }}
+                                {{ currentAttendee?.name_full }}
                             </p>
                             <p class="text-xs leading-none text-muted-foreground">
-                                {{ currentAttendee.handle }}
+                                {{ currentAttendee?.handle }}
                             </p>
                         </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                         <DropdownMenuItem as-child>
-                            <Link :href="route('events.attendees.detail', { eventId: currentAttendee.event.id, attendeeId: currentAttendee.id })">
+                            <Link :href="route('events.attendees.detail', { eventId: currentAttendee?.event?.id, attendeeId: currentAttendee?.id })">
                                 <i class="ri-user-line mr-2 text-lg"></i>
                                 <span>Profile</span>
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem as-child>
-                            <Link :href="route('settings.event', { eventId: currentAttendee.event.id })">
+                            <Link :href="route('settings.event', { eventId: currentAttendee?.event?.id })">
                                 <i class="ri-settings-2-line mr-2 text-lg"></i>
                                 <span>Settings</span>
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                            v-if="user.is_admin || currentAttendee.role === 'organizer'"
+                            v-if="user.is_admin || currentAttendee?.role === 'organizer'"
                             as-child
                         >
-                            <Link :href="route('events.admin', { eventId: currentAttendee.event.id })">
+                            <Link :href="route('events.admin', { eventId: currentAttendee?.event?.id })">
                                 <i class="ri-key-line mr-2 text-lg"></i>
                                 <span>Admin</span>
                             </Link>
@@ -119,7 +119,7 @@
                                         {{ attendee.name_full }}
                                     </p>
                                     <p class="text-xs leading-none text-muted-foreground">
-                                        {{ attendee.event.title }}
+                                        {{ attendee?.event?.title }}
                                     </p>
                                 </div>
                             </Link>
@@ -152,7 +152,7 @@
                         <i class="ri-notification-2-line text-lg"></i>
                         <span
                             class="absolute bottom-2 right-2 h-2 w-2 rounded-full bg-red-600"
-                            v-if="currentAttendee.notifications.length > 0"
+                            v-if="currentAttendee?.notifications && currentAttendee?.notifications?.length > 0"
                         ></span>
                     </Button>
                 </DropdownMenuTrigger>
@@ -166,9 +166,9 @@
                         </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuGroup>
+                    <DropdownMenuGroup v-if="currentAttendee?.notifications">
                         <template
-                            v-for="(notification, n) in currentAttendee.notifications"
+                            v-for="(notification, n) in currentAttendee?.notifications"
                             :key="notification.id"
                         >
                             <DropdownMenuItem
@@ -178,7 +178,7 @@
                                 <Link
                                     :href="
                                         route('events.notifications.clear', {
-                                            eventId: currentAttendee.event.id,
+                                            eventId: currentAttendee?.event?.id,
                                             notificationId: notification.id,
                                         })
                                     "
@@ -191,9 +191,9 @@
                                     </div>
                                 </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuSeparator v-if="n < currentAttendee.notifications.length - 1" />
+                            <DropdownMenuSeparator v-if="currentAttendee?.notifications && n < currentAttendee?.notifications?.length - 1" />
                         </template>
-                        <template v-if="currentAttendee.notifications.length === 0">
+                        <template v-if="currentAttendee?.notifications?.length === 0">
                             <div class="flex flex-col items-center p-3 py-6">
                                 <i class="ri-notification-off-line mb-2 text-3xl"></i>
                                 <h1>All caught up!</h1>
@@ -225,17 +225,17 @@
                 <div class="mb-2 flex gap-2">
                     <Avatar class="h-8 w-8">
                         <AvatarImage
-                            :src="`/storage/avatars/${currentAttendee.avatar_url}?v=${currentAttendee.updated_at}`"
-                            v-if="currentAttendee.avatar_url"
+                            :src="`/storage/avatars/${currentAttendee?.avatar_url}?v=${currentAttendee?.updated_at}`"
+                            v-if="currentAttendee?.avatar_url"
                         />
-                        <AvatarFallback>{{ currentAttendee.name_initials }}</AvatarFallback>
+                        <AvatarFallback>{{ currentAttendee?.name_initials }}</AvatarFallback>
                     </Avatar>
                     <div class="flex flex-col space-y-1">
                         <p class="text-sm font-medium leading-none">
-                            {{ currentAttendee.name_full }}
+                            {{ currentAttendee?.name_full }}
                         </p>
                         <p class="text-xs leading-none text-muted-foreground">
-                            {{ currentAttendee.handle }}
+                            {{ currentAttendee?.handle }}
                         </p>
                     </div>
                 </div>
@@ -247,7 +247,7 @@
                         >
                             <i class="ri-notification-2-line mr-2 text-lg"></i>
                             <span class="grow text-start">Notifications</span>
-                            <Badge>{{ currentAttendee.notifications.length }}</Badge>
+                            <Badge>{{ currentAttendee?.notifications?.length || 0 }}</Badge>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
@@ -260,9 +260,9 @@
                             </div>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
+                        <DropdownMenuGroup v-if="currentAttendee?.notifications">
                             <template
-                                v-for="(notification, n) in currentAttendee.notifications"
+                                v-for="(notification, n) in currentAttendee?.notifications"
                                 :key="notification.id"
                             >
                                 <DropdownMenuItem
@@ -272,7 +272,7 @@
                                     <Link
                                         :href="
                                             route('events.notifications.clear', {
-                                                eventId: currentAttendee.event.id,
+                                                eventId: currentAttendee?.event?.id,
                                                 notificationId: notification.id,
                                             })
                                         "
@@ -285,9 +285,9 @@
                                         </div>
                                     </Link>
                                 </DropdownMenuItem>
-                                <DropdownMenuSeparator v-if="n < currentAttendee.notifications.length - 1" />
+                                <DropdownMenuSeparator v-if="currentAttendee?.notifications && n < currentAttendee?.notifications?.length - 1" />
                             </template>
-                            <template v-if="currentAttendee.notifications.length === 0">
+                            <template v-if="currentAttendee?.notifications?.length === 0">
                                 <div class="flex flex-col items-center p-3 py-6">
                                     <i class="ri-notification-off-line mb-2 text-3xl"></i>
                                     <h1>All caught up!</h1>
@@ -298,18 +298,18 @@
                     </DropdownMenuContent>
                 </DropdownMenu>
                 <NavigationBarItem
-                    :href="route('events.attendees.detail', { eventId: currentAttendee.event.id, attendeeId: currentAttendee.id })"
+                    :href="route('events.attendees.detail', { eventId: currentAttendee?.event?.id, attendeeId: currentAttendee?.id })"
                     icon="user"
                     label="Profile"
                 />
                 <NavigationBarItem
-                    :href="route('settings.event', { eventId: currentAttendee.event.id })"
+                    :href="route('settings.event', { eventId: currentAttendee?.event?.id })"
                     icon="settings-2"
                     label="Settings"
                 />
                 <NavigationBarItem
-                    v-if="user.is_admin || currentAttendee.role === 'organizer'"
-                    :href="route('events.admin', { eventId: currentAttendee.event.id })"
+                    v-if="user.is_admin || currentAttendee?.role === 'organizer'"
+                    :href="route('events.admin', { eventId: currentAttendee?.event?.id })"
                     icon="key"
                     label="Admin"
                 />
@@ -342,7 +342,7 @@
                                 {{ attendee.name_full }}
                             </p>
                             <p class="text-xs leading-none text-muted-foreground">
-                                {{ attendee.event.title }}
+                                {{ attendee?.event?.title }}
                             </p>
                         </div>
                     </Link>
@@ -380,6 +380,7 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { Attendee } from '@/types/models/Attendee';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
@@ -392,9 +393,9 @@ const props = defineProps({
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
-const attendees = computed(() => page.props.auth.attendees);
-const currentAttendee = computed(() => {
-    let foundAttendee = null;
+const attendees = computed<Attendee[]>(() => page.props.auth.attendees);
+const currentAttendee = computed<Attendee | null>(() => {
+    let foundAttendee: Attendee | null = null;
 
     attendees.value.forEach((attendee) => {
         if (attendee.event_id === props.event.id) {
@@ -405,7 +406,7 @@ const currentAttendee = computed(() => {
     return foundAttendee;
 });
 
-function getIconByType(type) {
+function getIconByType(type: string): string {
     switch (type) {
         default:
         case 'system':
@@ -425,7 +426,7 @@ function getIconByType(type) {
     }
 }
 
-function getLabelByType(type) {
+function getLabelByType(type: string): string {
     switch (type) {
         default:
         case 'system':

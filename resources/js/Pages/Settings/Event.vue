@@ -279,9 +279,9 @@ const props = defineProps({
 });
 
 const nameForm = useForm({
-    handle: props.attendee?.handle,
-    first_name: props.attendee?.first_name,
-    last_name: props.attendee?.last_name,
+    handle: props.attendee?.handle ?? '',
+    first_name: props.attendee?.first_name ?? '',
+    last_name: props.attendee?.last_name ?? '',
 });
 
 const avatarForm = useForm({
@@ -289,9 +289,9 @@ const avatarForm = useForm({
 });
 
 const descriptionForm = useForm({
-    description: props.attendee?.description,
-    job_company: props.attendee?.job_company,
-    job_position: props.attendee?.job_position,
+    description: props.attendee?.description ?? '',
+    job_company: props.attendee?.job_company ?? '',
+    job_position: props.attendee?.job_position ?? '',
 });
 
 const confirmationForm = useForm({
@@ -299,12 +299,14 @@ const confirmationForm = useForm({
 });
 
 const socialLinkForm = useForm({
-    type: null,
+    type: 'web',
     value: '',
     visibility: 'hidden',
 });
-function getContactInfoIcon(type: string) {
+function getContactInfoIcon(type: string): string {
     switch (type) {
+        default:
+            return '';
         case 'web':
             return 'ri-earth-fill';
         case 'twitter':
@@ -327,8 +329,9 @@ function getContactInfoIcon(type: string) {
             return 'ri-reddit-fill';
     }
 }
-function getContactInfoLink(type: string, value: string) {
+function getContactInfoLink(type: string, value: string): string {
     switch (type) {
+        default:
         case 'web':
         case 'mastodon':
         case 'discord':

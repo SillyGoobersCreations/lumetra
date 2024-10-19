@@ -6,7 +6,8 @@
     "scripts": {
         "dev": "vite",
         "build": "vue-tsc && vite build",
-        "lint": "eslint resources/js --ext .js,.ts,.vue --ignore-path .gitignore --fix --debug"
+        "ts": "vue-tsc",
+        "lint": "eslint resources/js --ext .js,.ts,.vue --ignore-path .gitignore --fix"
     },
     "devDependencies": {
         "@rushstack/eslint-patch": "^1.8.0",

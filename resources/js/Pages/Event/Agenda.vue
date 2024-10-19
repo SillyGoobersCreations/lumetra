@@ -34,15 +34,15 @@
                                     <CardTitle>{{ getOtherAttendeeRoomClaim(meet).name_full }}</CardTitle>
                                     <CardDescription v-if="getOtherAttendeeRoomClaim(meet).job_company">{{ getOtherAttendeeRoomClaim(meet).job_company }}</CardDescription>
                                 </div>
-                                <Badge variant="secondary">{{ moment(meet.slot.start_date).fromNow() }}</Badge>
+                                <Badge variant="secondary">{{ moment(meet.slot?.start_date).fromNow() }}</Badge>
                             </CardContent>
                             <CardContent>
                                 <div class="flex flex-col gap-0">
                                     <span class="mb-2"
-                                        >{{ moment(meet.slot.start_date).format('DD.MM.YYYY') }} @ {{ moment(meet.slot.start_date).format('HH:mm') }} <span class="text-muted-foreground">- {{ moment(meet.slot.end_date).format('HH:mm') }}</span></span
+                                        >{{ moment(meet.slot?.start_date).format('DD.MM.YYYY') }} @ {{ moment(meet.slot?.start_date).format('HH:mm') }} <span class="text-muted-foreground">- {{ moment(meet.slot?.end_date).format('HH:mm') }}</span></span
                                     >
-                                    <span class="font-bold">{{ meet.slot.room.name }}</span>
-                                    <span class="text-muted-foreground">{{ meet.slot.room.location }}</span>
+                                    <span class="font-bold">{{ meet.slot?.room?.name }}</span>
+                                    <span class="text-muted-foreground">{{ meet.slot?.room?.location }}</span>
                                 </div>
                             </CardContent>
                             <CardFooter class="flex gap-2">
@@ -95,6 +95,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Attendee } from '@/types/models/Attendee';
 import { Event } from '@/types/models/Event';
 import { EventRoomSlotClaim } from '@/types/models/EventRoomSlotClaim';
 import { Head, Link, usePage } from '@inertiajs/vue3';
@@ -115,8 +116,8 @@ const props = defineProps({
 /* Get Current Users Attendee */
 const page = usePage();
 const attendees = computed(() => page.props.auth.attendees);
-const currentAttendee = computed(() => {
-    let foundAttendee = null;
+const currentAttendee = computed<Attendee | null>(() => {
+    let foundAttendee: Attendee | null = null;
 
     attendees.value.forEach((attendee) => {
         if (attendee.event_id === props.event.id) {
@@ -126,11 +127,11 @@ const currentAttendee = computed(() => {
 
     return foundAttendee;
 });
-function getOtherAttendeeRoomClaim(eventRoomSlotClaim) {
-    if (eventRoomSlotClaim.inviter_attendee_id === currentAttendee.value.id) {
-        return eventRoomSlotClaim.invitee_attendee;
+function getOtherAttendeeRoomClaim(eventRoomSlotClaim: EventRoomSlotClaim): Attendee {
+    if (eventRoomSlotClaim.inviter_attendee_id === currentAttendee.value?.id) {
+        return eventRoomSlotClaim.invitee_attendee as Attendee;
     } else {
-        return eventRoomSlotClaim.inviter_attendee;
+        return eventRoomSlotClaim.inviter_attendee as Attendee;
     }
 }
 </script>

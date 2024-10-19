@@ -109,10 +109,10 @@ const props = defineProps({
 });
 
 const form = useForm({
-    name: props.room?.name,
-    location: props.room?.location,
-    notes: props.room?.notes,
-    available: props.room?.available,
+    name: props.room?.name ?? '',
+    location: props.room?.location ?? '',
+    notes: props.room?.notes ?? '',
+    available: props.room?.available ?? false,
 });
 
 function sendForm() {

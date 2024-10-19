@@ -62,6 +62,7 @@ import EventLayout from '@/Layouts/EventLayout.vue';
 import ConnectionButton from '@/components/Chat/ConnectionButton.vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Attendee } from '@/types/models/Attendee';
 import { AttendeeConnection } from '@/types/models/AttendeeConnection';
 import { Event } from '@/types/models/Event';
 import { Head, Link, usePage } from '@inertiajs/vue3';
@@ -69,8 +70,8 @@ import { PropType, computed } from 'vue';
 
 const page = usePage();
 const attendees = computed(() => page.props.auth.attendees);
-const currentAttendee = computed(() => {
-    let foundAttendee = null;
+const currentAttendee = computed<Attendee | null>(() => {
+    let foundAttendee: Attendee | null = null;
 
     attendees.value.forEach((attendee) => {
         if (attendee.event_id === props.event.id) {

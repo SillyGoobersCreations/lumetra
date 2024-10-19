@@ -81,7 +81,7 @@
                 </Card>
                 <div class="flex flex-col gap-2">
                     <Button
-                        v-if="attendee.id === currentAttendee.id"
+                        v-if="attendee.id === currentAttendee?.id"
                         class="w-full justify-start"
                         variant="secondary"
                         as-child
@@ -98,7 +98,7 @@
                         </Link>
                     </Button>
 
-                    <template v-if="attendee.id !== currentAttendee.id">
+                    <template v-if="attendee.id !== currentAttendee?.id">
                         <!-- Users are not connected, show modal -->
                         <Card v-if="connection == null">
                             <CardHeader>
@@ -144,7 +144,7 @@
                             </Card>
                             <template v-else>
                                 <!-- User was the one requesting, show pending -->
-                                <Card v-if="connection.inviter_attendee_id === currentAttendee.id">
+                                <Card v-if="connection.inviter_attendee_id === currentAttendee?.id">
                                     <CardHeader>
                                         <CardTitle>Connection request</CardTitle>
                                     </CardHeader>
@@ -159,7 +159,7 @@
                                     </CardFooter>
                                 </Card>
                                 <!-- User was the one to be requested, show request and accept/decline -->
-                                <template v-if="connection.inviter_attendee_id !== currentAttendee.id && connection.state === 'pending'">
+                                <template v-if="connection.inviter_attendee_id !== currentAttendee?.id && connection.state === 'pending'">
                                     <Card>
                                         <CardHeader>
                                             <CardTitle>Connect request</CardTitle>
@@ -277,8 +277,8 @@ const props = defineProps({
         required: true,
     },
     attendee: {
-        type: [Object as PropType<Attendee>, Boolean],
-        default: false,
+        type: Object as PropType<Attendee>,
+        default: null,
     },
     contactInfos: {
         type: Array as PropType<AttendeeContactInfo[]>,
@@ -292,8 +292,8 @@ const props = defineProps({
 
 const page = usePage();
 const attendees = computed(() => page.props.auth.attendees);
-const currentAttendee = computed(() => {
-    let foundAttendee = null;
+const currentAttendee = computed<Attendee | null>(() => {
+    let foundAttendee: Attendee | null = null;
 
     attendees.value.forEach((attendee) => {
         if (attendee.event_id === props.event.id) {

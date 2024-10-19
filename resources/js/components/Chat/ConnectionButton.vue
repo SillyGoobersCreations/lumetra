@@ -32,6 +32,7 @@
 <script setup lang="ts">
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { Attendee } from '@/types/models/Attendee';
 import { AttendeeConnection } from '@/types/models/AttendeeConnection';
 import { Link } from '@inertiajs/vue3';
 import moment from 'moment/moment';
@@ -52,11 +53,12 @@ const props = defineProps({
     },
 });
 
-const attendee = computed(() => {
+/* Get the other Attendee */
+const attendee = computed<Attendee>(() => {
     if (props.currentAttendeeId === props.connection?.inviter_attendee_id) {
-        return props.connection?.invitee_attendee;
+        return props.connection?.invitee_attendee as Attendee;
     } else {
-        return props.connection?.inviter_attendee;
+        return props.connection?.inviter_attendee as Attendee;
     }
 });
 </script>

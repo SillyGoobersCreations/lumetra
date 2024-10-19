@@ -33,7 +33,7 @@
                             ><div class="line-clamp-1">{{ attendee.handle }}</div></TableCell
                         >
                         <TableCell
-                            ><div class="line-clamp-1">{{ attendee.user.email }}</div></TableCell
+                            ><div class="line-clamp-1">{{ attendee.user?.email }}</div></TableCell
                         >
                         <TableCell>
                             <Badge

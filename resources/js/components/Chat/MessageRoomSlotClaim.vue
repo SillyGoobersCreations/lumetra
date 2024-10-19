@@ -4,20 +4,20 @@
             <div class="flex flex-col gap-0">
                 <span class="text-xs font-bold">Meet invite</span>
                 <span class="mb-2"
-                    >{{ moment(claim.slot.start_date).format('DD.MM.YYYY') }} @ {{ moment(claim.slot.start_date).format('HH:mm') }} <span class="text-muted-foreground">- {{ moment(claim.slot.end_date).format('HH:mm') }}</span></span
+                    >{{ moment(claim?.slot?.start_date).format('DD.MM.YYYY') }} @ {{ moment(claim?.slot?.start_date).format('HH:mm') }} <span class="text-muted-foreground">- {{ moment(claim?.slot?.end_date).format('HH:mm') }}</span></span
                 >
-                <span class="font-bold">{{ claim.slot.room.name }}</span>
-                <span class="text-muted-foreground">{{ claim.slot.room.location }}</span>
+                <span class="font-bold">{{ claim?.slot?.room?.name }}</span>
+                <span class="text-muted-foreground">{{ claim?.slot?.room?.location }}</span>
                 <div
                     class="mt-2 rounded-md bg-destructive p-2 text-xs text-destructive-foreground"
-                    v-if="claim.state === 'pending' && isUserUnavailable"
+                    v-if="claim?.state === 'pending' && isUserUnavailable"
                 >
                     You already have a confirmed invite at this time.
                 </div>
             </div>
         </template>
         <template #actions>
-            <template v-if="claim.state === 'pending'">
+            <template v-if="claim?.state === 'pending'">
                 <template v-if="isRemote">
                     <Button
                         as-child
@@ -63,15 +63,15 @@
                 </template>
             </template>
             <div
-                v-if="claim.state === 'attendee_confirmed'"
+                v-if="claim?.state === 'attendee_confirmed'"
                 class="text-xs text-muted-foreground"
             >
                 Awaiting organizer approval
             </div>
-            <Badge v-if="claim.state === 'confirmed'">Invite confirmed</Badge>
+            <Badge v-if="claim?.state === 'confirmed'">Invite confirmed</Badge>
             <Badge
                 variant="destructive"
-                v-if="claim.state === 'attendee_declined'"
+                v-if="claim?.state === 'attendee_declined'"
                 >Invite declined</Badge
             >
         </template>
@@ -110,7 +110,7 @@ const props = defineProps({
     },
 });
 
-const isUserUnavailable = computed(() => {
-    return props.confirmedUserSlots.includes(props.claim.slot.start_date);
+const isUserUnavailable = computed<boolean>(() => {
+    return props.confirmedUserSlots.includes(props.claim?.slot?.start_date);
 });
 </script>

@@ -81,7 +81,13 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Head } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 
-const githubContributors = ref([]);
+interface GitHubContributor {
+    id: number;
+    html_url: string;
+    avatar_url: string;
+}
+
+const githubContributors = ref<GitHubContributor[]>([]);
 
 async function loadContributors() {
     let response = await fetch('https://api.github.com/repos/SillyGoobersCreations/lumetra/contributors');

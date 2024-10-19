@@ -64,8 +64,8 @@ const props = defineProps({
         required: true,
     },
     attendee: {
-        type: [Object as PropType<Attendee>, Boolean],
-        default: false,
+        type: Object as PropType<Attendee>,
+        default: null,
     },
 });
 
