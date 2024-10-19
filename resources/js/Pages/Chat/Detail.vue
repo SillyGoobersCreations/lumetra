@@ -78,7 +78,7 @@
                             :current-attendee-id="currentAttendee.id"
                         />
                         <template
-                            v-for="message in messages"
+                            v-for="message in loadedMessages"
                             :key="message.id"
                         >
                             <MessageRoomSlotClaim
@@ -136,14 +136,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { AttendeeConnection } from '@/types/models/AttendeeConnection';
-import { ChatMessage } from '@/types/models/ChatMessage';
 import { Event } from '@/types/models/Event';
 import { EventRoomSlotClaim } from '@/types/models/EventRoomSlotClaim';
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import moment from 'moment';
 import { PropType, computed, onMounted, onUnmounted, ref } from 'vue';
 
-const messages = ref([]);
+const loadedMessages = ref([]);
 let messageTimer: number | undefined;
 
 /* Get Current Users Attendee */
@@ -173,10 +172,6 @@ const props = defineProps({
     selectedConnection: {
         type: Object as PropType<AttendeeConnection>,
         required: true,
-    },
-    messages: {
-        type: Array as PropType<ChatMessage[]>,
-        default: () => [],
     },
     confirmedUserSlots: {
         type: Array,
@@ -222,7 +217,7 @@ async function updateChat() {
         attendeeId: attendee.value?.id,
     });
     const response = await fetch(url);
-    messages.value = await response.json();
+    loadedMessages.value = await response.json();
 }
 
 function parseRoomSlotClaim(message: string): EventRoomSlotClaim {

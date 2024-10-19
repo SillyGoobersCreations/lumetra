@@ -16,71 +16,64 @@
                 </div>
             </div>
         </template>
-        <template
-            v-if="claim.state === 'pending'"
-            #actions
-        >
-            <template v-if="isRemote">
-                <Button
-                    as-child
-                    variant="secondary"
-                    size="xs"
-                >
-                    <Link
-                        :href="
-                            route('events.chats.roomSlotInvite.answer', {
-                                eventId: eventId,
-                                attendeeId: attendeeId,
-                                inviteId: claim.id,
-                                acceptInvite: true,
-                            })
-                        "
+        <template #actions>
+            <template v-if="claim.state === 'pending'">
+                <template v-if="isRemote">
+                    <Button
+                        as-child
+                        variant="secondary"
+                        size="xs"
                     >
-                        <i class="ri-shake-hands-line mr-2 text-lg"></i>
-                        <span>Accept</span>
-                    </Link>
-                </Button>
-                <Button
-                    as-child
-                    size="xs"
-                    variant="destructive"
-                >
-                    <Link
-                        :href="
-                            route('events.chats.roomSlotInvite.answer', {
-                                eventId: eventId,
-                                attendeeId: attendeeId,
-                                inviteId: claim.id,
-                                acceptInvite: false,
-                            })
-                        "
+                        <Link
+                            :href="
+                                route('events.chats.roomSlotInvite.answer', {
+                                    eventId: eventId,
+                                    attendeeId: attendeeId,
+                                    inviteId: claim.id,
+                                    acceptInvite: true,
+                                })
+                            "
+                        >
+                            <i class="ri-shake-hands-line mr-2 text-lg"></i>
+                            <span>Accept</span>
+                        </Link>
+                    </Button>
+                    <Button
+                        as-child
+                        size="xs"
+                        variant="destructive"
                     >
-                        <i class="ri-delete-bin-line mr-2 text-lg"></i>
-                        <span>Decline</span>
-                    </Link>
-                </Button>
+                        <Link
+                            :href="
+                                route('events.chats.roomSlotInvite.answer', {
+                                    eventId: eventId,
+                                    attendeeId: attendeeId,
+                                    inviteId: claim.id,
+                                    acceptInvite: false,
+                                })
+                            "
+                        >
+                            <i class="ri-delete-bin-line mr-2 text-lg"></i>
+                            <span>Decline</span>
+                        </Link>
+                    </Button>
+                </template>
+                <template v-else>
+                    <div class="text-xs text-muted-foreground">Awaiting response</div>
+                </template>
             </template>
-            <template v-else>
-                <div class="text-xs text-muted-foreground">Awaiting response</div>
-            </template>
-        </template>
-        <template
-            v-if="claim.state === 'attendee_confirmed'"
-            #actions
-        >
-            <div class="text-xs text-muted-foreground">Awaiting organizer approval</div>
-        </template>
-        <template
-            v-if="claim.state === 'confirmed'"
-            #actions
-        >
-            <Badge>Invite confirmed</Badge>
-        </template>
-        <template
-            v-if="claim.state === 'attendee_declined'"
-            #actions
-        >
-            <Badge variant="destructive">Invite declined</Badge>
+            <div
+                v-if="claim.state === 'attendee_confirmed'"
+                class="text-xs text-muted-foreground"
+            >
+                Awaiting organizer approval
+            </div>
+            <Badge v-if="claim.state === 'confirmed'">Invite confirmed</Badge>
+            <Badge
+                variant="destructive"
+                v-if="claim.state === 'attendee_declined'"
+                >Invite declined</Badge
+            >
         </template>
     </Message>
 </template>

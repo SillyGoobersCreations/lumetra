@@ -34,7 +34,7 @@ import { PropType } from 'vue';
 
 defineProps({
     attendees: {
-        type: Object as PropType<Attendee[]>,
+        type: Array as PropType<Attendee[]>,
         default: () => [],
     },
 });

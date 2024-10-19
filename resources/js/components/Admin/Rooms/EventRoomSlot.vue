@@ -1,37 +1,37 @@
 <template>
-    <div :class="`flex gap-2 rounded-md border-[1px] border-accent p-2 ${slot.state === 'unavailable' ? 'opacity-40' : ''}`">
+    <div :class="`flex gap-2 rounded-md border-[1px] border-accent p-2 ${roomSlot.state === 'unavailable' ? 'opacity-40' : ''}`">
         <div class="flex grow flex-col justify-center gap-1">
             <div class="flex items-center gap-1 text-xs">
-                <span class="font-bold">{{ moment(slot.start_date).format('HH:mm') }}</span>
+                <span class="font-bold">{{ moment(roomSlot.start_date).format('HH:mm') }}</span>
                 <span>-</span>
-                <span class="text-muted-foreground">{{ moment(slot.end_date).format('HH:mm') }}</span>
+                <span class="text-muted-foreground">{{ moment(roomSlot.end_date).format('HH:mm') }}</span>
             </div>
             <div
-                v-if="['claimed', 'claim_open'].includes(slot.state)"
+                v-if="['claimed', 'claim_open'].includes(roomSlot.state)"
                 class="mt-2 flex flex-col gap-2"
             >
                 <div class="flex items-center gap-2">
                     <Avatar class="mr-2 h-8 w-8">
                         <AvatarImage
-                            :src="`/storage/avatars/${slot.claims.invitee_attendee.avatar_url}?v=${slot.claims.invitee_attendee.updated_at}`"
-                            v-if="slot.claims.invitee_attendee.avatar_url"
+                            :src="`/storage/avatars/${roomSlot.claims.invitee_attendee.avatar_url}?v=${roomSlot.claims.invitee_attendee.updated_at}`"
+                            v-if="roomSlot.claims.invitee_attendee.avatar_url"
                         />
-                        <AvatarFallback>{{ slot.claims.invitee_attendee.name_initials }}</AvatarFallback>
+                        <AvatarFallback>{{ roomSlot.claims.invitee_attendee.name_initials }}</AvatarFallback>
                     </Avatar>
                     <p class="text-sm font-medium leading-none">
-                        {{ slot.claims.invitee_attendee.name_full }}
+                        {{ roomSlot.claims.invitee_attendee.name_full }}
                     </p>
                 </div>
                 <div class="flex items-center gap-2">
                     <Avatar class="mr-2 h-8 w-8">
                         <AvatarImage
-                            :src="`/storage/avatars/${slot.claims.inviter_attendee.avatar_url}?v=${slot.claims.inviter_attendee.updated_at}`"
-                            v-if="slot.claims.inviter_attendee.avatar_url"
+                            :src="`/storage/avatars/${roomSlot.claims.inviter_attendee.avatar_url}?v=${roomSlot.claims.inviter_attendee.updated_at}`"
+                            v-if="roomSlot.claims.inviter_attendee.avatar_url"
                         />
-                        <AvatarFallback>{{ slot.claims.inviter_attendee.name_initials }}</AvatarFallback>
+                        <AvatarFallback>{{ roomSlot.claims.inviter_attendee.name_initials }}</AvatarFallback>
                     </Avatar>
                     <p class="text-sm font-medium leading-none">
-                        {{ slot.claims.inviter_attendee.name_full }}
+                        {{ roomSlot.claims.inviter_attendee.name_full }}
                     </p>
                 </div>
             </div>
@@ -48,9 +48,9 @@
                 <DropdownMenuTrigger as-child>
                     <Button
                         variant="secondary"
-                        :disabled="slot.state === 'claimed'"
+                        :disabled="roomSlot.state === 'claimed'"
                     >
-                        <span>{{ stateToText(slot.state) }}</span>
+                        <span>{{ stateToText(roomSlot.state) }}</span>
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -60,7 +60,7 @@
                                 route('events.admin.rooms.slots.changeState', {
                                     eventId: event.id,
                                     roomId: room.id,
-                                    slotId: slot.id,
+                                    slotId: roomSlot.id,
                                     state: 'open',
                                 })
                             "
@@ -74,7 +74,7 @@
                                 route('events.admin.rooms.slots.changeState', {
                                     eventId: event.id,
                                     roomId: room.id,
-                                    slotId: slot.id,
+                                    slotId: roomSlot.id,
                                     state: 'reserved',
                                 })
                             "
@@ -88,7 +88,7 @@
                                 route('events.admin.rooms.slots.changeState', {
                                     eventId: event.id,
                                     roomId: room.id,
-                                    slotId: slot.id,
+                                    slotId: roomSlot.id,
                                     state: 'unavailable',
                                 })
                             "
@@ -108,7 +108,7 @@
                         route('events.admin.rooms.slots.delete', {
                             eventId: event.id,
                             roomId: room.id,
-                            slotId: slot.id,
+                            slotId: roomSlot.id,
                         })
                     "
                 >
@@ -139,7 +139,7 @@ const props = defineProps({
         type: Object as PropType<EventRoom>,
         required: true,
     },
-    slot: {
+    roomSlot: {
         type: Object as PropType<EventRoomSlot>,
         required: true,
     },

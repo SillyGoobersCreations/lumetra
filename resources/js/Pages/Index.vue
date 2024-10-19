@@ -59,6 +59,7 @@
                 <div class="avatars">
                     <a
                         v-for="contributor in githubContributors"
+                        :key="contributor.id"
                         :href="contributor.html_url"
                         target="_blank"
                     >

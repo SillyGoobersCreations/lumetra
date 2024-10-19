@@ -13,6 +13,7 @@
             <Card
                 class="room-card"
                 v-for="room in event.rooms"
+                :key="room.id"
             >
                 <CardContent class="content">
                     <div class="flex items-start gap-2">

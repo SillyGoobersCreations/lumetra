@@ -64,6 +64,7 @@
                 <div class="results">
                     <AttendeeButton
                         v-for="attendee in results"
+                        :key="attendee.id"
                         :attendee="attendee"
                         :eventId="event.id"
                     />

@@ -277,12 +277,12 @@ const props = defineProps({
         required: true,
     },
     attendee: {
-        type: Object as PropType<Attendee>,
+        type: [Object as PropType<Attendee>, Boolean],
         default: false,
     },
     contactInfos: {
         type: Array as PropType<AttendeeContactInfo[]>,
-        default: [],
+        default: () => [],
     },
     connection: {
         type: Object as PropType<AttendeeConnection>,

@@ -57,7 +57,7 @@
                             :key="slot"
                         >
                             <EventRoomSlot
-                                :slot="slot"
+                                :roomSlot="slot"
                                 :room="room"
                                 :event="event"
                             />
