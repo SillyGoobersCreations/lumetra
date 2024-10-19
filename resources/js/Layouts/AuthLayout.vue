@@ -2,8 +2,16 @@
     <section class="layout-auth">
         <aside>
             <div class="top-left">
-                <img :src="LumetraLightLogo" alt="Lumetra Logo" class="logo dark:hidden block" />
-                <img :src="LumetraDarkLogo" alt="Lumetra Logo" class="logo dark:block hidden" />
+                <img
+                    :src="LumetraLightLogo"
+                    alt="Lumetra Logo"
+                    class="logo block dark:hidden"
+                />
+                <img
+                    :src="LumetraDarkLogo"
+                    alt="Lumetra Logo"
+                    class="logo hidden dark:block"
+                />
             </div>
             <div class="version">
                 <span>Version 1.1.0</span>
@@ -20,25 +28,25 @@
 </template>
 
 <script setup lang="ts">
-import LumetraLightLogo from "@/../img/lumetra-logo-onlight.svg";
-import LumetraDarkLogo from "@/../img/lumetra-logo-ondark.svg";
+import LumetraDarkLogo from '@/../img/lumetra-logo-ondark.svg';
+import LumetraLightLogo from '@/../img/lumetra-logo-onlight.svg';
 import Toaster from '@/components/ui/toast/Toaster.vue';
-import {onMounted, ref} from "vue";
+import { onMounted, ref } from 'vue';
 
 const isDark = ref<boolean>(false);
 
 onMounted(() => {
-    isDark.value = localStorage.getItem("theme") === "dark";
+    isDark.value = localStorage.getItem('theme') === 'dark';
     updateTheme();
 });
 
 function updateTheme() {
-    let body = document.querySelector("body");
+    let body = document.querySelector('body');
 
-    if(isDark.value) {
-        body?.classList.add("dark");
+    if (isDark.value) {
+        body?.classList.add('dark');
     } else {
-        body?.classList.remove("dark");
+        body?.classList.remove('dark');
     }
 }
 </script>
@@ -54,7 +62,7 @@ function updateTheme() {
         @apply lg:p-8;
 
         & .content {
-            @apply mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] py-6 lg:py-0;
+            @apply mx-auto flex w-full flex-col justify-center space-y-6 py-6 sm:w-[350px] lg:py-0;
         }
     }
     & .top-left {

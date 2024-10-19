@@ -5,12 +5,12 @@
     >
         <div
             v-if="stickyNote.sticky"
-            class="bg-red-800 py-1 border-red-950 border-b-[1px]"
+            class="border-b-[1px] border-red-950 bg-red-800 py-1"
         >
             <Wrapper>
-                <div class="flex gap-4 flex-wrap items-center">
+                <div class="flex flex-wrap items-center gap-4">
                     <div class="font-bold text-white">{{ stickyNote.title }}</div>
-                    <div class="text-white text-xs">{{ stickyNote.text }}</div>
+                    <div class="text-xs text-white">{{ stickyNote.text }}</div>
                 </div>
             </Wrapper>
         </div>
@@ -24,9 +24,16 @@
         </main>
     </Wrapper>
 
-    <Button variant="secondary" class="fixed bottom-2 right-2" as-child>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLScOxisj-288XQ7Vo5qHEf0CLoFZCe_ijBMIo-tBdy-FiFd91Q/viewform?usp=sf_link" target="_blank">
-            <i class="ri-feedback-line text-lg mr-2"></i>
+    <Button
+        variant="secondary"
+        class="fixed bottom-2 right-2"
+        as-child
+    >
+        <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLScOxisj-288XQ7Vo5qHEf0CLoFZCe_ijBMIo-tBdy-FiFd91Q/viewform?usp=sf_link"
+            target="_blank"
+        >
+            <i class="ri-feedback-line mr-2 text-lg"></i>
             <span>Feedback</span>
         </a>
     </Button>
@@ -35,12 +42,12 @@
 </template>
 
 <script setup lang="ts">
-import EventNavigationBar from "@/components/Event/EventNavigationBar.vue";
-import Wrapper from "@/components/Common/Wrapper.vue";
+import Wrapper from '@/components/Common/Wrapper.vue';
+import EventNavigationBar from '@/components/Event/EventNavigationBar.vue';
+import { Button } from '@/components/ui/button';
 import Toaster from '@/components/ui/toast/Toaster.vue';
-import {PropType} from "@vue/runtime-dom";
-import {Event} from "@/types/models/Event";
-import {Button} from "@/components/ui/button";
+import { Event } from '@/types/models/Event';
+import { PropType } from 'vue';
 
 const props = defineProps({
     event: {

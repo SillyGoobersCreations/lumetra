@@ -26,4 +26,4 @@ export type Swatches = {
     fuchsia: Swatch;
     pink: Swatch;
     rose: Swatch;
-}
+};

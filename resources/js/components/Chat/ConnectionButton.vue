@@ -5,35 +5,38 @@
         class="justify-start py-6"
     >
         <Link
-            :href="route('events.chats.detail', {
-                eventId: attendee.event_id,
-                attendeeId: attendee.id,
-            })"
+            :href="
+                route('events.chats.detail', {
+                    eventId: attendee.event_id,
+                    attendeeId: attendee.id,
+                })
+            "
         >
-            <Avatar class="h-8 w-8 mr-2">
-                <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}?v=${attendee.updated_at}`" v-if="attendee.avatar_url" />
+            <Avatar class="mr-2 h-8 w-8">
+                <AvatarImage
+                    :src="`/storage/avatars/${attendee.avatar_url}?v=${attendee.updated_at}`"
+                    v-if="attendee.avatar_url"
+                />
                 <AvatarFallback>{{ attendee.name_initials }}</AvatarFallback>
             </Avatar>
             <div class="flex flex-col space-y-1">
                 <p class="text-sm font-medium leading-none">
                     {{ attendee.name_full }}
                 </p>
-                <p class="text-xs leading-none text-muted-foreground">
-                    Connected {{ moment(connection.created_at).fromNow() }}
-                </p>
+                <p class="text-xs leading-none text-muted-foreground">Connected {{ moment(connection.created_at).fromNow() }}</p>
             </div>
         </Link>
     </Button>
 </template>
 
 <script setup lang="ts">
-import {Link} from '@inertiajs/vue3';
-import {PropType} from "@vue/runtime-dom";
-import {AttendeeConnection} from "@/types/models/AttendeeConnection";
-import {computed} from "vue";
-import moment from "moment/moment";
-import {Button} from "@/components/ui/button";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Attendee } from '@/types/models/Attendee';
+import { AttendeeConnection } from '@/types/models/AttendeeConnection';
+import { Link } from '@inertiajs/vue3';
+import moment from 'moment/moment';
+import { PropType, computed } from 'vue';
 
 const props = defineProps({
     currentAttendeeId: {
@@ -47,17 +50,17 @@ const props = defineProps({
     active: {
         type: Boolean,
         default: false,
-    }
+    },
 });
 
-const attendee = computed(() => {
-    if(props.currentAttendeeId === props.connection?.inviter_attendee_id) {
-        return props.connection?.invitee_attendee;
+/* Get the other Attendee */
+const attendee = computed<Attendee>(() => {
+    if (props.currentAttendeeId === props.connection?.inviter_attendee_id) {
+        return props.connection?.invitee_attendee as Attendee;
     } else {
-        return props.connection?.inviter_attendee;
+        return props.connection?.inviter_attendee as Attendee;
     }
 });
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -2,9 +2,7 @@
     <Head title="Events" />
 
     <AuthLayout>
-        <AuthHeader
-            title="Select an event"
-        />
+        <AuthHeader title="Select an event" />
 
         <div class="event-gate">
             <div class="events">
@@ -16,7 +14,7 @@
                     as-child
                 >
                     <Link
-                        :href="route('events.detail', { eventId: attendee.event?.id})"
+                        :href="route('events.detail', { eventId: attendee.event?.id })"
                         class="button attendee-button"
                     >
                         <Avatar :attendee="attendee" />
@@ -27,10 +25,11 @@
                     </Link>
                 </Button>
             </div>
-            <Button variant="secondary" as-child>
-                <Link
-                    :href="route('index')"
-                >
+            <Button
+                variant="secondary"
+                as-child
+            >
+                <Link :href="route('index')">
                     <i class="ri-home-5-line mr-2 text-lg"></i>
                     <span>Back to Frontpage</span>
                 </Link>
@@ -40,12 +39,12 @@
 </template>
 
 <script setup lang="ts">
-import {Head, Link, usePage} from '@inertiajs/vue3';
-import AuthLayout from "@/Layouts/AuthLayout.vue";
-import {computed} from "vue";
-import Avatar from "@/components/Common/Avatar.vue";
-import AuthHeader from "@/components/Auth/AuthHeader.vue";
-import {Button} from "@/components/ui/button";
+import AuthLayout from '@/Layouts/AuthLayout.vue';
+import AuthHeader from '@/components/Auth/AuthHeader.vue';
+import Avatar from '@/components/Common/Avatar.vue';
+import { Button } from '@/components/ui/button';
+import { Head, Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -60,7 +59,7 @@ const attendees = computed(() => page.props.auth.attendees);
         @apply flex flex-col gap-2;
 
         & .attendee-item {
-            @apply h-[60px] flex gap-2 justify-start;
+            @apply flex h-[60px] justify-start gap-2;
 
             & .meta {
                 @apply flex flex-col;

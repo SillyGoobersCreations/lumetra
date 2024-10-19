@@ -4,7 +4,7 @@
 
 <style lang="scss" scoped>
 .loading-circle {
-    @apply w-8 h-8 rounded-full border-4 border-l-accent-foreground;
+    @apply h-8 w-8 rounded-full border-4 border-l-accent-foreground;
     animation: loadingLoop 0.5s linear infinite;
 }
 @keyframes loadingLoop {

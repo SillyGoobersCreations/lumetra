@@ -10,8 +10,11 @@
                         <CardDescription>Events and meetups</CardDescription>
                     </CardHeader>
                     <CardContent class="flex flex-col gap-2">
-                        <div class="p-3 flex flex-col gap-1 items-center" v-if="slotClaims.length === 0">
-                            <i class="ri-chat-1-line text-4xl mb-2"></i>
+                        <div
+                            class="flex flex-col items-center gap-1 p-3"
+                            v-if="slotClaims.length === 0"
+                        >
+                            <i class="ri-chat-1-line mb-2 text-4xl"></i>
                             <h1>No meetups yet</h1>
                             <p class="text-muted-foreground">Invite another attendee to begin.</p>
                         </div>
@@ -19,24 +22,27 @@
                             v-for="meet in slotClaims"
                             :key="meet.id"
                         >
-                            <CardContent
-                                class="p-4 px-4 gap-2 grid grid-cols-[auto_1fr_auto] items-center"
-                            >
-                                <Avatar class="h-8 w-8 mr-2">
-                                    <AvatarImage v-if="getOtherAttendeeRoomClaim(meet).avatar_url" :src="`/storage/avatars/${getOtherAttendeeRoomClaim(meet).avatar_url}?v=${getOtherAttendeeRoomClaim(meet).updated_at}`" />
+                            <CardContent class="grid grid-cols-[auto_1fr_auto] items-center gap-2 p-4 px-4">
+                                <Avatar class="mr-2 h-8 w-8">
+                                    <AvatarImage
+                                        v-if="getOtherAttendeeRoomClaim(meet).avatar_url"
+                                        :src="`/storage/avatars/${getOtherAttendeeRoomClaim(meet).avatar_url}?v=${getOtherAttendeeRoomClaim(meet).updated_at}`"
+                                    />
                                     <AvatarFallback>{{ getOtherAttendeeRoomClaim(meet).name_initials }}</AvatarFallback>
                                 </Avatar>
                                 <div class="flex flex-col gap-1">
                                     <CardTitle>{{ getOtherAttendeeRoomClaim(meet).name_full }}</CardTitle>
                                     <CardDescription v-if="getOtherAttendeeRoomClaim(meet).job_company">{{ getOtherAttendeeRoomClaim(meet).job_company }}</CardDescription>
                                 </div>
-                                <Badge variant="secondary">{{ moment(meet.slot.start_date).fromNow() }}</Badge>
+                                <Badge variant="secondary">{{ moment(meet.slot?.start_date).fromNow() }}</Badge>
                             </CardContent>
                             <CardContent>
                                 <div class="flex flex-col gap-0">
-                                    <span class="mb-2">{{ moment(meet.slot.start_date).format("DD.MM.YYYY") }} @ {{ moment(meet.slot.start_date).format("HH:mm") }} <span class="text-muted-foreground">- {{ moment(meet.slot.end_date).format("HH:mm") }}</span></span>
-                                    <span class="font-bold">{{ meet.slot.room.name }}</span>
-                                    <span class="text-muted-foreground">{{ meet.slot.room.location }}</span>
+                                    <span class="mb-2"
+                                        >{{ moment(meet.slot?.start_date).format('DD.MM.YYYY') }} @ {{ moment(meet.slot?.start_date).format('HH:mm') }} <span class="text-muted-foreground">- {{ moment(meet.slot?.end_date).format('HH:mm') }}</span></span
+                                    >
+                                    <span class="font-bold">{{ meet.slot?.room?.name }}</span>
+                                    <span class="text-muted-foreground">{{ meet.slot?.room?.location }}</span>
                                 </div>
                             </CardContent>
                             <CardFooter class="flex gap-2">
@@ -69,7 +75,7 @@
                     :key="note.id"
                 >
                     <CardHeader>
-                        <CardTitle class="flex gap-2 items-center">
+                        <CardTitle class="flex items-center gap-2">
                             <span>{{ note.title }}</span>
                             <Badge variant="secondary">{{ moment(note.created_at).fromNow() }}</Badge>
                         </CardTitle>
@@ -84,17 +90,17 @@
 </template>
 
 <script setup lang="ts">
-import EventLayout from "@/Layouts/EventLayout.vue";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import moment from "moment";
-import {Badge} from "@/components/ui/badge";
-import {PropType} from "@vue/runtime-dom";
-import {Event} from "@/types/models/Event";
-import {EventRoomSlotClaim} from "@/types/models/EventRoomSlotClaim";
-import {computed} from "vue";
-import {Head, Link, usePage} from "@inertiajs/vue3";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Button} from "@/components/ui/button";
+import EventLayout from '@/Layouts/EventLayout.vue';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Attendee } from '@/types/models/Attendee';
+import { Event } from '@/types/models/Event';
+import { EventRoomSlotClaim } from '@/types/models/EventRoomSlotClaim';
+import { Head, Link, usePage } from '@inertiajs/vue3';
+import moment from 'moment';
+import { PropType, computed } from 'vue';
 
 const props = defineProps({
     event: {
@@ -110,22 +116,22 @@ const props = defineProps({
 /* Get Current Users Attendee */
 const page = usePage();
 const attendees = computed(() => page.props.auth.attendees);
-const currentAttendee = computed(() => {
-    let foundAttendee = null;
+const currentAttendee = computed<Attendee | null>(() => {
+    let foundAttendee: Attendee | null = null;
 
     attendees.value.forEach((attendee) => {
-        if(attendee.event_id === props.event.id) {
+        if (attendee.event_id === props.event.id) {
             foundAttendee = attendee;
         }
-    })
+    });
 
     return foundAttendee;
 });
-function getOtherAttendeeRoomClaim(eventRoomSlotClaim) {
-    if(eventRoomSlotClaim.inviter_attendee_id === currentAttendee.value.id) {
-        return eventRoomSlotClaim.invitee_attendee;
+function getOtherAttendeeRoomClaim(eventRoomSlotClaim: EventRoomSlotClaim): Attendee {
+    if (eventRoomSlotClaim.inviter_attendee_id === currentAttendee.value?.id) {
+        return eventRoomSlotClaim.invitee_attendee as Attendee;
     } else {
-        return eventRoomSlotClaim.inviter_attendee;
+        return eventRoomSlotClaim.inviter_attendee as Attendee;
     }
 }
 </script>

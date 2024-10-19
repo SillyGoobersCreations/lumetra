@@ -15,24 +15,39 @@
                                 :error="nameForm.errors.handle"
                                 variant="wide"
                             >
-                                <Input type="text" id="handle" placeholder="@johndoe" v-model="nameForm.handle" />
+                                <Input
+                                    type="text"
+                                    id="handle"
+                                    placeholder="@johndoe"
+                                    v-model="nameForm.handle"
+                                />
                             </FormRow>
                             <FormRow
                                 label="First name"
                                 :error="nameForm.errors.first_name"
                                 variant="wide"
                             >
-                                <Input type="text" id="first_name" placeholder="John" v-model="nameForm.first_name" />
+                                <Input
+                                    type="text"
+                                    id="first_name"
+                                    placeholder="John"
+                                    v-model="nameForm.first_name"
+                                />
                             </FormRow>
                             <FormRow
                                 label="Last name"
                                 :error="nameForm.errors.last_name"
                                 variant="wide"
                             >
-                                <Input type="text" id="last_name" placeholder="Doe" v-model="nameForm.last_name" />
+                                <Input
+                                    type="text"
+                                    id="last_name"
+                                    placeholder="Doe"
+                                    v-model="nameForm.last_name"
+                                />
                             </FormRow>
                         </CardContent>
-                        <CardFooter class="justify-end flex gap-2">
+                        <CardFooter class="flex justify-end gap-2">
                             <Button>
                                 <span class="ri-save-2-line mr-2 text-lg"></span>
                                 <span>Save</span>
@@ -52,14 +67,19 @@
                                 :error="avatarForm.errors.avatar"
                                 variant="wide"
                             >
-                                <Input type="file" id="avatar" @input="avatarForm.avatar = $event.target.files[0]" />
+                                <Input
+                                    type="file"
+                                    id="avatar"
+                                    @input="avatarForm.avatar = $event.target.files[0]"
+                                />
                             </FormRow>
                         </CardContent>
-                        <CardFooter class="justify-end flex gap-2">
-                            <Button variant="destructive" as-child>
-                                <Link
-                                    :href="route('settings.event.avatar.clear', {eventId: event.id})"
-                                >
+                        <CardFooter class="flex justify-end gap-2">
+                            <Button
+                                variant="destructive"
+                                as-child
+                            >
+                                <Link :href="route('settings.event.avatar.clear', { eventId: event.id })">
                                     <span>Clear current</span>
                                 </Link>
                             </Button>
@@ -81,24 +101,35 @@
                                 :error="descriptionForm.errors.description"
                                 variant="wide"
                             >
-                                <Textarea v-model="descriptionForm.description" rows="10" />
+                                <Textarea
+                                    v-model="descriptionForm.description"
+                                    rows="10"
+                                />
                             </FormRow>
                             <FormRow
                                 label="Company"
                                 :error="descriptionForm.errors.job_company"
                                 variant="wide"
                             >
-                                <Input type="text" id="job_company" v-model="descriptionForm.job_company" />
+                                <Input
+                                    type="text"
+                                    id="job_company"
+                                    v-model="descriptionForm.job_company"
+                                />
                             </FormRow>
                             <FormRow
                                 label="Position"
                                 :error="descriptionForm.errors.job_position"
                                 variant="wide"
                             >
-                                <Input type="text" id="job_position" v-model="descriptionForm.job_position" />
+                                <Input
+                                    type="text"
+                                    id="job_position"
+                                    v-model="descriptionForm.job_position"
+                                />
                             </FormRow>
                         </CardContent>
-                        <CardFooter class="justify-end flex gap-2">
+                        <CardFooter class="flex justify-end gap-2">
                             <Button>
                                 <span class="ri-save-2-line mr-2 text-lg"></span>
                                 <span>Save</span>
@@ -111,26 +142,45 @@
                     <CardHeader>
                         <CardTitle>Social links</CardTitle>
                     </CardHeader>
-                    <CardContent class="flex flex-col gap-2" v-if="attendee.contact_infos.length > 0">
+                    <CardContent
+                        class="flex flex-col gap-2"
+                        v-if="attendee.contact_infos.length > 0"
+                    >
                         <div
-                            class="grid gap-2 grid-cols-[auto_1fr_auto_auto] items-center"
+                            class="grid grid-cols-[auto_1fr_auto_auto] items-center gap-2"
                             v-for="attendeeContactInfo in attendee.contact_infos"
                             :key="attendeeContactInfo.id"
                         >
                             <i :class="`${getContactInfoIcon(attendeeContactInfo.type)} text-lg`"></i>
                             <div class="line-clamp-1 text-xs text-muted-foreground">{{ getContactInfoLink(attendeeContactInfo.type, attendeeContactInfo.value) }}</div>
-                            <Badge variant="secondary" v-if="attendeeContactInfo.visibility === 'public'">Public</Badge>
-                            <Badge variant="secondary" v-if="attendeeContactInfo.visibility === 'connections_only'">Connections</Badge>
-                            <Badge variant="secondary" v-if="attendeeContactInfo.visibility === 'hidden'">Hidden</Badge>
-                            <Button variant="destructive" size="sm" as-child>
-                                <Link :href="route('settings.event.socialLink.remove', {eventId: event.id, socialLinkId: attendeeContactInfo.id})">
+                            <Badge
+                                variant="secondary"
+                                v-if="attendeeContactInfo.visibility === 'public'"
+                                >Public</Badge
+                            >
+                            <Badge
+                                variant="secondary"
+                                v-if="attendeeContactInfo.visibility === 'connections_only'"
+                                >Connections</Badge
+                            >
+                            <Badge
+                                variant="secondary"
+                                v-if="attendeeContactInfo.visibility === 'hidden'"
+                                >Hidden</Badge
+                            >
+                            <Button
+                                variant="destructive"
+                                size="sm"
+                                as-child
+                            >
+                                <Link :href="route('settings.event.socialLink.remove', { eventId: event.id, socialLinkId: attendeeContactInfo.id })">
                                     <i class="ri-delete-bin-5-line"></i>
                                 </Link>
                             </Button>
                         </div>
                     </CardContent>
                     <form @submit.prevent="submitSocialLink">
-                        <CardFooter class="justify-start border-t p-6 gap-2 flex flex-col md:grid md:grid-cols-[auto_1fr_auto_auto]">
+                        <CardFooter class="flex flex-col justify-start gap-2 border-t p-6 md:grid md:grid-cols-[auto_1fr_auto_auto]">
                             <Select v-model="socialLinkForm.type">
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select a service" />
@@ -150,8 +200,15 @@
                             </Select>
 
                             <div class="grow">
-                                <Input type="text" v-model="socialLinkForm.value" :disabled="!socialLinkForm.type" />
-                                <div class="text-xs text-muted-foreground" v-if="socialLinkForm.value">
+                                <Input
+                                    type="text"
+                                    v-model="socialLinkForm.value"
+                                    :disabled="!socialLinkForm.type"
+                                />
+                                <div
+                                    class="text-xs text-muted-foreground"
+                                    v-if="socialLinkForm.value"
+                                >
                                     Preview: {{ getContactInfoLink(socialLinkForm.type, socialLinkForm.value) }}
                                 </div>
                             </div>
@@ -187,23 +244,21 @@
 </template>
 
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
-import {Link, useForm} from "@inertiajs/vue3";
-import EventLayout from "@/Layouts/EventLayout.vue";
-import {PropType} from "@vue/runtime-dom";
-import {Event} from "@/types/models/Event";
-import {Attendee} from "@/types/models/Attendee";
-import {User} from "@/types/models/User";
-import Sidebar from "@/components/Settings/Sidebar.vue";
-import {inject} from "vue";
+import EventLayout from '@/Layouts/EventLayout.vue';
+import FormRow from '@/components/Common/FormRow.vue';
+import Sidebar from '@/components/Settings/Sidebar.vue';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
-import FormRow from "@/components/Common/FormRow.vue";
-import {Input} from "@/components/ui/input";
-import {Textarea} from "@/components/ui/textarea";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {Badge} from "@/components/ui/badge";
+import { Attendee } from '@/types/models/Attendee';
+import { Event } from '@/types/models/Event';
+import { User } from '@/types/models/User';
+import { Head, Link, useForm } from '@inertiajs/vue3';
+import { PropType, inject } from 'vue';
 
 const { toast } = useToast();
 const emitter = inject('emitter');
@@ -224,9 +279,9 @@ const props = defineProps({
 });
 
 const nameForm = useForm({
-    handle: props.attendee?.handle,
-    first_name: props.attendee?.first_name,
-    last_name: props.attendee?.last_name,
+    handle: props.attendee?.handle ?? '',
+    first_name: props.attendee?.first_name ?? '',
+    last_name: props.attendee?.last_name ?? '',
 });
 
 const avatarForm = useForm({
@@ -234,126 +289,129 @@ const avatarForm = useForm({
 });
 
 const descriptionForm = useForm({
-    description: props.attendee?.description,
-    job_company: props.attendee?.job_company,
-    job_position: props.attendee?.job_position,
+    description: props.attendee?.description ?? '',
+    job_company: props.attendee?.job_company ?? '',
+    job_position: props.attendee?.job_position ?? '',
 });
 
 const confirmationForm = useForm({
-    confirmation_key: "",
+    confirmation_key: '',
 });
 
 const socialLinkForm = useForm({
-    type: null,
+    type: 'web',
     value: '',
-    visibility: 'hidden'
-})
-function getContactInfoIcon(type: string) {
-    switch(type) {
-        case "web":
-            return "ri-earth-fill";
-        case "twitter":
-            return "ri-twitter-fill";
-        case "bluesky":
-            return "ri-bluesky-fill";
-        case "facebook":
-            return "ri-facebook-fill";
-        case "linkedin":
-            return "ri-linkedin-fill";
-        case "discord":
-            return "ri-discord-fill";
-        case "mastodon":
-            return "ri-mastodon-fill";
-        case "github":
-            return "ri-github-fill";
-        case "youtube":
-            return "ri-youtube-fill";
-        case "reddit":
-            return "ri-reddit-fill";
+    visibility: 'hidden',
+});
+function getContactInfoIcon(type: string): string {
+    switch (type) {
+        default:
+            return '';
+        case 'web':
+            return 'ri-earth-fill';
+        case 'twitter':
+            return 'ri-twitter-fill';
+        case 'bluesky':
+            return 'ri-bluesky-fill';
+        case 'facebook':
+            return 'ri-facebook-fill';
+        case 'linkedin':
+            return 'ri-linkedin-fill';
+        case 'discord':
+            return 'ri-discord-fill';
+        case 'mastodon':
+            return 'ri-mastodon-fill';
+        case 'github':
+            return 'ri-github-fill';
+        case 'youtube':
+            return 'ri-youtube-fill';
+        case 'reddit':
+            return 'ri-reddit-fill';
     }
 }
-function getContactInfoLink(type: string, value: string) {
-    switch(type) {
-        case "web":
-        case "mastodon":
-        case "discord":
+function getContactInfoLink(type: string, value: string): string {
+    switch (type) {
+        default:
+        case 'web':
+        case 'mastodon':
+        case 'discord':
             return value;
-        case "twitter":
+        case 'twitter':
             return `https://x.com/${value}`;
-        case "bluesky":
+        case 'bluesky':
             return `https://bsky.app/profile/${value}`;
-        case "facebook":
+        case 'facebook':
             return `https://www.facebook.com/${value}`;
-        case "linkedin":
+        case 'linkedin':
             return `https://www.linkedin.com/in/${value}`;
-        case "github":
+        case 'github':
             return `https://github.com/${value}`;
-        case "youtube":
+        case 'youtube':
             return `https://www.youtube.com/@${value}`;
-        case "reddit":
+        case 'reddit':
             return `https://reddit.com/u/${value}`;
     }
 }
 
 function submitName() {
-    nameForm.post(route('settings.event.name', {eventId: props.event.id}), {
+    nameForm.post(route('settings.event.name', { eventId: props.event.id }), {
         onSuccess: () => {
             toast({
-                description: "Successfully saved."
+                description: 'Successfully saved.',
             });
         },
         onError: () => {
             toast({
-                description: "Could not save. Please try again later.",
-                variant: "destructive"
+                description: 'Could not save. Please try again later.',
+                variant: 'destructive',
             });
         },
     });
 }
 
 function submitAvatar() {
-    avatarForm.post(route('settings.event.avatar', {eventId: props.event.id}), {
+    avatarForm.post(route('settings.event.avatar', { eventId: props.event.id }), {
         onSuccess: () => {
             toast({
-                description: "Successfully saved."
+                description: 'Successfully saved.',
             });
         },
         onError: () => {
             toast({
-                description: "Could not save. Please try again later.",
-                variant: "destructive"
+                description: 'Could not save. Please try again later.',
+                variant: 'destructive',
             });
         },
     });
 }
 
 function submitDescription() {
-    descriptionForm.post(route('settings.event.description', {eventId: props.event.id}), {
+    descriptionForm.post(route('settings.event.description', { eventId: props.event.id }), {
         onSuccess: () => {
             toast({
-                description: "Successfully saved."
+                description: 'Successfully saved.',
             });
         },
         onError: () => {
             toast({
-                description: "Could not save. Please try again later.",
-                variant: "destructive"
+                description: 'Could not save. Please try again later.',
+                variant: 'destructive',
             });
         },
     });
 }
 
 function submitSocialLink() {
-    socialLinkForm.post(route('settings.event.socialLink.create', {eventId: props.event.id}), {
+    socialLinkForm.post(route('settings.event.socialLink.create', { eventId: props.event.id }), {
         onSuccess: () => {
             toast({
-                description: "Successfully saved."
+                description: 'Successfully saved.',
             });
         },
         onError: () => {
             toast({
-                description: "Could not save. Please try again later.",
-                variant: "destructive"
+                description: 'Could not save. Please try again later.',
+                variant: 'destructive',
             });
         },
     });
@@ -362,7 +420,7 @@ function submitSocialLink() {
 
 <style lang="scss" scoped>
 .attendee-settings {
-    @apply flex flex-col lg:grid lg:grid-cols-[350px_1fr] gap-4;
+    @apply flex flex-col gap-4 lg:grid lg:grid-cols-[350px_1fr];
 }
 .attendee-settings > main {
     @apply flex flex-col gap-4;

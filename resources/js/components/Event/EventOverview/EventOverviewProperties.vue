@@ -1,29 +1,49 @@
 <template>
     <Card>
-        <CardContent class="pt-6 flex flex-col gap-4">
-            <div class="grid grid-cols-[1fr_2fr] gap-2 items-center">
+        <CardContent class="flex flex-col gap-4 pt-6">
+            <div class="grid grid-cols-[1fr_2fr] items-center gap-2">
                 <Label>Start date</Label>
-                <p class="text-muted-foreground" v-if="event.start_date">{{ moment(event.start_date).format("D.MM.YYYY") }}</p>
-                <p class="text-muted-foreground" v-else>No date set.</p>
+                <p
+                    class="text-muted-foreground"
+                    v-if="event.start_date"
+                >
+                    {{ moment(event.start_date).format('D.MM.YYYY') }}
+                </p>
+                <p
+                    class="text-muted-foreground"
+                    v-else
+                >
+                    No date set.
+                </p>
             </div>
-            <div class="grid grid-cols-[1fr_2fr] gap-2 items-center">
+            <div class="grid grid-cols-[1fr_2fr] items-center gap-2">
                 <Label>End date</Label>
-                <p class="text-muted-foreground" v-if="event.end_date">{{ moment(event.end_date).format("D.MM.YYYY") }}</p>
-                <p class="text-muted-foreground" v-else>No date set.</p>
+                <p
+                    class="text-muted-foreground"
+                    v-if="event.end_date"
+                >
+                    {{ moment(event.end_date).format('D.MM.YYYY') }}
+                </p>
+                <p
+                    class="text-muted-foreground"
+                    v-else
+                >
+                    No date set.
+                </p>
             </div>
         </CardContent>
     </Card>
 </template>
 <script setup lang="ts">
-import moment from "moment/moment";
-import {Card, CardContent} from "@/components/ui/card";
-import {Label} from "@/components/ui/label";
+import { Card, CardContent } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import moment from 'moment/moment';
 
 defineProps({
     event: {
         type: Object,
         required: true,
-    }
+    },
 });
 </script>
 

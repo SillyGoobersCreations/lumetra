@@ -8,7 +8,7 @@ declare global {
         axios: AxiosInstance;
     }
 
-    var route: typeof ziggyRoute;
+    let route: typeof ziggyRoute;
 }
 
 declare module 'vue' {

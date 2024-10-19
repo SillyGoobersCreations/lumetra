@@ -1,5 +1,5 @@
-import {User} from "@/types/models/User";
-import {Attendee} from "@/types/models/Attendee";
+import { Attendee } from '@/types/models/Attendee';
+import { User } from '@/types/models/User';
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {

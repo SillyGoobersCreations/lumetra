@@ -1,12 +1,21 @@
 <template>
-    <div :style="`width: ${size}px; height: ${size}px; background-image: url(/storage/avatars/${attendee.avatar_url}?v=${attendee.updated_at})`" class="avatar" v-if="attendee.avatar_url"></div>
-    <div :style="`width: ${size}px; height: ${size}px; font-size: ${size * 0.4}px`" class="avatar fallback" v-else>{{ attendee.name_initials }}</div>
+    <div
+        :style="`width: ${size}px; height: ${size}px; background-image: url(/storage/avatars/${attendee.avatar_url}?v=${attendee.updated_at})`"
+        class="avatar"
+        v-if="attendee.avatar_url"
+    ></div>
+    <div
+        :style="`width: ${size}px; height: ${size}px; font-size: ${size * 0.4}px`"
+        class="avatar fallback"
+        v-else
+    >
+        {{ attendee.name_initials }}
+    </div>
 </template>
 
 <script setup lang="ts">
-
-import {Attendee} from "@/types/models/Attendee";
-import {PropType} from "@vue/runtime-dom";
+import { Attendee } from '@/types/models/Attendee';
+import { PropType } from 'vue';
 
 const props = defineProps({
     attendee: {
@@ -16,7 +25,7 @@ const props = defineProps({
     size: {
         type: Number,
         default: 35,
-    }
+    },
 });
 </script>
 

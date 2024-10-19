@@ -1,7 +1,10 @@
 <template>
     <Head title="Attendees" />
 
-    <AdminLayout title="Attendees" :event="event">
+    <AdminLayout
+        title="Attendees"
+        :event="event"
+    >
         <section class="page-attendee">
             <Table>
                 <TableHeader>
@@ -20,17 +23,41 @@
                         v-for="attendee in event.attendees"
                         :key="attendee.id"
                     >
-                        <TableCell><div class="line-clamp-1">{{ attendee.id }}</div></TableCell>
-                        <TableCell><div class="line-clamp-1">{{ attendee.name_full }}</div></TableCell>
-                        <TableCell><div class="line-clamp-1">{{ attendee.handle }}</div></TableCell>
-                        <TableCell><div class="line-clamp-1">{{ attendee.user.email }}</div></TableCell>
+                        <TableCell
+                            ><div class="line-clamp-1">{{ attendee.id }}</div></TableCell
+                        >
+                        <TableCell
+                            ><div class="line-clamp-1">{{ attendee.name_full }}</div></TableCell
+                        >
+                        <TableCell
+                            ><div class="line-clamp-1">{{ attendee.handle }}</div></TableCell
+                        >
+                        <TableCell
+                            ><div class="line-clamp-1">{{ attendee.user?.email }}</div></TableCell
+                        >
                         <TableCell>
-                            <Badge v-if="attendee.confirmed" variant="secondary">Yes</Badge>
-                            <Badge v-else variant="destructive">No</Badge>
+                            <Badge
+                                v-if="attendee.confirmed"
+                                variant="secondary"
+                                >Yes</Badge
+                            >
+                            <Badge
+                                v-else
+                                variant="destructive"
+                                >No</Badge
+                            >
                         </TableCell>
                         <TableCell>
-                            <Badge v-if="attendee.role === 'organizer'" variant="default">Yes</Badge>
-                            <Badge v-else variant="secondary">No</Badge>
+                            <Badge
+                                v-if="attendee.role === 'organizer'"
+                                variant="default"
+                                >Yes</Badge
+                            >
+                            <Badge
+                                v-else
+                                variant="secondary"
+                                >No</Badge
+                            >
                         </TableCell>
                         <TableCell class="flex gap-2">
                             <DetailDialog
@@ -54,14 +81,14 @@
 </template>
 
 <script setup lang="ts">
-import AdminLayout from "@/Layouts/AdminLayout.vue";
-import {PropType} from "@vue/runtime-dom";
-import {Event} from "@/types/models/Event";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {Badge} from "@/components/ui/badge";
-import {Button} from "@/components/ui/button";
-import {Head} from "@inertiajs/vue3";
-import DetailDialog from "@/components/Admin/Attendee/DetailDialog.vue";
+import AdminLayout from '@/Layouts/AdminLayout.vue';
+import DetailDialog from '@/components/Admin/Attendee/DetailDialog.vue';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Event } from '@/types/models/Event';
+import { Head } from '@inertiajs/vue3';
+import { PropType } from 'vue';
 
 defineProps({
     event: {

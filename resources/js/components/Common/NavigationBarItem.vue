@@ -6,20 +6,27 @@
         as-child
     >
         <Link :href="href">
-            <i v-if="icon" :class="`ri-${icon}-line ${label ? 'mr-2' : ''} text-lg`"></i>
-            <span v-if="label" class="label">{{ label }}</span>
+            <i
+                v-if="icon"
+                :class="`ri-${icon}-line ${label ? 'mr-2' : ''} text-lg`"
+            ></i>
+            <span
+                v-if="label"
+                class="label"
+                >{{ label }}</span
+            >
         </Link>
     </Button>
 </template>
 
 <script setup lang="ts">
+import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/vue3';
-import {Button} from "@/components/ui/button";
 
 defineProps({
     href: {
         type: String,
-        default: "/",
+        default: '/',
     },
     active: {
         type: Boolean,

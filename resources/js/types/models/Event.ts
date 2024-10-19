@@ -1,7 +1,7 @@
-import {Attendee} from "@/types/models/Attendee";
-import {EventRoom} from "@/types/models/EventRoom";
-import {EventNote} from "@/types/models/EventNote";
-import {Swatch} from "@/types/models/Swatch";
+import { Attendee } from '@/types/models/Attendee';
+import { EventNote } from '@/types/models/EventNote';
+import { EventRoom } from '@/types/models/EventRoom';
+import { Swatch } from '@/types/models/Swatch';
 
 export interface Event {
     id: string;

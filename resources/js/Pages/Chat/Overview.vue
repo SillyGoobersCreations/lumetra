@@ -8,7 +8,7 @@
         >
             <aside>
                 <Card>
-                    <CardContent class="p-2 gap-2 flex flex-col">
+                    <CardContent class="flex flex-col gap-2 p-2">
                         <ConnectionButton
                             v-for="connection in connections"
                             :key="connection.id"
@@ -22,9 +22,7 @@
                     <CardHeader>
                         <CardTitle>Connect with attendees</CardTitle>
                     </CardHeader>
-                    <CardContent class="text-muted-foreground">
-                        By connecting with other attendees, you can chat and schedule meetups during the event.
-                    </CardContent>
+                    <CardContent class="text-muted-foreground"> By connecting with other attendees, you can chat and schedule meetups during the event. </CardContent>
                     <CardFooter>
                         <Button
                             variant="secondary"
@@ -32,9 +30,11 @@
                             as-child
                         >
                             <Link
-                                :href="route('events.attendees.index', {
-                                eventId: event.id,
-                            })"
+                                :href="
+                                    route('events.attendees.index', {
+                                        eventId: event.id,
+                                    })
+                                "
                             >
                                 <i class="ri-shake-hands-line mr-2 text-lg"></i>
                                 <span>Connect with attendees</span>
@@ -58,26 +58,26 @@
 </template>
 
 <script setup lang="ts">
-import {Head, Link, usePage} from '@inertiajs/vue3';
-import EventLayout from "@/Layouts/EventLayout.vue";
-import {PropType} from "@vue/runtime-dom";
-import {Event} from "@/types/models/Event";
-import {AttendeeConnection} from "@/types/models/AttendeeConnection";
-import ConnectionButton from "@/components/Chat/ConnectionButton.vue";
-import {computed} from "vue";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
+import EventLayout from '@/Layouts/EventLayout.vue';
+import ConnectionButton from '@/components/Chat/ConnectionButton.vue';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Attendee } from '@/types/models/Attendee';
+import { AttendeeConnection } from '@/types/models/AttendeeConnection';
+import { Event } from '@/types/models/Event';
+import { Head, Link, usePage } from '@inertiajs/vue3';
+import { PropType, computed } from 'vue';
 
 const page = usePage();
 const attendees = computed(() => page.props.auth.attendees);
-const currentAttendee = computed(() => {
-    let foundAttendee = null;
+const currentAttendee = computed<Attendee | null>(() => {
+    let foundAttendee: Attendee | null = null;
 
     attendees.value.forEach((attendee) => {
-        if(attendee.event_id === props.event.id) {
+        if (attendee.event_id === props.event.id) {
             foundAttendee = attendee;
         }
-    })
+    });
 
     return foundAttendee;
 });
@@ -89,14 +89,14 @@ const props = defineProps({
     },
     connections: {
         type: Array as PropType<AttendeeConnection[]>,
-        default: () => []
+        default: () => [],
     },
 });
 </script>
 
 <style lang="scss" scoped>
 .chat-overview {
-    @apply flex flex-col lg:grid lg:grid-cols-[1fr_2fr] gap-5;
+    @apply flex flex-col gap-5 lg:grid lg:grid-cols-[1fr_2fr];
 
     & aside {
         @apply flex flex-col gap-5;

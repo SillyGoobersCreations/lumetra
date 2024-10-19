@@ -6,7 +6,7 @@
 
 <style lang="scss" scoped>
 .wrapper {
-    @apply max-w-[1100px] flex flex-col m-auto;
+    @apply m-auto flex max-w-[1100px] flex-col;
     width: calc(100% - 40px);
 }
 </style>

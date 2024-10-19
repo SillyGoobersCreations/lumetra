@@ -1,18 +1,21 @@
 <template>
-    <div
-        :class="`form-item `+ cn(buttonVariants({ variant }))"
-    >
+    <div :class="`form-item ` + cn(buttonVariants({ variant }))">
         <Label>{{ label }}</Label>
         <slot />
-        <div class="error" v-if="error">{{ error }}</div>
+        <div
+            class="error"
+            v-if="error"
+        >
+            {{ error }}
+        </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import {Label} from "@/components/ui/label";
-import {cva} from "class-variance-authority";
+import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-import {PropType} from "@vue/runtime-dom";
+import { cva } from 'class-variance-authority';
+import { PropType } from 'vue';
 
 defineProps({
     label: {
@@ -25,24 +28,21 @@ defineProps({
     },
     variant: {
         type: String as PropType<'default' | 'wide'>,
-        default: "default",
-    }
+        default: 'default',
+    },
 });
 
-const buttonVariants = cva(
-    'w-full gap-1.5',
-    {
-        variants: {
-            variant: {
-                default: 'flex flex-col',
-                wide: 'flex flex-col md:grid md:grid-cols-[1fr_2fr] md:items-center',
-            },
-        },
-        defaultVariants: {
-            variant: 'default',
+const buttonVariants = cva('w-full gap-1.5', {
+    variants: {
+        variant: {
+            default: 'flex flex-col',
+            wide: 'flex flex-col md:grid md:grid-cols-[1fr_2fr] md:items-center',
         },
     },
-);
+    defaultVariants: {
+        variant: 'default',
+    },
+});
 </script>
 
 <style lang="scss" scoped>

@@ -1,14 +1,20 @@
 <template>
     <Card class="attendee-button">
-        <CardContent class="flex flex-col gap-2 pt-6 grow">
+        <CardContent class="flex grow flex-col gap-2 pt-6">
             <div class="flex w-full justify-center">
                 <Avatar class="h-[128px] w-[128px]">
-                    <AvatarImage :src="`/storage/avatars/${attendee.avatar_url}?v=${attendee.updated_at}`" v-if="attendee.avatar_url" />
+                    <AvatarImage
+                        :src="`/storage/avatars/${attendee.avatar_url}?v=${attendee.updated_at}`"
+                        v-if="attendee.avatar_url"
+                    />
                     <AvatarFallback class="text-3xl">{{ attendee.name_initials }}</AvatarFallback>
                 </Avatar>
             </div>
             <div class="name">{{ attendee.name_full }}</div>
-            <div class="job-info" v-if="attendee.job_position || attendee.job_company">
+            <div
+                class="job-info"
+                v-if="attendee.job_position || attendee.job_company"
+            >
                 <div v-if="attendee.job_position">{{ attendee.job_position }}</div>
                 <div v-if="attendee.job_company">{{ attendee.job_company }}</div>
             </div>
@@ -29,12 +35,12 @@
 </template>
 
 <script setup lang="ts">
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Attendee } from '@/types/models/Attendee';
 import { Link } from '@inertiajs/vue3';
-import {PropType} from "@vue/runtime-dom";
-import {Attendee} from "@/types/models/Attendee";
-import {Card, CardContent, CardFooter} from "@/components/ui/card";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Button} from "@/components/ui/button";
+import { PropType } from 'vue';
 
 defineProps({
     attendee: {
@@ -43,24 +49,24 @@ defineProps({
     },
     eventId: {
         type: String,
-        default: "",
-    }
+        default: '',
+    },
 });
 </script>
 
 <style lang="scss" scoped>
 .attendee-button {
     & .name {
-        @apply line-clamp-1 text-center mt-2 font-bold;
+        @apply mt-2 line-clamp-1 text-center font-bold;
     }
     & .job-info {
-        @apply flex flex-col mt-2;
+        @apply mt-2 flex flex-col;
 
         & div {
             @apply line-clamp-1;
         }
         & div:nth-child(2) {
-            @apply text-muted-foreground text-xs;
+            @apply text-xs text-muted-foreground;
         }
     }
 }

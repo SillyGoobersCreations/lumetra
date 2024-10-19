@@ -36,8 +36,14 @@
                         <p>Lumetra was created for <strong>GodotCon</strong>, the developer conference by the Godot Foundation. As with the Godot Engine itself, Lumetra was developed to be fully open-source.</p>
                     </CardContent>
                     <CardFooter>
-                        <Button as-child variant="secondary">
-                            <a href="https://github.com/SillyGoobersCreations/lumetra" target="_blank">
+                        <Button
+                            as-child
+                            variant="secondary"
+                        >
+                            <a
+                                href="https://github.com/SillyGoobersCreations/lumetra"
+                                target="_blank"
+                            >
                                 <span>Lumetra on Github</span>
                             </a>
                         </Button>
@@ -45,12 +51,17 @@
                 </Card>
             </div>
 
-            <div class="contributors" v-if="githubContributors.length > 0">
+            <div
+                class="contributors"
+                v-if="githubContributors.length > 0"
+            >
                 <div class="label">Made with contributions by</div>
                 <div class="avatars">
-                    <a v-for="contributor in githubContributors"
-                       :href="contributor.html_url"
-                       target="_blank"
+                    <a
+                        v-for="contributor in githubContributors"
+                        :key="contributor.id"
+                        :href="contributor.html_url"
+                        target="_blank"
                     >
                         <Avatar>
                             <AvatarImage :src="contributor.avatar_url" />
@@ -63,14 +74,20 @@
 </template>
 
 <script setup lang="ts">
+import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Head } from '@inertiajs/vue3';
-import DefaultLayout from "@/Layouts/DefaultLayout.vue";
-import {Card, CardContent, CardFooter} from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
-import {onMounted, ref} from "vue";
-import {Avatar, AvatarImage} from "@/components/ui/avatar";
+import { onMounted, ref } from 'vue';
 
-const githubContributors = ref([]);
+interface GitHubContributor {
+    id: number;
+    html_url: string;
+    avatar_url: string;
+}
+
+const githubContributors = ref<GitHubContributor[]>([]);
 
 async function loadContributors() {
     let response = await fetch('https://api.github.com/repos/SillyGoobersCreations/lumetra/contributors');
@@ -87,13 +104,13 @@ onMounted(() => {
     @apply flex flex-col gap-4;
 
     & .welcome {
-        @apply bg-accent text-accent-foreground p-6 py-10 rounded-md flex flex-col;
+        @apply flex flex-col rounded-md bg-accent p-6 py-10 text-accent-foreground;
 
         & h1 {
-            @apply text-lg font-bold text-center;
+            @apply text-center text-lg font-bold;
         }
         & p {
-            @apply text-muted-foreground text-center;
+            @apply text-center text-muted-foreground;
         }
     }
 
@@ -102,10 +119,10 @@ onMounted(() => {
 
         & .feature-card {
             & i {
-                @apply text-3xl mb-4 block;
+                @apply mb-4 block text-3xl;
             }
             & h2 {
-                @apply font-bold mb-2;
+                @apply mb-2 font-bold;
             }
             & p {
                 @apply text-muted-foreground;
@@ -114,7 +131,7 @@ onMounted(() => {
     }
 
     & .contributors {
-        @apply flex flex-col flex-wrap gap-2 mt-8 items-center;
+        @apply mt-8 flex flex-col flex-wrap items-center gap-2;
 
         & .label {
             @apply text-muted-foreground;
