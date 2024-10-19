@@ -114,6 +114,36 @@ class Attendee extends Model
             ->orWhere('inviter_attendee_id', $this->id);
     }
 
+    public function getFirstNameAttribute($value)
+    {
+        return $value ?? $this->user->first_name;
+    }
+
+    public function getLastNameAttribute($value)
+    {
+        return $value ?? $this->user->last_name;
+    }
+
+    public function getAvatarUrlAttribute($value)
+    {
+        return $value ?? $this->user->avatar_url;
+    }
+
+    public function getDescriptionAttribute($value)
+    {
+        return $value ?? $this->user->description;
+    }
+
+    public function getJobCompanyAttribute($value)
+    {
+        return $value ?? $this->user->job_company;
+    }
+
+    public function getJobPositionAttribute($value)
+    {
+        return $value ?? $this->user->job_position;
+    }
+
     public function getNameFullAttribute(): string
     {
         if($this->first_name && $this->last_name){
@@ -166,5 +196,24 @@ class Attendee extends Model
     public function shouldBeSearchable(): bool
     {
         return ($this['active'] ?? false) && ($this['confirmed'] ?? false);
+    }
+
+    // Ensure Attendee is re-indexed when User data changes
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($attendee) {
+            $attendee->user->attendees()->get()->each->searchable();
+        });
+
+        // Re-index related attendees when a User is updated
+        static::created(function ($attendee) {
+            $attendee->user->attendees()->get()->each->searchable();
+        });
+
+        User::saved(function ($user) {
+            $user->attendees()->get()->each->searchable();
+        });
     }
 }
